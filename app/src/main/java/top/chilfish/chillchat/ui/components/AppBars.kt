@@ -35,6 +35,9 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import top.chilfish.chillchat.R
+import top.chilfish.chillchat.navigation.NavBars
+import top.chilfish.chillchat.navigation.NavigationActions
+import top.chilfish.chillchat.provider.curUid
 import top.chilfish.chillchat.ui.main.MainViewModel
 
 
@@ -134,13 +137,12 @@ fun NavBar(
             .fillMaxWidth()
             .height(74.dp)
     ) {
-        // TODO: add navigation
         NavBars.forEachIndexed { index, navBar ->
             NavigationBarItem(
                 selected = selectedItem == index,
                 onClick = {
                     setSelectedItem(index)
-                    TODO()
+                    NavigationActions(navController).navigateTo(navBar.router)
                 },
                 icon = {
                     Icon(
