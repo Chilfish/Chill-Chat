@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.MoreVert
 import androidx.compose.material.icons.rounded.Search
@@ -26,7 +25,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -35,9 +33,9 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import top.chilfish.chillchat.R
+import top.chilfish.chillchat.data.Profile
 import top.chilfish.chillchat.navigation.NavBars
 import top.chilfish.chillchat.navigation.NavigationActions
-import top.chilfish.chillchat.provider.curUid
 import top.chilfish.chillchat.ui.main.MainViewModel
 
 
@@ -74,7 +72,7 @@ fun HomeBar(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MessageBar(
-    profile: Profile, // TODO: add data
+    profile: Profile,
     onClick: () -> Unit
 ) {
     TopAppBar(
