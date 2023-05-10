@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import top.chilfish.chillchat.provider.AccountProvider
-import top.chilfish.chillchat.ui.components.showToast
+import top.chilfish.chillchat.utils.showToast
 
 class LoginViewModel : ViewModel() {
     private val _loginState = MutableStateFlow(LoginState())

@@ -1,47 +1,20 @@
 package top.chilfish.chillchat.ui.components
 
-import android.os.Handler
-import android.os.Looper
-import android.widget.Toast
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.res.painterResource
-import top.chilfish.chillchat.R
-import top.chilfish.chillchat.provider.ContextProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.DefaultAlpha
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import coil.compose.AsyncImage
 import coil.request.CachePolicy
 import coil.request.ImageRequest
+import top.chilfish.chillchat.R
 
-private val mainHandler by lazy {
-    Handler(Looper.getMainLooper())
-}
-
-private fun showToast(message: String) {
-    Toast.makeText(
-        ContextProvider.context, message, Toast.LENGTH_SHORT
-    ).show()
-}
-
-fun showToast(msg: Any?) {
-    val message = msg?.toString()
-    if (message.isNullOrBlank()) {
-        return
-    }
-    if (Looper.myLooper() == Looper.getMainLooper()) {
-        showToast(message = message)
-    } else {
-        mainHandler.post {
-            showToast(message = message)
-        }
-    }
-}
 
 @Composable
 fun VisibilityBtn(

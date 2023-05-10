@@ -12,12 +12,9 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -25,13 +22,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImage
 import top.chilfish.chillchat.R
-import top.chilfish.chillchat.ui.components.VisibilityBtn
+import top.chilfish.chillchat.ui.components.LoginInput
 
 
 @Composable
@@ -113,53 +106,6 @@ fun LoginInputs(
             isPassword = true,
             isError = loginState.isPasswordError,
             errorText = stringResource(R.string.password_invalid)
-        )
-    }
-}
-
-@Composable
-fun LoginInput(
-    modifier: Modifier = Modifier,
-    label: String,
-    value: String,
-    onValueChange: (String) -> Unit,
-    placeholder: String,
-    isPassword: Boolean = false,
-    isError: Boolean = false,
-    errorText: String = "",
-) {
-    val (passwordHidden, setPasswordHidden) = rememberSaveable { mutableStateOf(true) }
-
-    Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(16.dp),
-        horizontalArrangement = Arrangement.Center
-    ) {
-        OutlinedTextField(
-            modifier = modifier.width(300.dp),
-            value = value,
-            onValueChange = onValueChange,
-            label = { Text(text = label) },
-            isError = isError,
-            singleLine = true,
-
-            visualTransformation = if (isPassword && passwordHidden)
-                PasswordVisualTransformation() else VisualTransformation.None,
-            trailingIcon = {
-                if (isPassword) VisibilityBtn(passwordHidden, setPasswordHidden)
-            },
-
-            placeholder = { Text(text = placeholder) },
-            supportingText = {
-                if (isError) Text(
-                    text = "* $errorText",
-                    color = MaterialTheme.colorScheme.error,
-                    style = MaterialTheme.typography.bodySmall,
-                    textAlign = TextAlign.Start,
-                    modifier = Modifier.padding(top = 8.dp)
-                )
-            }
         )
     }
 }
