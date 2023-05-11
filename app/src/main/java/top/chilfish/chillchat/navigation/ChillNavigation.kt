@@ -2,9 +2,19 @@ package top.chilfish.chillchat.navigation
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
 import top.chilfish.chillchat.R
+import top.chilfish.chillchat.ui.main.ChatsListPage
+import top.chilfish.chillchat.ui.main.ContactsPage
+import top.chilfish.chillchat.ui.main.MainViewModel
+import top.chilfish.chillchat.ui.main.MePage
 
 object Routers {
     const val Home = "home"
@@ -47,3 +57,30 @@ val NavBars = listOf(
         selectedIcon = R.drawable.outline_person_24
     )
 )
+
+
+@Composable
+fun ChillNavHost(
+    modifier: Modifier = Modifier,
+    navController: NavHostController,
+    viewModel: MainViewModel,
+) {
+    Column(modifier = modifier.fillMaxWidth()) {
+        NavHost(
+            navController = navController,
+            startDestination = Routers.Home,
+        ) {
+            composable(route = Routers.Home) {
+                ChatsListPage(viewModel)
+            }
+
+            composable(route = Routers.Contact) {
+                ContactsPage(viewModel)
+            }
+
+            composable(route = Routers.Me) {
+                MePage(viewModel)
+            }
+        }
+    }
+}

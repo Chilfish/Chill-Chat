@@ -1,4 +1,4 @@
-package top.chilfish.chillchat.room.profile
+package top.chilfish.chillchat.room.contacts
 
 import androidx.room.Dao
 import androidx.room.Insert
@@ -9,7 +9,7 @@ import top.chilfish.chillchat.data.Profile
 import top.chilfish.chillchat.data.User_Table
 
 @Dao
-interface ProfileDao {
+interface ContactsDao {
     @Query("SELECT * FROM $User_Table ORDER BY name ASC")
     fun getAll(): Flow<MutableList<Profile>>
 

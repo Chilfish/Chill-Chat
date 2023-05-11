@@ -6,18 +6,18 @@ import androidx.room.Query
 import androidx.room.Update
 import kotlinx.coroutines.flow.Flow
 import top.chilfish.chillchat.data.Chat_Table
-import top.chilfish.chillchat.data.ChatsList
+import top.chilfish.chillchat.data.Chats
 
 @Dao
 interface ChatsListDao {
     @Query("SELECT * FROM $Chat_Table ORDER BY lastTime DESC")
-    fun getAll(): Flow<MutableList<ChatsList>>
+    fun getAll(): Flow<MutableList<Chats>>
 
     @Query("SELECT * FROM $Chat_Table WHERE id = :id")
-    suspend fun getById(id: Long): ChatsList
+    suspend fun getById(id: Long): Chats
 
     @Insert
-    suspend fun insert(chatsList: ChatsList)
+    suspend fun insert(chats: Chats)
 
     @Query("DELETE FROM $Chat_Table")
     suspend fun deleteAll()
@@ -26,5 +26,5 @@ interface ChatsListDao {
     suspend fun deleteById(id: Long)
 
     @Update
-    suspend fun update(chatsList: ChatsList)
+    suspend fun update(chats: Chats)
 }

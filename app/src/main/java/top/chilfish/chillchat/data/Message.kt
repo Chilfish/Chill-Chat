@@ -1,7 +1,9 @@
 package top.chilfish.chillchat.data
 
 import androidx.room.Entity
+import androidx.room.Ignore
 import androidx.room.PrimaryKey
+import top.chilfish.chillchat.utils.formattedTime
 
 const val Message_Table = "messages"
 
@@ -13,4 +15,8 @@ data class Message(
     val receiverId: Long,
     val message: String,
     val time: Long,
-)
+) {
+    @get:Ignore
+    val timeStr: String
+        get() = formattedTime(time)
+}

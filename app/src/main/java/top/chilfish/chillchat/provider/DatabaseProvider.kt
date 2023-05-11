@@ -1,17 +1,16 @@
 package top.chilfish.chillchat.provider
 
 import android.content.Context
-import top.chilfish.chillchat.data.Profile
 import top.chilfish.chillchat.room.chatslist.ChatsListDatabase
 import top.chilfish.chillchat.room.chatslist.ChatsListRepository
 import top.chilfish.chillchat.room.messages.MessageDatabase
 import top.chilfish.chillchat.room.messages.MessageRepository
-import top.chilfish.chillchat.room.profile.ProfileDatabase
-import top.chilfish.chillchat.room.profile.ProfileRepository
+import top.chilfish.chillchat.room.contacts.ContactsDatabase
+import top.chilfish.chillchat.room.contacts.ContactsRepository
 
 object DatabaseProvider {
 
-    lateinit var profileRepository: ProfileRepository
+    lateinit var contactsRepository: ContactsRepository
         private set
 
     lateinit var messageRepository: MessageRepository
@@ -21,8 +20,8 @@ object DatabaseProvider {
         private set
 
     fun init(context: Context) {
-        val profileDatabase by lazy {
-            ProfileDatabase.getDatabase(context)
+        val contactsDatabase by lazy {
+            ContactsDatabase.getDatabase(context)
         }
 
         val messageDatabase by lazy {
@@ -33,7 +32,7 @@ object DatabaseProvider {
             ChatsListDatabase.getDatabase(context)
         }
 
-        profileRepository = ProfileRepository(profileDatabase.profileDao())
+        contactsRepository = ContactsRepository(contactsDatabase.profileDao())
         messageRepository = MessageRepository(messageDatabase.messageDao())
         chatsListRepository = ChatsListRepository(chatsListDatabase.chatsListDao())
     }

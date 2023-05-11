@@ -1,4 +1,4 @@
-package top.chilfish.chillchat.room.profile
+package top.chilfish.chillchat.room.contacts
 
 import android.content.Context
 import androidx.room.Database
@@ -7,22 +7,22 @@ import top.chilfish.chillchat.data.Profile
 import top.chilfish.chillchat.data.User_Table
 
 @Database(entities = [Profile::class], version = 1, exportSchema = false)
-abstract class ProfileDatabase : RoomDatabase() {
-    abstract fun profileDao(): ProfileDao
+abstract class ContactsDatabase : RoomDatabase() {
+    abstract fun profileDao(): ContactsDao
 
     companion object {
         private const val DATABASE_NAME = "$User_Table.db"
 
         @Volatile
-        private var INSTANCE: ProfileDatabase? = null
+        private var INSTANCE: ContactsDatabase? = null
 
         fun getDatabase(
             context: Context
-        ): ProfileDatabase {
+        ): ContactsDatabase {
             return INSTANCE ?: synchronized(this) {
                 val instance = androidx.room.Room.databaseBuilder(
                     context.applicationContext,
-                    ProfileDatabase::class.java,
+                    ContactsDatabase::class.java,
                     DATABASE_NAME
                 ).build()
                 INSTANCE = instance

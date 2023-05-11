@@ -3,9 +3,9 @@ package top.chilfish.chillchat.room.chatslist
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import top.chilfish.chillchat.data.Chat_Table
-import top.chilfish.chillchat.data.ChatsList
+import top.chilfish.chillchat.data.Chats
 
-@Database(entities = [ChatsList::class], version = 1, exportSchema = false)
+@Database(entities = [Chats::class], version = 1, exportSchema = false)
 abstract class ChatsListDatabase : RoomDatabase() {
     abstract fun chatsListDao(): ChatsListDao
 
