@@ -1,6 +1,5 @@
-package top.chilfish.chillchat.room.contacts
+package top.chilfish.chillchat.data.contacts
 
-import top.chilfish.chillchat.data.Profile
 import top.chilfish.chillchat.provider.curUid
 
 class ContactsRepository(private val dao: ContactsDao) {

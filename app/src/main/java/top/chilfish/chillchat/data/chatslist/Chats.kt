@@ -1,6 +1,5 @@
-package top.chilfish.chillchat.data
+package top.chilfish.chillchat.data.chatslist
 
-import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
@@ -12,9 +11,9 @@ const val Chat_Table = "chats"
 data class Chats(
     @PrimaryKey(autoGenerate = true)
     val id: Long = 0L,
-    val chatterId: Long,
-    val lastMessage: String,
-    val lastTime: Long,
+    val chatterId: Long = 0L,
+    val lastMessage: String = "",
+    val lastTime: Long = 0,
 ) {
     @get:Ignore
     val lastTimeStr: String

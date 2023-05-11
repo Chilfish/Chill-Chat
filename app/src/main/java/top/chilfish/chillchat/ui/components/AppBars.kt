@@ -33,7 +33,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import top.chilfish.chillchat.R
-import top.chilfish.chillchat.data.Profile
+import top.chilfish.chillchat.data.contacts.Profile
 import top.chilfish.chillchat.navigation.NavBars
 import top.chilfish.chillchat.navigation.NavigationActions
 import top.chilfish.chillchat.ui.main.MainViewModel

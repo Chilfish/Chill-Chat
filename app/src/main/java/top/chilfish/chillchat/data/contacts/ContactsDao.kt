@@ -1,11 +1,9 @@
-package top.chilfish.chillchat.room.contacts
+package top.chilfish.chillchat.data.contacts
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
-import top.chilfish.chillchat.data.Profile
-import top.chilfish.chillchat.data.User_Table
 
 @Dao
 interface ContactsDao {

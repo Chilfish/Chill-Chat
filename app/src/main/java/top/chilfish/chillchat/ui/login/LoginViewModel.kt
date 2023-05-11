@@ -29,7 +29,7 @@ class LoginViewModel : ViewModel() {
 
     private fun success() = viewModelScope.launch {
         // TODO: fetch profile from server
-        val uid = 1L
+        val uid = 3L
 
         AccountProvider.setLogin(uid)
         _loginState.value = _loginState.value.copy(isLoginSuccess = true)

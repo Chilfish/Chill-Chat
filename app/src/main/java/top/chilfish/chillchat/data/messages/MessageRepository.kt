@@ -1,6 +1,5 @@
-package top.chilfish.chillchat.room.messages
+package top.chilfish.chillchat.data.messages
 
-import top.chilfish.chillchat.data.Message
 import top.chilfish.chillchat.provider.curUid
 
 class MessageRepository(private val dao: MessageDao) {

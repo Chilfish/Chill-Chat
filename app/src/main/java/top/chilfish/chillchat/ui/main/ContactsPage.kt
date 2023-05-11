@@ -18,7 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import top.chilfish.chillchat.data.Profile
+import top.chilfish.chillchat.data.contacts.Profile
 import top.chilfish.chillchat.ui.components.AvatarImg
 
 @Composable

@@ -1,6 +1,5 @@
-package top.chilfish.chillchat.room.chatslist
+package top.chilfish.chillchat.data.chatslist
 
-import top.chilfish.chillchat.data.Chats
 
 class ChatsListRepository(private val dao: ChatsListDao) {
     suspend fun allChats() = dao.getAll()

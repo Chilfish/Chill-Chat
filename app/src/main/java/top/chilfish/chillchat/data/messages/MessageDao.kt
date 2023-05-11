@@ -1,11 +1,9 @@
-package top.chilfish.chillchat.room.messages
+package top.chilfish.chillchat.data.messages
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import kotlinx.coroutines.flow.Flow
-import top.chilfish.chillchat.data.Message
-import top.chilfish.chillchat.data.Message_Table
 
 @Dao
 interface MessageDao {

@@ -1,12 +1,10 @@
-package top.chilfish.chillchat.room.chatslist
+package top.chilfish.chillchat.data.chatslist
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Update
-import top.chilfish.chillchat.data.Chat_Table
-import top.chilfish.chillchat.data.Chats
 
 @Dao
 interface ChatsListDao {

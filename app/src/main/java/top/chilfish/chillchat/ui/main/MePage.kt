@@ -10,7 +10,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import top.chilfish.chillchat.data.Profile
+import top.chilfish.chillchat.data.contacts.Profile
 import top.chilfish.chillchat.ui.components.Hero
 import top.chilfish.chillchat.ui.components.ProfileBtn
 import top.chilfish.chillchat.ui.components.ProfileInfo

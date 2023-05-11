@@ -1,4 +1,4 @@
-package top.chilfish.chillchat.data
+package top.chilfish.chillchat.data.messages
 
 import androidx.room.Entity
 import androidx.room.Ignore
