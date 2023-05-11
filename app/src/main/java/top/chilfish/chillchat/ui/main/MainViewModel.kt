@@ -1,9 +1,11 @@
 package top.chilfish.chillchat.ui.main
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavHostController
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -25,14 +27,19 @@ class MainViewModel(
     }
 
     private fun load() = viewModelScope.launch {
-        DatabaseProvider.chatsListRepository.allChats.collect {
-            _mainState.value = _mainState.value.copy(chats = it)
-        }
-        DatabaseProvider.contactsRepository.allUsers.collect {
-            _mainState.value = _mainState.value.copy(contacts = it)
-        }
-        val curUser = DatabaseProvider.contactsRepository.getUser()
-        _mainState.value = _mainState.value.copy(me = curUser)
+        val contactsDeferred = async { DatabaseProvider.contactsRepository.allUsers() }
+        val chatsDeferred = async { DatabaseProvider.chatsListRepository.allChats() }
+        val curUserDeferred = async { DatabaseProvider.contactsRepository.getUser() }
+
+        val contacts = contactsDeferred.await()
+        val chats = chatsDeferred.await()
+        val curUser = curUserDeferred.await()
+
+        _mainState.value = _mainState.value.copy(
+            contacts = contacts,
+            chats = chats,
+            me = curUser
+        )
     }
 
     fun logout() = viewModelScope.launch {
@@ -40,6 +47,10 @@ class MainViewModel(
     }
 
     fun navToMessage(chat: Chats) {
+
+    }
+
+    fun navToProfile(profile: Profile) {
 
     }
 

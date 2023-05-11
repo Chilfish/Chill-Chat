@@ -1,6 +1,7 @@
 package top.chilfish.chillchat.provider
 
 import android.content.Context
+import kotlinx.coroutines.CoroutineScope
 import top.chilfish.chillchat.room.chatslist.ChatsListDatabase
 import top.chilfish.chillchat.room.chatslist.ChatsListRepository
 import top.chilfish.chillchat.room.messages.MessageDatabase
@@ -19,21 +20,21 @@ object DatabaseProvider {
     lateinit var chatsListRepository: ChatsListRepository
         private set
 
-    fun init(context: Context) {
+    fun init(context: Context, scope: CoroutineScope) {
         val contactsDatabase by lazy {
-            ContactsDatabase.getDatabase(context)
+            ContactsDatabase.getDatabase(context, scope)
         }
 
         val messageDatabase by lazy {
-            MessageDatabase.getDatabase(context)
+            MessageDatabase.getDatabase(context, scope)
         }
 
         val chatsListDatabase by lazy {
-            ChatsListDatabase.getDatabase(context)
+            ChatsListDatabase.getDatabase(context, scope)
         }
 
-        contactsRepository = ContactsRepository(contactsDatabase.profileDao())
         messageRepository = MessageRepository(messageDatabase.messageDao())
         chatsListRepository = ChatsListRepository(chatsListDatabase.chatsListDao())
+        contactsRepository = ContactsRepository(contactsDatabase.contactsDao())
     }
 }

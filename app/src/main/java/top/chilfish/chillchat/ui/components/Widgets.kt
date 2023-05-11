@@ -10,6 +10,7 @@ import androidx.compose.ui.graphics.DefaultAlpha
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import coil.compose.AsyncImage
 import coil.request.CachePolicy
 import coil.request.ImageRequest
@@ -36,7 +37,7 @@ fun VisibilityBtn(
 fun AvatarImg(
     url: String,
     modifier: Modifier = Modifier,
-    contentDescription: String? = null,
+    contentDescription: String = stringResource(R.string.avatar),
     contentScale: ContentScale = ContentScale.Fit,
     alignment: Alignment = Alignment.Center,
     alpha: Float = DefaultAlpha,

@@ -4,7 +4,7 @@ import top.chilfish.chillchat.data.Profile
 import top.chilfish.chillchat.provider.curUid
 
 class ContactsRepository(private val dao: ContactsDao) {
-    val allUsers = dao.getAll()
+    suspend fun allUsers() = dao.getAll()
 
     suspend fun insert(profile: Profile) = dao.insert(profile)
 
@@ -16,5 +16,5 @@ class ContactsRepository(private val dao: ContactsDao) {
 
     suspend fun getUser(id: Long = curUid) = dao.getById(id)
 
-    fun getByName(name: String) = dao.getByName(name)
+    suspend fun getByName(name: String) = dao.getByName(name)
 }

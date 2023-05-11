@@ -18,10 +18,8 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import top.chilfish.chillchat.R
 import top.chilfish.chillchat.data.Chats
 import top.chilfish.chillchat.data.Profile
 import top.chilfish.chillchat.ui.components.AvatarImg
@@ -61,7 +59,6 @@ fun ChatsListItem(
     ) {
         AvatarImg(
             url = profile.avatar,
-            contentDescription = stringResource(R.string.avatar),
             modifier = Modifier
                 .width(56.dp)
                 .clip(RoundedCornerShape(12.dp))
