@@ -19,7 +19,7 @@ class ChatApplication : Application() {
         }
 
         ContextProvider.init(this)
-        RepoProvider.init(database)
+        RepoProvider.init(database, applicationScope)
         AccountProvider.init(this)
     }
 }

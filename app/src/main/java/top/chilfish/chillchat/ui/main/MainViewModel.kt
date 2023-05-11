@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import top.chilfish.chillchat.data.chatslist.Chats
+import top.chilfish.chillchat.data.chatslist.Chatter
 import top.chilfish.chillchat.data.contacts.Profile
 import top.chilfish.chillchat.provider.AccountProvider
 import top.chilfish.chillchat.provider.RepoProvider
@@ -38,12 +38,11 @@ class MainViewModel(
         val chats = chatsDeferred.await()
         val curUser = curUserDeferred.await()
 
-        Log.d("Chat", "$chats\n\n$contacts\n\n$curUser")
-
         _mainState.value = _mainState.value.copy(
             contacts = contacts,
             chats = chats,
-            me = curUser
+            me = curUser,
+            isLoading = false,
         )
     }
 
@@ -51,20 +50,12 @@ class MainViewModel(
         AccountProvider.setLogout()
     }
 
-    fun navToMessage(chat: Chats) {
+    fun navToMessage(chat: Profile) {
 
     }
 
     fun navToProfile(profile: Profile) {
 
-    }
-
-    fun getChatProfile(id: Long): Profile {
-        var chat: Profile? = null
-        viewModelScope.launch {
-            chat = RepoProvider.contactsRepo.getById(id)
-        }
-        return chat ?: Profile()
     }
 }
 
@@ -80,7 +71,9 @@ class MainViewModelFactory(private val navController: NavHostController) :
 }
 
 data class MainState(
-    val chats: MutableList<Chats> = mutableListOf(),
+    val chats: MutableList<Chatter> = mutableListOf(),
     val contacts: MutableList<Profile> = mutableListOf(),
     val me: Profile? = null,
+
+    val isLoading: Boolean = true,
 )

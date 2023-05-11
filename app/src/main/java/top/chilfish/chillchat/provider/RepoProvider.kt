@@ -1,12 +1,13 @@
 package top.chilfish.chillchat.provider
 
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 import top.chilfish.chillchat.data.ChillChatDatabase
 import top.chilfish.chillchat.data.chatslist.ChatsListRepository
 import top.chilfish.chillchat.data.contacts.ContactsRepository
 import top.chilfish.chillchat.data.messages.MessageRepository
 
 object RepoProvider {
-    private lateinit var db: ChillChatDatabase
 
     lateinit var chatsRepo: ChatsListRepository
         private set
@@ -17,11 +18,12 @@ object RepoProvider {
     lateinit var contactsRepo: ContactsRepository
         private set
 
-    fun init(db: ChillChatDatabase) {
-        this.db = db
-
+    fun init(db: ChillChatDatabase, scope: CoroutineScope) {
         chatsRepo = ChatsListRepository(db.chatsDao())
         messRepo = MessageRepository(db.MessageDao())
         contactsRepo = ContactsRepository(db.ContactsDao())
+
+        // to init database file
+        scope.launch { chatsRepo.allChats() }
     }
 }

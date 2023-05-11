@@ -10,5 +10,4 @@ class ChatsListRepository(private val dao: ChatsListDao) {
 
     suspend fun update(chats: Chats) = dao.update(chats)
 
-    suspend fun getById(id: Long) = dao.getById(id)
 }

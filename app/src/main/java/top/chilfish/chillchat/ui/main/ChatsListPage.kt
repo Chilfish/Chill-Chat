@@ -28,20 +28,21 @@ import top.chilfish.chillchat.ui.components.AvatarImg
 fun ColumnScope.ChatsListPage(
     viewModel: MainViewModel,
 ) {
-    val chats = viewModel.mainState.collectAsState(initial = MainState()).value.chats
+    val mainState = viewModel.mainState.collectAsState(initial = MainState()).value
 
-    LazyColumn(Modifier.weight(1f)) {
-        itemsIndexed(
-            items = chats,
-            key = { _, chat -> chat.id }) { _, chat ->
-            val profile = viewModel.getChatProfile(chat.chatterId)
-            ChatsListItem(
-                chat = chat,
-                profile = profile,
-                onClick = { viewModel.navToMessage(chat) }
-            )
+
+    if (!mainState.isLoading)
+        LazyColumn(Modifier.weight(1f)) {
+            itemsIndexed(
+                items = mainState.chats,
+                key = { _, chat -> chat.chatter.id }) { _, chat ->
+                ChatsListItem(
+                    chat = chat.chatter,
+                    profile = chat.profile,
+                    onClick = { viewModel.navToMessage(chat.profile) }
+                )
+            }
         }
-    }
 }
 
 @Composable
