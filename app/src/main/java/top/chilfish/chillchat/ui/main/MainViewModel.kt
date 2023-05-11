@@ -1,6 +1,5 @@
 package top.chilfish.chillchat.ui.main
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -14,6 +13,7 @@ import top.chilfish.chillchat.data.Chats
 import top.chilfish.chillchat.data.Profile
 import top.chilfish.chillchat.provider.AccountProvider
 import top.chilfish.chillchat.provider.DatabaseProvider
+import top.chilfish.chillchat.provider.curUid
 
 class MainViewModel(
     private val navController: NavHostController,
@@ -32,6 +32,8 @@ class MainViewModel(
         val curUserDeferred = async { DatabaseProvider.contactsRepository.getUser() }
 
         val contacts = contactsDeferred.await()
+            .filter { it.id != curUid }
+            .toMutableList()
         val chats = chatsDeferred.await()
         val curUser = curUserDeferred.await()
 

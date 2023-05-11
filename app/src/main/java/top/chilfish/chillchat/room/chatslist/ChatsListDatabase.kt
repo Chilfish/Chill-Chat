@@ -59,7 +59,7 @@ abstract class ChatsListDatabase : RoomDatabase() {
 
         private val initData = listOf(
             Chats(
-                chatterId = 1,
+                chatterId = 2,
                 lastMessage = "Hello",
                 lastTime = 1681142224000,
             )

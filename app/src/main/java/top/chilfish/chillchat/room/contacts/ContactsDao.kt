@@ -13,7 +13,7 @@ interface ContactsDao {
     suspend fun getAll(): MutableList<Profile>
 
     @Query("SELECT * FROM $User_Table WHERE id = :id")
-    suspend fun getById(id: Long): Profile
+    suspend fun getById(id: Long): Profile?
 
     @Query("SELECT * FROM $User_Table WHERE name LIKE :name")
     suspend fun getByName(name: String): MutableList<Profile>
