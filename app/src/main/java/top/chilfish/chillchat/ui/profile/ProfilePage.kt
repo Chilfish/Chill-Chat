@@ -12,6 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import top.chilfish.chillchat.ui.components.Hero
+import top.chilfish.chillchat.ui.components.ProfileBar
 import top.chilfish.chillchat.ui.components.ProfileBtn
 import top.chilfish.chillchat.ui.components.ProfileInfo
 
@@ -23,7 +24,7 @@ fun ProfilePage(
 
     // TODO: add menu btn to delete friend
     Scaffold(
-        topBar = { },
+        topBar = { ProfileBar(viewModel) },
     ) { padding ->
         Column(
             Modifier

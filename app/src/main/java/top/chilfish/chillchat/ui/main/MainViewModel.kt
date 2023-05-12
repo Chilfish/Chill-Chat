@@ -62,6 +62,12 @@ class MainViewModel(
             id = id,
         )
     }
+
+    fun search() {
+    }
+
+    fun addFriend() {
+    }
 }
 
 class MainViewModelFactory(private val navController: NavHostController) :

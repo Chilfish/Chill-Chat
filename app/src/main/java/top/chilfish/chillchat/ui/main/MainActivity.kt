@@ -2,12 +2,14 @@ package top.chilfish.chillchat.ui.main
 
 import android.os.Bundle
 import androidx.activity.viewModels
+import androidx.compose.foundation.layout.padding
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
 import kotlinx.coroutines.launch
 import top.chilfish.chillchat.BaseActivity
+import top.chilfish.chillchat.navigation.ChillNavHost
 import top.chilfish.chillchat.provider.isLoggedIn
 import top.chilfish.chillchat.ui.login.LoginActivity
 
@@ -23,9 +25,9 @@ class MainActivity : BaseActivity() {
                 MainViewModelFactory(navController)
             )[MainViewModel::class.java]
 
-            MainPage(
-                viewModel = viewModel,
-                navController = navController
+            ChillNavHost(
+                navController = navController,
+                viewModel = viewModel
             )
         }
 

@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
@@ -15,8 +14,11 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import top.chilfish.chillchat.R
+import top.chilfish.chillchat.ui.components.HomeBar
+import top.chilfish.chillchat.ui.components.NavBar
 import top.chilfish.chillchat.ui.main.ChatsListPage
 import top.chilfish.chillchat.ui.main.ContactsPage
+import top.chilfish.chillchat.ui.main.MainPage
 import top.chilfish.chillchat.ui.main.MainViewModel
 import top.chilfish.chillchat.ui.main.MePage
 import top.chilfish.chillchat.ui.profile.ProfilePage
@@ -92,15 +94,30 @@ fun ChillNavHost(
             startDestination = Routers.Home,
         ) {
             composable(route = Routers.Home) {
-                ChatsListPage(viewModel)
+                MainPage(
+                    viewModel = viewModel,
+                    navController = navController
+                ) {
+                    ChatsListPage(viewModel)
+                }
             }
 
             composable(route = Routers.Contact) {
-                ContactsPage(viewModel)
+                MainPage(
+                    viewModel = viewModel,
+                    navController = navController
+                ) {
+                    ContactsPage(viewModel)
+                }
             }
 
             composable(route = Routers.Me) {
-                MePage(viewModel)
+                MainPage(
+                    viewModel = viewModel,
+                    navController = navController
+                ) {
+                    MePage(viewModel)
+                }
             }
 
             composable(
@@ -117,7 +134,6 @@ fun ChillNavHost(
                         navHostController = navController
                     )
                 }
-                // TODO: Should start a fragment instead of a composable
                 ProfilePage(profileViewModel)
             }
         }

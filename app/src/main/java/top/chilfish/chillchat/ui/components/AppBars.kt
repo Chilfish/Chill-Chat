@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.AddCircle
 import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.MoreVert
 import androidx.compose.material.icons.rounded.Search
@@ -56,10 +57,18 @@ fun HomeBar(
             )
         },
         actions = {
-            IconButton(onClick = { }) {
+            IconButton(onClick = { viewModel.search() }) {
                 Icon(
                     imageVector = Icons.Rounded.Search,
                     contentDescription = stringResource(R.string.search),
+                    modifier = Modifier.width(24.dp),
+                    tint = MaterialTheme.colorScheme.onPrimary
+                )
+            }
+            IconButton(onClick = { viewModel.addFriend() }) {
+                Icon(
+                    imageVector = Icons.Outlined.AddCircle,
+                    contentDescription = stringResource(R.string.add),
                     modifier = Modifier.width(24.dp),
                     tint = MaterialTheme.colorScheme.onPrimary
                 )
@@ -125,11 +134,21 @@ fun MessageBar(
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfileBar(
     viewModel: ProfileViewModel,
 ) {
+    TopAppBar(
+        title = {},
+        navigationIcon = {
 
+        },
+        actions = {
+
+        },
+        colors = TopAppBarDefaults.topAppBarColors(MaterialTheme.colorScheme.primary),
+    )
 }
 
 @Composable
