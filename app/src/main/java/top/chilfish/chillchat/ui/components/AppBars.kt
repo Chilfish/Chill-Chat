@@ -7,8 +7,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.outlined.AddCircle
-import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.MoreVert
 import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -26,6 +26,8 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -38,8 +40,12 @@ import top.chilfish.chillchat.data.contacts.Profile
 import top.chilfish.chillchat.navigation.NavBars
 import top.chilfish.chillchat.navigation.NavigationActions
 import top.chilfish.chillchat.ui.main.MainViewModel
+import top.chilfish.chillchat.ui.message.MessageViewModel
 import top.chilfish.chillchat.ui.profile.ProfileViewModel
 
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun appBarColors() = TopAppBarDefaults.topAppBarColors(MaterialTheme.colorScheme.primary)
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -57,25 +63,17 @@ fun HomeBar(
             )
         },
         actions = {
-            IconButton(onClick = { viewModel.search() }) {
-                Icon(
-                    imageVector = Icons.Rounded.Search,
-                    contentDescription = stringResource(R.string.search),
-                    modifier = Modifier.width(24.dp),
-                    tint = MaterialTheme.colorScheme.onPrimary
-                )
-            }
-            IconButton(onClick = { viewModel.addFriend() }) {
-                Icon(
-                    imageVector = Icons.Outlined.AddCircle,
-                    contentDescription = stringResource(R.string.add),
-                    modifier = Modifier.width(24.dp),
-                    tint = MaterialTheme.colorScheme.onPrimary
-                )
-            }
+            BarIcon(
+                onClick = { viewModel.search() },
+                imageVector = Icons.Rounded.Search
+            )
+            BarIcon(
+                onClick = { viewModel.addFriend() },
+                imageVector = Icons.Outlined.AddCircle
+            )
         },
         navigationIcon = {},
-        colors = TopAppBarDefaults.topAppBarColors(MaterialTheme.colorScheme.primary),
+        colors = appBarColors(),
     )
 }
 
@@ -83,7 +81,7 @@ fun HomeBar(
 @Composable
 fun MessageBar(
     profile: Profile,
-    onClick: () -> Unit
+    viewModel: MessageViewModel
 ) {
     TopAppBar(
         title = {
@@ -91,7 +89,7 @@ fun MessageBar(
                 modifier = Modifier.padding(start = 16.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                IconButton(onClick = onClick) {
+                IconButton(onClick = { viewModel.navToProfile() }) {
                     AsyncImage(
                         model = profile.avatar,
                         contentDescription = "avatar",
@@ -110,27 +108,18 @@ fun MessageBar(
             }
         },
         navigationIcon = {
-            IconButton(onClick = { /* doSomething() */ }) {
-                Icon(
-                    imageVector = Icons.Rounded.ArrowBack,
-                    contentDescription = "Back",
-                    modifier = Modifier
-                        .width(24.dp),
-                    tint = MaterialTheme.colorScheme.onPrimary
-                )
-            }
+            BarIcon(
+                onClick = { viewModel.back() },
+                imageVector = Icons.Default.ArrowBack
+            )
         },
         actions = {
-            IconButton(onClick = { /* doSomething() */ }) {
-                Icon(
-                    imageVector = Icons.Rounded.MoreVert,
-                    contentDescription = "More",
-                    modifier = Modifier.width(24.dp),
-                    tint = MaterialTheme.colorScheme.onPrimary
-                )
-            }
+            BarIcon(
+                onClick = { viewModel.more() },
+                imageVector = Icons.Rounded.MoreVert
+            )
         },
-        colors = TopAppBarDefaults.topAppBarColors(MaterialTheme.colorScheme.primary)
+        colors = appBarColors()
     )
 }
 
@@ -142,12 +131,18 @@ fun ProfileBar(
     TopAppBar(
         title = {},
         navigationIcon = {
-
+            BarIcon(
+                onClick = { viewModel.back() },
+                imageVector = Icons.Default.ArrowBack
+            )
         },
         actions = {
-
+            BarIcon(
+                onClick = { viewModel.more() },
+                imageVector = Icons.Rounded.MoreVert
+            )
         },
-        colors = TopAppBarDefaults.topAppBarColors(MaterialTheme.colorScheme.primary),
+        colors = appBarColors(),
     )
 }
 
@@ -184,5 +179,22 @@ fun NavBar(
                 }
             )
         }
+    }
+}
+
+@Composable
+fun BarIcon(
+    onClick: () -> Unit,
+    tint: Color = MaterialTheme.colorScheme.onPrimary,
+    imageVector: ImageVector,
+    des: String = ""
+) {
+    IconButton(onClick = onClick) {
+        Icon(
+            imageVector = imageVector,
+            contentDescription = des,
+            modifier = Modifier.width(24.dp),
+            tint = tint
+        )
     }
 }

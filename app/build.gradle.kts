@@ -67,7 +67,10 @@ dependencies {
     //UI
     implementation(libs.material)
     implementation(libs.material3)
+
+    // Tool
     implementation(libs.coil)
+    implementation(libs.gson)
 
     // Jetpack
     implementation(libs.lifecycle)

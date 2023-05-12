@@ -1,8 +1,10 @@
 package top.chilfish.chillchat.data.contacts
 
 import androidx.room.Entity
-import androidx.room.Ignore
 import androidx.room.PrimaryKey
+import top.chilfish.chillchat.utils.toJson
+import java.net.URL
+import java.net.URLEncoder
 
 const val User_Table = "users"
 const val Host = "chilfish.top"

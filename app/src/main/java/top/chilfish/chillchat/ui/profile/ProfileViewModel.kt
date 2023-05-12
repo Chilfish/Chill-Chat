@@ -14,7 +14,7 @@ import top.chilfish.chillchat.navigation.Routers
 import top.chilfish.chillchat.provider.RepoProvider
 
 class ProfileViewModel(
-    private val uid: Long?,
+    private val profile: Profile,
     private val navHostController: NavHostController
 ) : ViewModel() {
     private val _profileState = MutableStateFlow(ProfileState())
@@ -26,10 +26,6 @@ class ProfileViewModel(
     }
 
     private fun load() = viewModelScope.launch {
-        if (uid == null) return@launch
-        val profileDeferred = async { RepoProvider.contactsRepo.getUser(uid) }
-        val profile = profileDeferred.await() ?: return@launch
-
         _profileState.value = _profileState.value.copy(
             curProfile = profile,
         )
@@ -40,6 +36,12 @@ class ProfileViewModel(
 //            route = Routers.Message,
 //            id = uid,
 //        )
+    }
+
+    fun back() = navHostController.popBackStack()
+
+    fun more() {
+
     }
 }
 

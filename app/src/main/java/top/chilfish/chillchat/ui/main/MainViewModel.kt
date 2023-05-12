@@ -1,6 +1,5 @@
 package top.chilfish.chillchat.ui.main
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -17,6 +16,7 @@ import top.chilfish.chillchat.navigation.Routers
 import top.chilfish.chillchat.provider.AccountProvider
 import top.chilfish.chillchat.provider.RepoProvider
 import top.chilfish.chillchat.provider.curUid
+import top.chilfish.chillchat.utils.toJson
 
 class MainViewModel(
     private val navController: NavHostController,
@@ -52,14 +52,14 @@ class MainViewModel(
         AccountProvider.setLogout()
     }
 
-    fun navToMessage(chat: Profile) {
+    fun navToMessage(chat: Profile) = navTo(Routers.Message, chat)
 
-    }
+    fun navToProfile(chat: Profile) = navTo(Routers.Profile, chat)
 
-    fun navToProfile(id: Long) {
+    private fun navTo(des: String, chat: Profile) {
         NavigationActions(navController).navigateTo(
-            route = Routers.Profile,
-            id = id,
+            route = des,
+            data = toJson(chat),
         )
     }
 

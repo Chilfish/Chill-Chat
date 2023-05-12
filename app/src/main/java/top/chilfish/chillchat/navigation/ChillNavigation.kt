@@ -1,5 +1,6 @@
 package top.chilfish.chillchat.navigation
 
+import android.util.Log
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Column
@@ -14,25 +15,27 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import top.chilfish.chillchat.R
-import top.chilfish.chillchat.ui.components.HomeBar
-import top.chilfish.chillchat.ui.components.NavBar
+import top.chilfish.chillchat.data.contacts.Profile
 import top.chilfish.chillchat.ui.main.ChatsListPage
 import top.chilfish.chillchat.ui.main.ContactsPage
 import top.chilfish.chillchat.ui.main.MainPage
 import top.chilfish.chillchat.ui.main.MainViewModel
 import top.chilfish.chillchat.ui.main.MePage
+import top.chilfish.chillchat.ui.message.MessagePage
+import top.chilfish.chillchat.ui.message.MessageViewModel
 import top.chilfish.chillchat.ui.profile.ProfilePage
 import top.chilfish.chillchat.ui.profile.ProfileViewModel
+import top.chilfish.chillchat.utils.toData
 
-const val RouteId = "Id"
+const val ArgUser = "uid"
 
 object Routers {
     const val Home = "home"
     const val Contact = "contact"
     const val Me = "me"
 
-    const val Profile = "profile/{$RouteId}"
-    const val Message = "message/{$RouteId}"
+    const val Profile = "profile/{$ArgUser}"
+    const val Message = "message/{$ArgUser}"
 }
 
 data class NavBarDes(
@@ -42,16 +45,14 @@ data class NavBarDes(
 )
 
 class NavigationActions(private val navController: NavHostController) {
-    fun navigateTo(route: String, id: Long? = null) {
+    fun navigateTo(route: String, data: String = "") {
         val curRoute = when (route) {
-            Routers.Home -> Routers.Home
-            Routers.Contact -> Routers.Contact
-            Routers.Me -> Routers.Me
-
-            Routers.Profile -> Routers.Profile.replace("{$RouteId}", id.toString())
-            Routers.Message -> Routers.Message.replace("{$RouteId}", id.toString())
+            Routers.Profile -> Routers.Profile.replace("{$ArgUser}", data)
+            Routers.Message -> Routers.Message.replace("{$ArgUser}", data)
             else -> route
         }
+
+        Log.d("Chat", "data: $data")
 
         navController.navigate(curRoute) {
             popUpTo(navController.graph.findStartDestination().id) {
@@ -122,19 +123,38 @@ fun ChillNavHost(
 
             composable(
                 route = Routers.Profile,
-                arguments = listOf(
-                    navArgument(RouteId)
-                    { type = NavType.LongType }
-                )
+                arguments = listOf(navArgument(ArgUser) {
+                    type = NavType.StringType
+                })
             ) {
-                val id = it.arguments?.getLong(RouteId)
+                val profile = it.arguments?.getString(ArgUser)
+
                 val profileViewModel = remember {
                     ProfileViewModel(
-                        uid = id,
+                        profile = toData(profile),
                         navHostController = navController
                     )
                 }
                 ProfilePage(profileViewModel)
+            }
+
+            composable(
+                route = Routers.Message,
+                arguments = listOf(navArgument(ArgUser) {
+                    type = NavType.StringType
+                })
+            ) {
+                val profile = it.arguments?.getString(ArgUser)
+                Log.d("Chat", "profile: $profile")
+
+                val messageViewModel = remember {
+                    MessageViewModel(
+                        profile = toData(profile),
+                        navHostController = navController
+                    )
+                }
+
+                MessagePage(viewModel = messageViewModel)
             }
         }
     }
