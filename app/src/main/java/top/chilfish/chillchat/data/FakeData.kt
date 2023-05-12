@@ -13,21 +13,21 @@ private const val curId = 3L
 
 val Contacts = immutableListOf(
     Profile(
-        id = curId,
+        id = 1L,
         name = "Chilfish",
         avatar = "$AvatarHost/avatar.webp",
         email = "Chilfish@$Host",
         bio = "Chilfish is a fish that lives in the sea."
     ),
     Profile(
-        id = 1,
+        id = 2L,
         name = "Organic Fish",
         avatar = "$AvatarHost/avatar1.webp",
         email = "Organic_Fish@$Host",
         bio = "Organic Fish is a fish that is organic."
     ),
     Profile(
-        id = 2,
+        id = 3L,
         name = "Blue Fish",
         avatar = "$AvatarHost/avatar2.webp",
         email = "Blue_Fish@$Host",
@@ -37,35 +37,30 @@ val Contacts = immutableListOf(
 
 val Messages = immutableListOf(
     Message(
-        id = 7,
         senderId = curId,
         receiverId = 1,
         message = "Hello, Organic Fish!",
         time = 1681142224000
     ),
     Message(
-        id = 1,
         senderId = 1,
         receiverId = curId,
         message = "Hello, Chilfish!",
         time = 1681142228000
     ),
     Message(
-        id = 2,
         senderId = curId,
         receiverId = 2,
         message = "How are you?",
         time = 1681142294000
     ),
     Message(
-        id = 3,
         senderId = 1,
         receiverId = curId,
         message = "I'm fine, thank you.",
         time = 1681142264000
     ),
     Message(
-        id = 4,
         senderId = 2,
         receiverId = curId,
         message = "And you?",
@@ -73,19 +68,77 @@ val Messages = immutableListOf(
     ),
 
     Message(
-        id = 5,
         senderId = 1,
         receiverId = curId,
         message = "I'm fine too.",
         time = 1681142624000
     ),
     Message(
-        id = 6,
         senderId = 2,
         receiverId = curId,
         message = "Goodbye.",
         time = 1681142274000
     ),
+    Message(
+        senderId = curId,
+        receiverId = 1,
+        message = "Goodbye.",
+        time = 1681142274000
+    ),
+    Message(
+        senderId = 1,
+        receiverId = curId,
+        message = "Hey there!",
+        time = 1632977224000
+    ),
+    Message(
+        senderId = 2,
+        receiverId = curId,
+        message = "What's up?",
+        time = 1632977290000
+    ),
+    Message(
+        senderId = curId,
+        receiverId = 1,
+        message = "Not much, just hanging out.",
+        time = 1632977332000
+    ),
+    Message(
+        senderId = 2,
+        receiverId = curId,
+        message = "Do you want to grab lunch later?",
+        time = 1632977411000
+    ),
+    Message(
+        senderId = 1,
+        receiverId = curId,
+        message = "Sure, what time?",
+        time = 1632977487000
+    ),
+    Message(
+        senderId = curId,
+        receiverId = 2,
+        message = "I'm free at noon.",
+        time = 1632977556000
+    ),
+    Message(
+        senderId = 1,
+        receiverId = curId,
+        message = "Noon works for me too.",
+        time = 1632977623000
+    ),
+    Message(
+        senderId = curId,
+        receiverId = 1,
+        message = "Great, let's meet at the park.",
+        time = 1632977700000
+    ),
+    Message(
+        senderId = 2,
+        receiverId = curId,
+        message = "Sounds good.",
+        time = 1632977774000
+    )
 )
     .sortedBy { it.time }
     .reversed()
@@ -95,11 +148,10 @@ fun filterChat(chatterId: Long, message: Message) =
     (message.receiverId == chatterId && message.senderId == curId) ||
             (message.receiverId == curId && message.senderId == chatterId)
 
-val ChatsList = Contacts.mapIndexed { i, contact ->
+val ChatsList = Contacts.map { contact ->
     val message = Messages.find { filterChat(contact.id, it) }
-        ?: return@mapIndexed null
+        ?: return@map null
     Chats(
-        id = i.toLong(),
         chatterId = contact.id,
         lastMessage = message.message,
         lastTime = message.time

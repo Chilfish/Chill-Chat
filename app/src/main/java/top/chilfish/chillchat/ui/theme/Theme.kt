@@ -18,13 +18,13 @@ import androidx.core.view.WindowCompat
 
 private val DarkColorScheme = darkColorScheme(
     primary = Purple80,
-    secondary = PurpleGrey80,
+    secondary = Green80,
     tertiary = Pink80
 )
 
 private val LightColorScheme = lightColorScheme(
-    primary = Purple40,
-    secondary = PurpleGrey40,
+    primary = Purple80,
+    secondary = Green100,
     tertiary = Pink40,
 
     background = Color(0xFFFFFBFE),
@@ -40,7 +40,7 @@ private val LightColorScheme = lightColorScheme(
 fun ChillChatTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     // Dynamic color is available on Android 12+
-    dynamicColor: Boolean = true,
+    dynamicColor: Boolean = false,
     content: @Composable () -> Unit
 ) {
     val colorScheme = when {

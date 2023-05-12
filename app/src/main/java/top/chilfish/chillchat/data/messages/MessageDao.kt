@@ -9,8 +9,8 @@ import kotlinx.coroutines.flow.Flow
 interface MessageDao {
     @Query(
         "SELECT * FROM $Message_Table " +
-                "where (receiverId == :uid || senderId == :uid) " +
-                "AND (receiverId == :chatterId || senderId == :chatterId) " +
+                "where (receiverId ==:chatterId AND senderId == :uid) " +
+                "OR (receiverId == :uid AND senderId == :chatterId) " +
                 "ORDER BY time DESC"
     )
     fun getAll(uid: Long, chatterId: Long): Flow<MutableList<Message>>

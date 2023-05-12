@@ -15,7 +15,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import top.chilfish.chillchat.R
-import top.chilfish.chillchat.data.contacts.Profile
 import top.chilfish.chillchat.ui.main.ChatsListPage
 import top.chilfish.chillchat.ui.main.ContactsPage
 import top.chilfish.chillchat.ui.main.MainPage
@@ -58,7 +57,6 @@ class NavigationActions(private val navController: NavHostController) {
             popUpTo(navController.graph.findStartDestination().id) {
                 saveState = true
             }
-            launchSingleTop = true
             restoreState = true
         }
     }

@@ -1,5 +1,6 @@
 package top.chilfish.chillchat.ui.components
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -86,19 +87,21 @@ fun MessageBar(
     TopAppBar(
         title = {
             Row(
-                modifier = Modifier.padding(start = 16.dp),
+                modifier = Modifier
+                    .padding(start = 16.dp)
+                    .clickable(
+                        onClick = { viewModel.navToProfile() }
+                    ),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                IconButton(onClick = { viewModel.navToProfile() }) {
-                    AsyncImage(
-                        model = profile.avatar,
-                        contentDescription = "avatar",
-                        placeholder = painterResource(R.drawable.placeholder),
-                        modifier = Modifier
-                            .width(40.dp)
-                            .clip(RoundedCornerShape(50.dp))
-                    )
-                }
+                AsyncImage(
+                    model = profile.avatar,
+                    contentDescription = "avatar",
+                    placeholder = painterResource(R.drawable.placeholder),
+                    modifier = Modifier
+                        .width(40.dp)
+                        .clip(RoundedCornerShape(50.dp))
+                )
                 Text(
                     modifier = Modifier.padding(start = 12.dp),
                     text = profile.name,

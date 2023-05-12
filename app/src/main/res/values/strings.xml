@@ -39,4 +39,10 @@
 
     <string name="avatar">Avatar</string>
 
+
+    <string name="place_content">the content of note</string>
+    <string name="place_long_content">the long content of note,  the long content of note,
+        the long content of note, the long content of note,the long content of note,
+        the long content of note, the long content of note,
+    </string>
 </resources>
