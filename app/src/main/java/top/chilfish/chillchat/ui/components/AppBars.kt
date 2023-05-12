@@ -37,6 +37,7 @@ import top.chilfish.chillchat.data.contacts.Profile
 import top.chilfish.chillchat.navigation.NavBars
 import top.chilfish.chillchat.navigation.NavigationActions
 import top.chilfish.chillchat.ui.main.MainViewModel
+import top.chilfish.chillchat.ui.profile.ProfileViewModel
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -122,6 +123,13 @@ fun MessageBar(
         },
         colors = TopAppBarDefaults.topAppBarColors(MaterialTheme.colorScheme.primary)
     )
+}
+
+@Composable
+fun ProfileBar(
+    viewModel: ProfileViewModel,
+) {
+
 }
 
 @Composable

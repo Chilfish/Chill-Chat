@@ -5,21 +5,32 @@ import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import top.chilfish.chillchat.R
 import top.chilfish.chillchat.ui.main.ChatsListPage
 import top.chilfish.chillchat.ui.main.ContactsPage
 import top.chilfish.chillchat.ui.main.MainViewModel
 import top.chilfish.chillchat.ui.main.MePage
+import top.chilfish.chillchat.ui.profile.ProfilePage
+import top.chilfish.chillchat.ui.profile.ProfileViewModel
+
+const val RouteId = "Id"
 
 object Routers {
     const val Home = "home"
     const val Contact = "contact"
     const val Me = "me"
+
+    const val Profile = "profile/{$RouteId}"
+    const val Message = "message/{$RouteId}"
 }
 
 data class NavBarDes(
@@ -29,8 +40,18 @@ data class NavBarDes(
 )
 
 class NavigationActions(private val navController: NavHostController) {
-    fun navigateTo(route: String) {
-        navController.navigate(route) {
+    fun navigateTo(route: String, id: Long? = null) {
+        val curRoute = when (route) {
+            Routers.Home -> Routers.Home
+            Routers.Contact -> Routers.Contact
+            Routers.Me -> Routers.Me
+
+            Routers.Profile -> Routers.Profile.replace("{$RouteId}", id.toString())
+            Routers.Message -> Routers.Message.replace("{$RouteId}", id.toString())
+            else -> route
+        }
+
+        navController.navigate(curRoute) {
             popUpTo(navController.graph.findStartDestination().id) {
                 saveState = true
             }
@@ -80,6 +101,24 @@ fun ChillNavHost(
 
             composable(route = Routers.Me) {
                 MePage(viewModel)
+            }
+
+            composable(
+                route = Routers.Profile,
+                arguments = listOf(
+                    navArgument(RouteId)
+                    { type = NavType.LongType }
+                )
+            ) {
+                val id = it.arguments?.getLong(RouteId)
+                val profileViewModel = remember {
+                    ProfileViewModel(
+                        uid = id,
+                        navHostController = navController
+                    )
+                }
+                // TODO: Should start a fragment instead of a composable
+                ProfilePage(profileViewModel)
             }
         }
     }

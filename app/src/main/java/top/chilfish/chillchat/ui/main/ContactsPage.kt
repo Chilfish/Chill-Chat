@@ -31,7 +31,7 @@ fun ContactsPage(
         itemsIndexed(items = contacts, key = { _, profile -> profile.id }
         ) { _, profile ->
             ContactItem(profile = profile,
-                onClick = { viewModel.navToProfile(profile) }
+                onClick = { viewModel.navToProfile(profile.id) }
             )
         }
     }

@@ -30,19 +30,17 @@ fun ColumnScope.ChatsListPage(
 ) {
     val mainState = viewModel.mainState.collectAsState(initial = MainState()).value
 
-
-    if (!mainState.isLoading)
-        LazyColumn(Modifier.weight(1f)) {
-            itemsIndexed(
-                items = mainState.chats,
-                key = { _, chat -> chat.chatter.id }) { _, chat ->
-                ChatsListItem(
-                    chat = chat.chatter,
-                    profile = chat.profile,
-                    onClick = { viewModel.navToMessage(chat.profile) }
-                )
-            }
+    LazyColumn(Modifier.weight(1f)) {
+        itemsIndexed(
+            items = mainState.chats,
+            key = { _, chat -> chat.chatter.id }) { _, chat ->
+            ChatsListItem(
+                chat = chat.chatter,
+                profile = chat.profile,
+                onClick = { viewModel.navToMessage(chat.profile) }
+            )
         }
+    }
 }
 
 @Composable

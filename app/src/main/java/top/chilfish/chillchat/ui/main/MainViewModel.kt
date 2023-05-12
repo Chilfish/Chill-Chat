@@ -12,6 +12,8 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import top.chilfish.chillchat.data.chatslist.Chatter
 import top.chilfish.chillchat.data.contacts.Profile
+import top.chilfish.chillchat.navigation.NavigationActions
+import top.chilfish.chillchat.navigation.Routers
 import top.chilfish.chillchat.provider.AccountProvider
 import top.chilfish.chillchat.provider.RepoProvider
 import top.chilfish.chillchat.provider.curUid
@@ -54,8 +56,11 @@ class MainViewModel(
 
     }
 
-    fun navToProfile(profile: Profile) {
-
+    fun navToProfile(id: Long) {
+        NavigationActions(navController).navigateTo(
+            route = Routers.Profile,
+            id = id,
+        )
     }
 }
 
