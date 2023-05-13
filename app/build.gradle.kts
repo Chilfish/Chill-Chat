@@ -71,6 +71,8 @@ dependencies {
     // Tool
     implementation(libs.coil)
     implementation(libs.gson)
+    implementation(libs.accompanist.insets)
+    implementation(libs.accompanist.insets.ui)
 
     // Jetpack
     implementation(libs.lifecycle)

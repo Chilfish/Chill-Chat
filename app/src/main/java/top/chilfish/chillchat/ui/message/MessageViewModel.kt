@@ -48,6 +48,9 @@ class MessageViewModel(
 
     fun more() {}
 
+    fun sendMes(message: String) {
+
+    }
 }
 
 data class MessageState(
