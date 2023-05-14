@@ -18,13 +18,16 @@ bom = "2023.04.01"
 
 # Jetpack
 navigation = "2.6.0-beta01"
-lifecycle = '2.6.1'
-room = '2.5.1'
-dataStore = '1.1.0-alpha04'
+lifecycle = "2.6.1"
+room = "2.5.1"
+dataStore = "1.1.0-alpha04"
+hilt = "2.46"
+hiltWork = "1.0.0"
+hiltLifecycle = "1.0.0-alpha03"
 
 # UI
 material = "1.8.0"
-material3 = '1.1.0-rc01'
+material3 = "1.1.0-rc01"
 
 # Tool
 coil = "2.3.0"
@@ -34,14 +37,14 @@ accompanist = "0.31.2-alpha"
 # testing
 junit = "4.13.2"
 espresso = "3.5.1"
-androidxJunit = '1.1.5'
+androidxJunit = "1.1.5"
 
 [libraries]
 # Kotlin
 androidx-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "kotlinCore" }
+kotlin-gradle-plugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
 kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version.ref = "kotlin" }
 coroutines = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "coroutines" }
-kapt = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kapt" }
 
 # Compose
 compose = { group = "androidx.compose.ui", name = "ui", version.ref = "compose" }
@@ -50,6 +53,13 @@ activity-compose = { group = "androidx.activity", name = "activity-compose", ver
 appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "bom" }
 
+hilt-work = { group = "androidx.hilt", name = "hilt-work", version.ref = "hiltWork" }
+hlit-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
+hilt-android-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt" }
+hilt-viewmodel = { group = "androidx.hilt", name = "hilt-lifecycle-viewmodel", version.ref = "hiltLifecycle" }
+hilt-compiler = { group = "androidx.hilt", name = "hilt-compiler", version.ref = "hiltWork" }
+hilt-navigation = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "hiltWork" }
+hilt-android-gradle-plugin = { group = "com.google.dagger", name = "hilt-android-gradle-plugin", version.ref = "hilt" }
 # UI
 compose-ui = { group = "androidx.compose.ui", name = "ui", version.ref = "compose" }
 compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling", version.ref = "compose" }

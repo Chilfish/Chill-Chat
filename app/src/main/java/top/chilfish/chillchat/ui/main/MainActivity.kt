@@ -2,10 +2,7 @@ package top.chilfish.chillchat.ui.main
 
 import android.os.Bundle
 import androidx.activity.viewModels
-import androidx.compose.foundation.layout.padding
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
 import kotlinx.coroutines.launch
 import top.chilfish.chillchat.BaseActivity
@@ -20,10 +17,7 @@ class MainActivity : BaseActivity() {
 
         setContent {
             val navController = rememberNavController()
-            val viewModel = ViewModelProvider(
-                this,
-                MainViewModelFactory(navController)
-            )[MainViewModel::class.java]
+            val viewModel: MainViewModel by viewModels()
 
             ChillNavHost(
                 navController = navController,

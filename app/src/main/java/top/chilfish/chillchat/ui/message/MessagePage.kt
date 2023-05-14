@@ -1,12 +1,14 @@
 package top.chilfish.chillchat.ui.message
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.rememberCoroutineScope
@@ -69,13 +71,13 @@ fun MessageMain(
     messages: MutableList<Message>,
     scrollState: LazyListState,
 ) {
-    Box(modifier) {
-        Image(
-            painter = painterResource(R.drawable.chat_bg_light),
-            contentDescription = "background",
-            contentScale = ContentScale.FillBounds,
-            modifier = Modifier.fillMaxSize(),
-        )
+    Box(modifier.background(MaterialTheme.colorScheme.tertiary)) {
+//        Image(
+//            painter = painterResource(R.drawable.chat_bg_light),
+//            contentDescription = "background",
+//            contentScale = ContentScale.FillBounds,
+//            modifier = Modifier.fillMaxSize(),
+//        )
 
         LazyColumn(
             state = scrollState,
@@ -88,7 +90,7 @@ fun MessageMain(
                     message = message.message,
                     time = message.timeStr,
                     isMe = message.senderId == curUid,
-                    isShowTime = (index == 0 || messages[index - 1].time - message.time > TimeGap)
+                    isShowTime = (index == 0 || message.time - messages[index - 1].time > TimeGap)
                 )
             }
         }

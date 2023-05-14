@@ -51,12 +51,13 @@ dependencies {
     implementation(libs.androidx.ktx)
     implementation(libs.kotlin.stdlib)
     implementation(libs.coroutines)
-    kapt(libs.kapt)
 
     // Compose
     implementation(libs.compose)
-    implementation(libs.compose.bom)
-    androidTestImplementation(libs.compose.bom)
+
+    val bom = platform(libs.compose.bom)
+    implementation(bom)
+    androidTestImplementation(bom)
 
     implementation(libs.compose.ui)
     implementation(libs.compose.ui.tooling)
@@ -85,6 +86,7 @@ dependencies {
     implementation(libs.dataStore)
     implementation(libs.dataStore.preferences)
 
+    // room
     implementation(libs.room)
     annotationProcessor(libs.room.compiler)
     kapt(libs.room.compiler)

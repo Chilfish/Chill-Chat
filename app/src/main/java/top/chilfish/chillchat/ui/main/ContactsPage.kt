@@ -18,12 +18,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import top.chilfish.chillchat.data.contacts.Profile
+import top.chilfish.chillchat.navigation.NavigationActions
+import top.chilfish.chillchat.navigation.Routers
 import top.chilfish.chillchat.ui.components.AvatarImg
+import top.chilfish.chillchat.utils.toJson
 
 @Composable
 fun ContactsPage(
-    viewModel: MainViewModel
+    viewModel: MainViewModel,
+    navController: NavHostController,
 ) {
     val contacts = viewModel.mainState.collectAsState(initial = MainState()).value.contacts
 
@@ -31,7 +36,12 @@ fun ContactsPage(
         itemsIndexed(items = contacts, key = { _, profile -> profile.id }
         ) { _, profile ->
             ContactItem(profile = profile,
-                onClick = { viewModel.navToProfile(profile) }
+                onClick = {
+                    NavigationActions(navController).navigateTo(
+                        route = Routers.Message,
+                        data = toJson(profile)
+                    )
+                }
             )
         }
     }

@@ -1,30 +1,23 @@
 package top.chilfish.chillchat.ui.main
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.NavHostController
 import kotlinx.coroutines.async
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import top.chilfish.chillchat.data.chatslist.Chatter
 import top.chilfish.chillchat.data.contacts.Profile
-import top.chilfish.chillchat.navigation.NavigationActions
-import top.chilfish.chillchat.navigation.Routers
 import top.chilfish.chillchat.provider.AccountProvider
 import top.chilfish.chillchat.provider.RepoProvider
 import top.chilfish.chillchat.provider.curUid
-import top.chilfish.chillchat.utils.toJson
 
-class MainViewModel(
-    private val navController: NavHostController,
-) : ViewModel() {
+class MainViewModel: ViewModel() {
+
     private val _mainState = MutableStateFlow(MainState())
-    val mainState: Flow<MainState> = _mainState
-        .asStateFlow()
+    val mainState: StateFlow<MainState> = _mainState
 
     init {
         load()
@@ -41,6 +34,8 @@ class MainViewModel(
         val chats = chatsDeferred.await()
         val curUser = curUserDeferred.await()
 
+        Log.d("Chat", "chats: $chats")
+
         _mainState.update {
             it.copy(
                 contacts = contacts,
@@ -55,32 +50,10 @@ class MainViewModel(
         AccountProvider.setLogout()
     }
 
-    fun navToMessage(chat: Profile) = navTo(Routers.Message, chat)
-
-    fun navToProfile(chat: Profile) = navTo(Routers.Profile, chat)
-
-    private fun navTo(des: String, chat: Profile) {
-        NavigationActions(navController).navigateTo(
-            route = des,
-            data = toJson(chat),
-        )
-    }
-
     fun search() {
     }
 
     fun addFriend() {
-    }
-}
-
-class MainViewModelFactory(private val navController: NavHostController) :
-    ViewModelProvider.Factory {
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        @Suppress("UNCHECKED_CAST")
-        if (modelClass.isAssignableFrom(MainViewModel::class.java)) {
-            return MainViewModel(navController) as T
-        }
-        throw IllegalArgumentException("Unknown ViewModel class")
     }
 }
 

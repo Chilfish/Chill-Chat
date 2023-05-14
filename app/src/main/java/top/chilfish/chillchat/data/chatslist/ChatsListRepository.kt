@@ -10,4 +10,6 @@ class ChatsListRepository(private val dao: ChatsListDao) {
 
     suspend fun update(chats: Chats) = dao.update(chats)
 
+    suspend fun updateById(chatterId: Long, message: String, time: Long) =
+        dao.updateById(chatterId, message, time)
 }

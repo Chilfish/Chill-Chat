@@ -36,4 +36,7 @@ interface ChatsListDao {
 
     @Update
     suspend fun update(chats: Chats)
+
+    @Query("UPDATE $Chat_Table SET lastMessage = :message, lastTime = :time WHERE chatterId = :chatterId")
+    suspend fun updateById(chatterId: Long, message: String, time: Long)
 }

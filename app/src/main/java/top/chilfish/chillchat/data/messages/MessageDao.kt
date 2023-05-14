@@ -11,7 +11,7 @@ interface MessageDao {
         "SELECT * FROM $Message_Table " +
                 "where (receiverId ==:chatterId AND senderId == :uid) " +
                 "OR (receiverId == :uid AND senderId == :chatterId) " +
-                "ORDER BY time DESC"
+                "ORDER BY time"
     )
     fun getAll(uid: Long, chatterId: Long): Flow<MutableList<Message>>
 

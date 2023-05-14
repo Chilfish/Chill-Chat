@@ -51,7 +51,7 @@ class NavigationActions(private val navController: NavHostController) {
             else -> route
         }
 
-        Log.d("Chat", "data: $data")
+//        Log.d("Chat", "data: $data")
 
         navController.navigate(curRoute) {
             popUpTo(navController.graph.findStartDestination().id) {
@@ -97,7 +97,10 @@ fun ChillNavHost(
                     viewModel = viewModel,
                     navController = navController
                 ) {
-                    ChatsListPage(viewModel)
+                    ChatsListPage(
+                        viewModel = viewModel,
+                        navController = navController
+                    )
                 }
             }
 
@@ -106,7 +109,10 @@ fun ChillNavHost(
                     viewModel = viewModel,
                     navController = navController
                 ) {
-                    ContactsPage(viewModel)
+                    ContactsPage(
+                        viewModel = viewModel,
+                        navController = navController
+                    )
                 }
             }
 
@@ -143,7 +149,7 @@ fun ChillNavHost(
                 })
             ) {
                 val profile = it.arguments?.getString(ArgUser)
-                Log.d("Chat", "profile: $profile")
+//                Log.d("Chat", "profile: $profile")
 
                 val messageViewModel = remember {
                     MessageViewModel(
