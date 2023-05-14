@@ -8,6 +8,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import top.chilfish.chillchat.data.chatslist.Chatter
 import top.chilfish.chillchat.data.contacts.Profile
@@ -40,12 +41,14 @@ class MainViewModel(
         val chats = chatsDeferred.await()
         val curUser = curUserDeferred.await()
 
-        _mainState.value = _mainState.value.copy(
-            contacts = contacts,
-            chats = chats,
-            me = curUser,
-            isLoading = false,
-        )
+        _mainState.update {
+            it.copy(
+                contacts = contacts,
+                chats = chats,
+                me = curUser,
+                isLoading = false,
+            )
+        }
     }
 
     fun logout() = viewModelScope.launch {

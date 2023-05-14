@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavHostController
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import top.chilfish.chillchat.data.contacts.Profile
 import top.chilfish.chillchat.data.messages.Message
@@ -27,13 +27,15 @@ class MessageViewModel(
     }
 
     private fun load() = viewModelScope.launch {
-        RepoProvider.messRepo.getAll(profile.id).collect {
-            Log.d("Chat", "messages: ${it.size}")
+        RepoProvider.messRepo.getAll(profile.id).collect { messages ->
+            Log.d("Chat", "messages: ${messages.size}")
 
-            _messageState.value = _messageState.value.copy(
-                curProfile = profile,
-                messages = it.toMutableList(),
-            )
+            _messageState.update {
+                it.copy(
+                    messages = messages,
+                    curProfile = profile
+                )
+            }
         }
     }
 

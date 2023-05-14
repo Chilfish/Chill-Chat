@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import top.chilfish.chillchat.provider.AccountProvider
 import top.chilfish.chillchat.utils.showToast
@@ -32,7 +33,9 @@ class LoginViewModel : ViewModel() {
         val uid = 3L
 
         AccountProvider.setLogin(uid)
-        _loginState.value = _loginState.value.copy(isLoginSuccess = true)
+        _loginState.update {
+            it.copy(isLoginSuccess = true)
+        }
     }
 
     private fun checkSubmit(): Boolean {
@@ -64,15 +67,21 @@ class LoginViewModel : ViewModel() {
     }
 
     private fun setUsnError(isError: Boolean, usn: String) {
-        _loginState.value = _loginState.value.copy(
-            isUsernameError = isError, username = usn
-        )
+        _loginState.update {
+            it.copy(
+                isUsernameError = isError,
+                username = usn
+            )
+        }
     }
 
     private fun setPswError(isError: Boolean, psw: String) {
-        _loginState.value = _loginState.value.copy(
-            isPasswordError = isError, password = psw
-        )
+        _loginState.update {
+            it.copy(
+                isPasswordError = isError,
+                password = psw
+            )
+        }
     }
 }
 
