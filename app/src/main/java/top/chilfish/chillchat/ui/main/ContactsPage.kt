@@ -38,7 +38,7 @@ fun ContactsPage(
             ContactItem(profile = profile,
                 onClick = {
                     NavigationActions(navController).navigateTo(
-                        route = Routers.Message,
+                        route = Routers.Profile,
                         data = toJson(profile)
                     )
                 }

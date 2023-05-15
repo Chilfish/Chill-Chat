@@ -1,17 +1,12 @@
 package top.chilfish.chillchat.ui.message
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavHostController
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import top.chilfish.chillchat.data.chatslist.Chats
 import top.chilfish.chillchat.data.contacts.Profile
 import top.chilfish.chillchat.data.messages.Message
 import top.chilfish.chillchat.navigation.NavigationActions
@@ -33,8 +28,6 @@ class MessageViewModel(
 
     private fun load() = viewModelScope.launch {
         RepoProvider.messRepo.getAll(profile.id).collect { messages ->
-//            Log.d("Chat", "messages: ${messages.size}")
-
             _messageState.update {
                 it.copy(
                     messages = messages,
@@ -62,11 +55,9 @@ class MessageViewModel(
             message = message,
             time = System.currentTimeMillis(),
         )
-        async { RepoProvider.chatsRepo.updateById(profile.id, mes.message, mes.time) }
-            .await()
-        async { RepoProvider.messRepo.insert(mes) }
-            .await()
+        launch { RepoProvider.chatsRepo.updateById(profile.id, mes.message, mes.time) }
 
+        launch { RepoProvider.messRepo.insert(mes) }
     }
 }
 

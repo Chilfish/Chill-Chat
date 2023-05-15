@@ -24,6 +24,6 @@ object RepoProvider {
         contactsRepo = ContactsRepository(db.ContactsDao())
 
         // to init database file
-        scope.launch { chatsRepo.allChats() }
+        scope.launch { chatsRepo.getAll() }
     }
 }

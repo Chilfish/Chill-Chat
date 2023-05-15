@@ -2,7 +2,7 @@ package top.chilfish.chillchat.data.chatslist
 
 
 class ChatsListRepository(private val dao: ChatsListDao) {
-    suspend fun allChats() = dao.getAll()
+    suspend fun getAll() = dao.getAll()
 
     suspend fun insert(chats: Chats) = dao.insert(chats)
 

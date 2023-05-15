@@ -21,8 +21,10 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -150,7 +152,7 @@ fun ProfileBar(
 fun NavBar(
     navController: NavHostController,
 ) {
-    val (selectedItem, setSelectedItem) = rememberSaveable { mutableStateOf(0) }
+    var selected by rememberSaveable { mutableStateOf(0) }
 
     NavigationBar(
         modifier = Modifier
@@ -159,9 +161,9 @@ fun NavBar(
     ) {
         NavBars.forEachIndexed { index, navBar ->
             NavigationBarItem(
-                selected = selectedItem == index,
+                selected = selected == index,
                 onClick = {
-                    setSelectedItem(index)
+                    selected = index
                     NavigationActions(navController).navigateTo(navBar.router)
                 },
                 icon = {
@@ -172,10 +174,11 @@ fun NavBar(
                     )
                 },
                 label = {
-                    Text(
-                        text = stringResource(navBar.iconTextId),
-                        color = MaterialTheme.colorScheme.onSurface
-                    )
+                    if (selected == index)
+                        Text(
+                            text = stringResource(navBar.iconTextId),
+                            color = MaterialTheme.colorScheme.onSurface
+                        )
                 }
             )
         }

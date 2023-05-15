@@ -7,6 +7,7 @@ import androidx.room.Query
 import androidx.room.Relation
 import androidx.room.Transaction
 import androidx.room.Update
+import kotlinx.coroutines.flow.Flow
 import top.chilfish.chillchat.data.contacts.Profile
 
 data class Chatter(
@@ -23,7 +24,7 @@ interface ChatsListDao {
 
     @Transaction
     @Query("SELECT * FROM $Chat_Table ORDER BY lastTime DESC")
-    suspend fun getAll(): MutableList<Chatter>
+    fun getAll(): Flow<MutableList<Chatter>>
 
     @Insert
     suspend fun insert(chats: Chats)

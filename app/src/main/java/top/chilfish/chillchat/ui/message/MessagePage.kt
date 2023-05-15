@@ -1,6 +1,5 @@
 package top.chilfish.chillchat.ui.message
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -10,13 +9,10 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
-import kotlinx.coroutines.launch
-import top.chilfish.chillchat.R
 import top.chilfish.chillchat.data.messages.Message
 import top.chilfish.chillchat.provider.curUid
 import top.chilfish.chillchat.ui.components.ChillScaffold
@@ -51,11 +47,6 @@ fun MessagePage(
 
                 UserInput(
                     modifier = Modifier,
-                    resetScroll = {
-                        scope.launch {
-                            scrollState.scrollToItem(0)
-                        }
-                    },
                     onSend = { message ->
                         viewModel.sendMes(message)
                     }
@@ -71,14 +62,13 @@ fun MessageMain(
     messages: MutableList<Message>,
     scrollState: LazyListState,
 ) {
-    Box(modifier.background(MaterialTheme.colorScheme.tertiary)) {
-//        Image(
-//            painter = painterResource(R.drawable.chat_bg_light),
-//            contentDescription = "background",
-//            contentScale = ContentScale.FillBounds,
-//            modifier = Modifier.fillMaxSize(),
-//        )
+    LaunchedEffect(messages) {
+        if (messages.isNotEmpty()) {
+            scrollState.scrollToItem(messages.lastIndex)
+        }
+    }
 
+    Box(modifier.background(MaterialTheme.colorScheme.tertiary)) {
         LazyColumn(
             state = scrollState,
             modifier = modifier.fillMaxSize(),

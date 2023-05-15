@@ -14,7 +14,7 @@ import top.chilfish.chillchat.provider.AccountProvider
 import top.chilfish.chillchat.provider.RepoProvider
 import top.chilfish.chillchat.provider.curUid
 
-class MainViewModel: ViewModel() {
+class MainViewModel : ViewModel() {
 
     private val _mainState = MutableStateFlow(MainState())
     val mainState: StateFlow<MainState> = _mainState
@@ -25,24 +25,28 @@ class MainViewModel: ViewModel() {
 
     private fun load() = viewModelScope.launch {
         val contactsDeferred = async { RepoProvider.contactsRepo.allUsers() }
-        val chatsDeferred = async { RepoProvider.chatsRepo.allChats() }
         val curUserDeferred = async { RepoProvider.contactsRepo.getUser() }
 
         val contacts = contactsDeferred.await()
             .filter { it.id != curUid }
             .toMutableList()
-        val chats = chatsDeferred.await()
-        val curUser = curUserDeferred.await()
-
-        Log.d("Chat", "chats: $chats")
 
         _mainState.update {
             it.copy(
                 contacts = contacts,
-                chats = chats,
-                me = curUser,
+                me = curUserDeferred.await(),
                 isLoading = false,
             )
+        }
+
+        RepoProvider.chatsRepo.getAll().collect { chats ->
+            Log.d("Chat", "chats: ${chats.size}")
+
+            _mainState.update {
+                it.copy(
+                    chats = chats,
+                )
+            }
         }
     }
 
