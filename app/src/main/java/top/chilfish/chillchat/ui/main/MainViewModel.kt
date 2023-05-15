@@ -59,6 +59,10 @@ class MainViewModel : ViewModel() {
 
     fun addFriend() {
     }
+
+    fun saveEdit(profile: Profile) {
+
+    }
 }
 
 data class MainState(

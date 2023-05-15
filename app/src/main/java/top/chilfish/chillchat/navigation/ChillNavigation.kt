@@ -16,6 +16,7 @@ import androidx.navigation.navArgument
 import top.chilfish.chillchat.R
 import top.chilfish.chillchat.ui.main.ChatsListPage
 import top.chilfish.chillchat.ui.main.ContactsPage
+import top.chilfish.chillchat.ui.main.EditProfile
 import top.chilfish.chillchat.ui.main.MainPage
 import top.chilfish.chillchat.ui.main.MainViewModel
 import top.chilfish.chillchat.ui.main.MePage
@@ -26,6 +27,7 @@ import top.chilfish.chillchat.ui.profile.ProfileViewModel
 import top.chilfish.chillchat.utils.toData
 
 const val ArgUser = "uid"
+const val ArgEdit = "edit"
 
 object Routers {
     const val Home = "home"
@@ -34,6 +36,16 @@ object Routers {
 
     const val Profile = "profile/{$ArgUser}"
     const val Message = "message/{$ArgUser}"
+
+    const val EditProfile = "profile/edit/{${ArgEdit}}"
+}
+
+object EditType {
+    const val Name = "name"
+    const val Avatar = "avatar"
+    const val Email = "email"
+    const val Password = "password"
+    const val Bio = "bio"
 }
 
 data class NavBarDes(
@@ -47,6 +59,7 @@ fun navigateTo(navCtrl: NavHostController, route: String, data: String = "") {
     val curRoute = when (route) {
         Routers.Profile -> Routers.Profile.replace("{$ArgUser}", data)
         Routers.Message -> Routers.Message.replace("{$ArgUser}", data)
+        Routers.EditProfile -> Routers.EditProfile.replace("{${ArgEdit}}", data)
         else -> route
     }
 
@@ -114,7 +127,7 @@ fun ChillNavHost(
                 viewModel = viewModel,
                 navController = navController
             ) {
-                MePage(viewModel)
+                MePage(viewModel, navController)
             }
         }
 
@@ -152,6 +165,20 @@ fun ChillNavHost(
                 navController = navController,
             )
         }
-    }
 
+        composable(
+            route = Routers.EditProfile,
+            arguments = listOf(navArgument(ArgEdit) {
+                type = NavType.StringType
+            })
+        ) {
+            val type = it.arguments?.getString(ArgEdit) ?: EditType.Name
+
+            EditProfile(
+                viewModel = viewModel,
+                navController = navController,
+                type = type,
+            )
+        }
+    }
 }

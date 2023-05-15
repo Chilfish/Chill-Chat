@@ -10,6 +10,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import top.chilfish.chillchat.data.contacts.Profile
 import top.chilfish.chillchat.ui.components.Hero
 import top.chilfish.chillchat.ui.components.ProfileBtn
@@ -17,10 +18,10 @@ import top.chilfish.chillchat.ui.components.ProfileInfo
 
 @Composable
 fun MePage(
-    viewModel: MainViewModel
+    viewModel: MainViewModel,
+    navController: NavHostController,
 ) {
-    val profile = viewModel.mainState
-        .collectAsState(initial = MainState())
+    val profile = viewModel.mainState.collectAsState()
         .value.me ?: Profile()
 
     Column(
@@ -30,8 +31,16 @@ fun MePage(
             .padding(30.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Hero(profile)
-        ProfileInfo(profile)
+        Hero(
+            profile = profile,
+            isMe = true,
+            navController = navController
+        )
+        ProfileInfo(
+            profile = profile,
+            isMe = true,
+            navController = navController
+        )
         ProfileBtn(isMe = true) { viewModel.logout() }
     }
 }

@@ -8,6 +8,9 @@
     <string name="login">Login</string>
     <string name="register">Register</string>
 
+    <string name="logout">Log Out</string>
+    <string name="send_message">Send Message</string>
+
     <string name="username_hint">your username or email</string>
     <string name="password_hint">your password</string>
     <string name="username_required">Username is required</string>
@@ -27,7 +30,6 @@
     <string name="cancel">Cancel</string>
     <string name="confirm">Confirm</string>
     <string name="ok">OK</string>
-    <string name="logout">Logout</string>
     <string name="delete">Delete</string>
     <string name="edit">Edit</string>
     <string name="save">Save</string>
@@ -37,8 +39,13 @@
     <string name="load">Load</string>
     <string name="back">Back</string>
 
-    <string name="avatar">Avatar</string>
+    <string name="edit_my">Edit My %s</string>
 
+    <string name="avatar">Avatar</string>
+    <string name="account">Account</string>
+    <string name="email">Email</string>
+    <string name="bio">Bio</string>
+    <string name="uid">uid: %s</string>
 
     <string name="place_content">the content of note</string>
     <string name="place_long_content">the long content of note,  the long content of note,

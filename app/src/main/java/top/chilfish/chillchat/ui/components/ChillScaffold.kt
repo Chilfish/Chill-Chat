@@ -37,7 +37,7 @@ fun ChillScaffold(
         contentWindowInsets = ScaffoldDefaults
             .contentWindowInsets
             .exclude(WindowInsets.navigationBars)
-            .exclude(WindowInsets.ime)
+            .let { if (isIme) it.exclude(WindowInsets.ime) else it }
     ) { innerPadding ->
         Surface(
             modifier = Modifier
