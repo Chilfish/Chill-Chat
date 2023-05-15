@@ -2,22 +2,17 @@ package top.chilfish.chillchat.ui.message
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.NavHostController
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import top.chilfish.chillchat.data.contacts.Profile
 import top.chilfish.chillchat.data.messages.Message
-import top.chilfish.chillchat.navigation.NavigationActions
-import top.chilfish.chillchat.navigation.Routers
 import top.chilfish.chillchat.provider.RepoProvider
 import top.chilfish.chillchat.provider.curUid
-import top.chilfish.chillchat.utils.toJson
 
 class MessageViewModel(
     private val profile: Profile,
-    private val navHostController: NavHostController,
 ) : ViewModel() {
     private val _messageState = MutableStateFlow(MessageState())
     val messageState: StateFlow<MessageState> = _messageState
@@ -36,15 +31,6 @@ class MessageViewModel(
             }
         }
     }
-
-    fun navToProfile() {
-        NavigationActions(navHostController).navigateTo(
-            route = Routers.Profile,
-            data = toJson(profile),
-        )
-    }
-
-    fun back() = navHostController.popBackStack()
 
     fun more() {}
 

@@ -23,19 +23,19 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import top.chilfish.chillchat.data.chatslist.Chats
 import top.chilfish.chillchat.data.contacts.Profile
-import top.chilfish.chillchat.navigation.NavigationActions
 import top.chilfish.chillchat.navigation.Routers
+import top.chilfish.chillchat.navigation.navigateTo
 import top.chilfish.chillchat.ui.components.AvatarImg
 import top.chilfish.chillchat.utils.toJson
 
 @Composable
-fun ColumnScope.ChatsListPage(
+fun ChatsListPage(
     viewModel: MainViewModel,
     navController: NavHostController,
 ) {
     val mainState = viewModel.mainState.collectAsState().value
 
-    LazyColumn(Modifier.weight(1f)) {
+    LazyColumn {
         itemsIndexed(
             items = mainState.chats,
             key = { _, chat -> chat.chatter.id }) { _, chat ->
@@ -43,7 +43,8 @@ fun ColumnScope.ChatsListPage(
                 chat = chat.chatter,
                 profile = chat.profile,
                 onClick = {
-                    NavigationActions(navController).navigateTo(
+                    navigateTo(
+                        navCtrl = navController,
                         route = Routers.Message,
                         data = toJson(chat.profile),
                     )

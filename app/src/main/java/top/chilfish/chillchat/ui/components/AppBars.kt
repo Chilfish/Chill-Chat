@@ -22,9 +22,6 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -33,15 +30,19 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.currentBackStackEntryAsState
 import coil.compose.AsyncImage
 import top.chilfish.chillchat.R
 import top.chilfish.chillchat.data.contacts.Profile
 import top.chilfish.chillchat.navigation.NavBars
-import top.chilfish.chillchat.navigation.NavigationActions
+import top.chilfish.chillchat.navigation.Routers
+import top.chilfish.chillchat.navigation.navigateTo
 import top.chilfish.chillchat.ui.main.MainViewModel
 import top.chilfish.chillchat.ui.message.MessageViewModel
 import top.chilfish.chillchat.ui.profile.ProfileViewModel
+import top.chilfish.chillchat.utils.toJson
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -81,7 +82,8 @@ fun HomeBar(
 @Composable
 fun MessageBar(
     profile: Profile,
-    viewModel: MessageViewModel
+    viewModel: MessageViewModel,
+    navHostController: NavHostController,
 ) {
     TopAppBar(
         title = {
@@ -89,7 +91,13 @@ fun MessageBar(
                 modifier = Modifier
                     .padding(start = 16.dp)
                     .clickable(
-                        onClick = { viewModel.navToProfile() }
+                        onClick = {
+                            navigateTo(
+                                navCtrl = navHostController,
+                                route = Routers.Profile,
+                                data = toJson(profile),
+                            )
+                        }
                     ),
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -111,7 +119,7 @@ fun MessageBar(
         },
         navigationIcon = {
             IconBtn(
-                onClick = { viewModel.back() },
+                onClick = { navHostController.popBackStack() },
                 imageVector = Icons.Default.ArrowBack
             )
         },
@@ -129,12 +137,13 @@ fun MessageBar(
 @Composable
 fun ProfileBar(
     viewModel: ProfileViewModel,
+    navController: NavHostController,
 ) {
     TopAppBar(
         title = {},
         navigationIcon = {
             IconBtn(
-                onClick = { viewModel.back() },
+                onClick = { navController.popBackStack() },
                 imageVector = Icons.Default.ArrowBack
             )
         },
@@ -152,19 +161,25 @@ fun ProfileBar(
 fun NavBar(
     navController: NavHostController,
 ) {
-    var selected by rememberSaveable { mutableStateOf(0) }
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentDestination = navBackStackEntry?.destination
 
     NavigationBar(
         modifier = Modifier
             .fillMaxWidth()
             .height(74.dp)
     ) {
-        NavBars.forEachIndexed { index, navBar ->
+        NavBars.forEach { navBar ->
             NavigationBarItem(
-                selected = selected == index,
+                selected = currentDestination?.hierarchy?.any { it.route == navBar.router } == true,
                 onClick = {
-                    selected = index
-                    NavigationActions(navController).navigateTo(navBar.router)
+                    navController.navigate(navBar.router) {
+                        popUpTo(Routers.Home) {
+                            saveState = true
+                        }
+                        launchSingleTop = true
+                        restoreState = true
+                    }
                 },
                 icon = {
                     Icon(
@@ -174,11 +189,10 @@ fun NavBar(
                     )
                 },
                 label = {
-                    if (selected == index)
-                        Text(
-                            text = stringResource(navBar.iconTextId),
-                            color = MaterialTheme.colorScheme.onSurface
-                        )
+                    Text(
+                        text = stringResource(navBar.iconTextId),
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
                 }
             )
         }

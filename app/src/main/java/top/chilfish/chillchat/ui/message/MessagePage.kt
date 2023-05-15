@@ -13,6 +13,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavHostController
 import top.chilfish.chillchat.data.messages.Message
 import top.chilfish.chillchat.provider.curUid
 import top.chilfish.chillchat.ui.components.ChillScaffold
@@ -23,6 +24,7 @@ private const val TimeGap = 3 * 60 * 1000
 @Composable
 fun MessagePage(
     viewModel: MessageViewModel,
+    navController: NavHostController,
 ) {
     val messageState = viewModel.messageState.collectAsState().value
 
@@ -34,7 +36,8 @@ fun MessagePage(
         topBar = {
             MessageBar(
                 profile = messageState.curProfile,
-                viewModel = viewModel
+                viewModel = viewModel,
+                navHostController = navController,
             )
         },
         content = {

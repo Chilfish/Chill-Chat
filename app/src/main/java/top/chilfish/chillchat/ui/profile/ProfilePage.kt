@@ -11,20 +11,25 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
+import top.chilfish.chillchat.navigation.Routers
+import top.chilfish.chillchat.navigation.navigateTo
 import top.chilfish.chillchat.ui.components.Hero
 import top.chilfish.chillchat.ui.components.ProfileBar
 import top.chilfish.chillchat.ui.components.ProfileBtn
 import top.chilfish.chillchat.ui.components.ProfileInfo
+import top.chilfish.chillchat.utils.toJson
 
 @Composable
 fun ProfilePage(
     viewModel: ProfileViewModel,
+    navController: NavHostController,
 ) {
     val profileState = viewModel.profileState.collectAsState(initial = ProfileState()).value
 
     // TODO: add menu btn to delete friend
     Scaffold(
-        topBar = { ProfileBar(viewModel) },
+        topBar = { ProfileBar(viewModel, navController) },
     ) { padding ->
         Column(
             Modifier
@@ -36,7 +41,13 @@ fun ProfilePage(
         ) {
             Hero(profileState.curProfile)
             ProfileInfo(profileState.curProfile)
-            ProfileBtn(isMe = false) { viewModel.navToMessage() }
+            ProfileBtn(isMe = false) {
+                navigateTo(
+                    navCtrl = navController,
+                    route = Routers.Message,
+                    data = toJson(profileState.curProfile),
+                )
+            }
         }
     }
 }

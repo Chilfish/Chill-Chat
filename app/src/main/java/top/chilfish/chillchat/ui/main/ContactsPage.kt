@@ -20,8 +20,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import top.chilfish.chillchat.data.contacts.Profile
-import top.chilfish.chillchat.navigation.NavigationActions
 import top.chilfish.chillchat.navigation.Routers
+import top.chilfish.chillchat.navigation.navigateTo
 import top.chilfish.chillchat.ui.components.AvatarImg
 import top.chilfish.chillchat.utils.toJson
 
@@ -37,7 +37,8 @@ fun ContactsPage(
         ) { _, profile ->
             ContactItem(profile = profile,
                 onClick = {
-                    NavigationActions(navController).navigateTo(
+                    navigateTo(
+                        navCtrl = navController,
                         route = Routers.Profile,
                         data = toJson(profile)
                     )

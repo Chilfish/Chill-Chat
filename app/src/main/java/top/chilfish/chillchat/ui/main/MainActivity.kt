@@ -3,7 +3,6 @@ package top.chilfish.chillchat.ui.main
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.compose.rememberNavController
 import kotlinx.coroutines.launch
 import top.chilfish.chillchat.BaseActivity
 import top.chilfish.chillchat.navigation.ChillNavHost
@@ -16,13 +15,9 @@ class MainActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            val navController = rememberNavController()
             val viewModel: MainViewModel by viewModels()
 
-            ChillNavHost(
-                navController = navController,
-                viewModel = viewModel
-            )
+            ChillNavHost(viewModel = viewModel)
         }
 
         lifecycleScope.launch {
