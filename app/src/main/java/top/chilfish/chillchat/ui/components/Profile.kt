@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material.icons.outlined.KeyboardArrowRight
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -17,6 +18,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
@@ -62,13 +64,24 @@ fun Hero(
                 .clip(RoundedCornerShape(12.dp))
         )
         Column(Modifier.padding(24.dp)) {
-            Text(
-                text = profile.name,
-                fontSize = 20.sp,
-                modifier = Modifier
-                    .padding(bottom = 12.dp)
-                    .clickToEdit(navController, isMe, EditType.Name)
-            )
+            Row(
+                Modifier.clickToEdit(navController, isMe, EditType.Name)
+            ) {
+                Text(
+                    text = profile.name,
+                    fontSize = 20.sp,
+                    modifier = Modifier.padding(bottom = 12.dp),
+                )
+                if (isMe)
+                    Icon(
+                        Icons.Outlined.Edit,
+                        null,
+                        Modifier
+                            .width(18.dp)
+                            .padding(start = 4.dp),
+                        tint = MaterialTheme.colorScheme.surfaceTint,
+                    )
+            }
             Text(text = stringResource(R.string.uid, profile.id.toString()))
         }
     }
@@ -144,6 +157,7 @@ fun ProfileFrag(
 @Composable
 fun ProfileBtn(
     isMe: Boolean = false,
+    text: String,
     onClick: () -> Unit
 ) {
     Button(
@@ -158,7 +172,7 @@ fun ProfileBtn(
         shape = RoundedCornerShape(12.dp)
     ) {
         Text(
-            text = stringResource(if (isMe) R.string.logout else R.string.send_message),
+            text = text,
             color = Color.White,
             fontSize = 18.sp,
             modifier = Modifier.padding(12.dp),

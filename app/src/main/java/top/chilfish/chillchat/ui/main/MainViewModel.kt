@@ -1,12 +1,14 @@
 package top.chilfish.chillchat.ui.main
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import top.chilfish.chillchat.data.chatslist.Chatter
@@ -32,25 +34,28 @@ class MainViewModel @Inject constructor(
 
     private fun load() = viewModelScope.launch {
         val contactsDeferred = async { contactsRepo.allUsers() }
-        val curUserDeferred = async { contactsRepo.getUser() }
-
         val contacts = contactsDeferred.await()
             .filter { it.id != curUid }
             .toMutableList()
 
+        val chats = async { chatsRepo.getAll().first() }.await()
+
         _mainState.update {
             it.copy(
+                chats = chats,
                 contacts = contacts,
-                me = curUserDeferred.await(),
                 isLoading = false,
             )
         }
 
-        chatsRepo.getAll().collect { chats ->
-            _mainState.update {
-                it.copy(chats = chats,)
+        // collect change from repo
+        contactsRepo.getUser()
+            .flowOn(Dispatchers.IO)
+            .collect { me ->
+                _mainState.update {
+                    it.copy(me = me)
+                }
             }
-        }
     }
 
     fun logout() = viewModelScope.launch {

@@ -11,9 +11,11 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import top.chilfish.chillchat.R
 import top.chilfish.chillchat.navigation.ArgUser
 import top.chilfish.chillchat.navigation.Routers
 import top.chilfish.chillchat.navigation.navigateTo
@@ -50,8 +52,13 @@ fun ProfilePage(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Hero(profileState.curProfile)
+
             ProfileInfo(profileState.curProfile)
-            ProfileBtn(isMe = false) {
+
+            ProfileBtn(
+                isMe = false,
+                text = stringResource(R.string.send_message)
+            ) {
                 navigateTo(
                     navCtrl = navController,
                     route = Routers.Message,

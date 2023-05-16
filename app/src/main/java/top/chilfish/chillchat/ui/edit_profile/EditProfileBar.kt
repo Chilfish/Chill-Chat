@@ -24,9 +24,9 @@ import top.chilfish.chillchat.ui.components.appBarColors
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EditProfileBar(
-    viewModel: EditViewModel,
     navController: NavHostController,
     type: String,
+    onSave: () -> Unit,
 ) {
     TopAppBar(
         title = {
@@ -47,7 +47,7 @@ fun EditProfileBar(
         },
         actions = {
             IconBtn(
-                onClick = { viewModel.saveEdit() },
+                onClick = onSave,
                 imageVector = Icons.Outlined.Done
             )
         },

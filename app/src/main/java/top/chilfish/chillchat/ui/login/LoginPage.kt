@@ -24,7 +24,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import top.chilfish.chillchat.R
-import top.chilfish.chillchat.ui.components.LoginInput
+import top.chilfish.chillchat.ui.components.TextInput
 
 
 @Composable
@@ -86,7 +86,7 @@ fun LoginInputs(
     loginState: LoginState
 ) {
     Column(modifier = modifier) {
-        LoginInput(
+        TextInput(
             label = stringResource(R.string.username),
             value = loginState.username,
             onValueChange = {
@@ -96,7 +96,7 @@ fun LoginInputs(
             isError = loginState.isUsernameError,
             errorText = stringResource(R.string.username_invalid)
         )
-        LoginInput(
+        TextInput(
             label = stringResource(R.string.password),
             value = loginState.password,
             onValueChange = {

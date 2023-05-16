@@ -9,9 +9,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import top.chilfish.chillchat.R
 import top.chilfish.chillchat.data.contacts.Profile
+import top.chilfish.chillchat.navigation.EditType
+import top.chilfish.chillchat.navigation.Routers
+import top.chilfish.chillchat.navigation.navigateTo
 import top.chilfish.chillchat.ui.components.Hero
 import top.chilfish.chillchat.ui.components.ProfileBtn
 import top.chilfish.chillchat.ui.components.ProfileInfo
@@ -41,6 +46,21 @@ fun MePage(
             isMe = true,
             navController = navController
         )
-        ProfileBtn(isMe = true) { viewModel.logout() }
+
+        ProfileBtn(
+            text = stringResource(R.string.reset_password),
+        ) {
+            navigateTo(
+                navController,
+                Routers.EditProfile,
+                EditType.Password
+            )
+        }
+
+        ProfileBtn(
+            isMe = true,
+            text = stringResource(R.string.logout),
+            onClick = { viewModel.logout() }
+        )
     }
 }

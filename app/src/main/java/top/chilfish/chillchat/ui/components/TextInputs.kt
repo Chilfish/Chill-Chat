@@ -18,28 +18,33 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun LoginInput(
+fun TextInput(
     modifier: Modifier = Modifier,
-    label: String,
+    label: String = "",
     value: String,
     onValueChange: (String) -> Unit,
-    placeholder: String,
+    placeholder: String = "",
     isPassword: Boolean = false,
     isError: Boolean = false,
     errorText: String = "",
 ) {
     val (passwordHidden, setPasswordHidden) = rememberSaveable { mutableStateOf(true) }
 
+    val (text, setText) = rememberSaveable { mutableStateOf(value) }
+
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .padding(16.dp),
+            .padding(12.dp),
         horizontalArrangement = Arrangement.Center
     ) {
         OutlinedTextField(
             modifier = modifier.width(300.dp),
-            value = value,
-            onValueChange = onValueChange,
+            value = text,
+            onValueChange = {
+                setText(it)
+                onValueChange(it)
+            },
             label = { Text(text = label) },
             isError = isError,
             singleLine = true,
