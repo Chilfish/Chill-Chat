@@ -1,5 +1,7 @@
-package top.chilfish.chillchat.data.chatslist
+package top.chilfish.chillchat.data.repository
 
+import top.chilfish.chillchat.data.chatslist.Chats
+import top.chilfish.chillchat.data.chatslist.ChatsListDao
 import javax.inject.Inject
 import javax.inject.Singleton
 

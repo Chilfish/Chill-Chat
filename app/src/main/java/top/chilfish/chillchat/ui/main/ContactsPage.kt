@@ -1,6 +1,5 @@
 package top.chilfish.chillchat.ui.main
 
-
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -40,7 +39,7 @@ fun ContactsPage(
                     navigateTo(
                         navCtrl = navController,
                         route = Routers.Profile,
-                        data = toJson(profile)
+                        data = profile.id.toString(),
                     )
                 }
             )

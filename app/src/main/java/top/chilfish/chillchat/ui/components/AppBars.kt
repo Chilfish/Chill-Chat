@@ -102,7 +102,7 @@ fun MessageBar(
                             navigateTo(
                                 navCtrl = navHostController,
                                 route = Routers.Profile,
-                                data = toJson(profile),
+                                data = profile.id.toString(),
                             )
                         }
                     ),

@@ -3,9 +3,9 @@ package top.chilfish.chillchat.provider
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import top.chilfish.chillchat.data.ChillChatDatabase
-import top.chilfish.chillchat.data.chatslist.ChatsListRepository
-import top.chilfish.chillchat.data.contacts.ContactsRepository
-import top.chilfish.chillchat.data.messages.MessageRepository
+import top.chilfish.chillchat.data.repository.ChatsListRepository
+import top.chilfish.chillchat.data.repository.ContactsRepository
+import top.chilfish.chillchat.data.repository.MessageRepository
 
 object RepoProvider {
 

@@ -3,7 +3,6 @@ package top.chilfish.chillchat.ui.main
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -26,7 +25,6 @@ import top.chilfish.chillchat.data.contacts.Profile
 import top.chilfish.chillchat.navigation.Routers
 import top.chilfish.chillchat.navigation.navigateTo
 import top.chilfish.chillchat.ui.components.AvatarImg
-import top.chilfish.chillchat.utils.toJson
 
 @Composable
 fun ChatsListPage(
@@ -46,7 +44,7 @@ fun ChatsListPage(
                     navigateTo(
                         navCtrl = navController,
                         route = Routers.Message,
-                        data = toJson(chat.profile),
+                        data = chat.profile.id.toString(),
                     )
                 }
             )

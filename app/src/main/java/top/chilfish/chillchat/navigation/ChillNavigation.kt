@@ -137,13 +137,7 @@ fun ChillNavHost(
                 type = NavType.StringType
             })
         ) {
-            val profile = it.arguments?.getString(ArgUser)
-
-            val profileViewModel = remember {
-                ProfileViewModel(toData(profile))
-            }
             ProfilePage(
-                viewModel = profileViewModel,
                 navController = navController
             )
         }
@@ -154,14 +148,7 @@ fun ChillNavHost(
                 type = NavType.StringType
             })
         ) {
-            val profile = it.arguments?.getString(ArgUser)
-
-            val messageViewModel = remember {
-                MessageViewModel(toData(profile))
-            }
-
             MessagePage(
-                viewModel = messageViewModel,
                 navController = navController,
             )
         }

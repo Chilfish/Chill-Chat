@@ -1,8 +1,15 @@
-package top.chilfish.chillchat.data.contacts
+package top.chilfish.chillchat.data.repository
 
+import top.chilfish.chillchat.data.contacts.ContactsDao
+import top.chilfish.chillchat.data.contacts.Profile
 import top.chilfish.chillchat.provider.curUid
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class ContactsRepository(private val dao: ContactsDao) {
+@Singleton
+class ContactsRepository @Inject constructor(
+    private val dao: ContactsDao
+) {
     suspend fun allUsers() = dao.getAll()
 
     suspend fun insert(profile: Profile) = dao.insert(profile)

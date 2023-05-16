@@ -3,6 +3,7 @@ package top.chilfish.chillchat.ui.main
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -10,11 +11,17 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import top.chilfish.chillchat.data.chatslist.Chatter
 import top.chilfish.chillchat.data.contacts.Profile
+import top.chilfish.chillchat.data.repository.ChatsListRepository
+import top.chilfish.chillchat.data.repository.ContactsRepository
 import top.chilfish.chillchat.provider.AccountProvider
-import top.chilfish.chillchat.provider.RepoProvider
 import top.chilfish.chillchat.provider.curUid
+import javax.inject.Inject
 
-class MainViewModel : ViewModel() {
+@HiltViewModel
+class MainViewModel @Inject constructor(
+    private val contactsRepo: ContactsRepository,
+    private val chatsRepo: ChatsListRepository,
+) : ViewModel() {
 
     private val _mainState = MutableStateFlow(MainState())
     val mainState: StateFlow<MainState> = _mainState
@@ -24,8 +31,8 @@ class MainViewModel : ViewModel() {
     }
 
     private fun load() = viewModelScope.launch {
-        val contactsDeferred = async { RepoProvider.contactsRepo.allUsers() }
-        val curUserDeferred = async { RepoProvider.contactsRepo.getUser() }
+        val contactsDeferred = async { contactsRepo.allUsers() }
+        val curUserDeferred = async { contactsRepo.getUser() }
 
         val contacts = contactsDeferred.await()
             .filter { it.id != curUid }
@@ -39,7 +46,7 @@ class MainViewModel : ViewModel() {
             )
         }
 
-        RepoProvider.chatsRepo.getAll().collect { chats ->
+        chatsRepo.getAll().collect { chats ->
             Log.d("Chat", "chats: ${chats.size}")
 
             _mainState.update {

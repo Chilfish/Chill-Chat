@@ -13,8 +13,10 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import top.chilfish.chillchat.data.messages.Message
+import top.chilfish.chillchat.navigation.ArgUser
 import top.chilfish.chillchat.provider.curUid
 import top.chilfish.chillchat.ui.components.ChillScaffold
 import top.chilfish.chillchat.ui.components.MessageBar
@@ -23,7 +25,7 @@ private const val TimeGap = 3 * 60 * 1000
 
 @Composable
 fun MessagePage(
-    viewModel: MessageViewModel,
+    viewModel: MessageViewModel = hiltViewModel(),
     navController: NavHostController,
 ) {
     val messageState = viewModel.messageState.collectAsState().value
@@ -31,11 +33,19 @@ fun MessagePage(
     val scrollState = rememberLazyListState()
     val scope = rememberCoroutineScope()
 
+    LaunchedEffect(Unit) {
+        navController.currentBackStackEntryFlow.collect {
+            it.arguments?.getString(ArgUser)?.let { id ->
+                viewModel.init(id.toLong())
+            }
+        }
+    }
+
     ChillScaffold(
         isIme = true,
         topBar = {
             MessageBar(
-                profile = messageState.curProfile,
+                profile = messageState.chatter,
                 viewModel = viewModel,
                 navHostController = navController,
             )
