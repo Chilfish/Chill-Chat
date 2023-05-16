@@ -77,6 +77,8 @@ dependencies {
 
     // Tool
     implementation(libs.coil)
+    implementation(libs.coil.gif)
+
     implementation(libs.gson)
     implementation(libs.accompanist.insets)
     implementation(libs.accompanist.insets.ui)

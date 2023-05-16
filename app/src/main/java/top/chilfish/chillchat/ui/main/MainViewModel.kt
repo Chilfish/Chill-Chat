@@ -47,12 +47,8 @@ class MainViewModel @Inject constructor(
         }
 
         chatsRepo.getAll().collect { chats ->
-            Log.d("Chat", "chats: ${chats.size}")
-
             _mainState.update {
-                it.copy(
-                    chats = chats,
-                )
+                it.copy(chats = chats,)
             }
         }
     }
@@ -65,10 +61,6 @@ class MainViewModel @Inject constructor(
     }
 
     fun addFriend() {
-    }
-
-    fun saveEdit(profile: Profile) {
-
     }
 }
 

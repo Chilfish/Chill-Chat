@@ -2,11 +2,7 @@ package top.chilfish.chillchat.navigation
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
-import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -16,15 +12,12 @@ import androidx.navigation.navArgument
 import top.chilfish.chillchat.R
 import top.chilfish.chillchat.ui.main.ChatsListPage
 import top.chilfish.chillchat.ui.main.ContactsPage
-import top.chilfish.chillchat.ui.main.EditProfile
+import top.chilfish.chillchat.ui.edit_profile.EditProfile
 import top.chilfish.chillchat.ui.main.MainPage
 import top.chilfish.chillchat.ui.main.MainViewModel
 import top.chilfish.chillchat.ui.main.MePage
 import top.chilfish.chillchat.ui.message.MessagePage
-import top.chilfish.chillchat.ui.message.MessageViewModel
 import top.chilfish.chillchat.ui.profile.ProfilePage
-import top.chilfish.chillchat.ui.profile.ProfileViewModel
-import top.chilfish.chillchat.utils.toData
 
 const val ArgUser = "uid"
 const val ArgEdit = "edit"
@@ -99,34 +92,19 @@ fun ChillNavHost(
         startDestination = Routers.Home,
     ) {
         composable(route = Routers.Home) {
-            MainPage(
-                viewModel = viewModel,
-                navController = navController
-            ) {
-                ChatsListPage(
-                    viewModel = viewModel,
-                    navController = navController
-                )
+            MainPage(navController = navController) {
+                ChatsListPage(viewModel, navController)
             }
         }
 
         composable(route = Routers.Contact) {
-            MainPage(
-                viewModel = viewModel,
-                navController = navController
-            ) {
-                ContactsPage(
-                    viewModel = viewModel,
-                    navController = navController
-                )
+            MainPage(navController = navController) {
+                ContactsPage(viewModel, navController)
             }
         }
 
         composable(route = Routers.Me) {
-            MainPage(
-                viewModel = viewModel,
-                navController = navController
-            ) {
+            MainPage(navController = navController) {
                 MePage(viewModel, navController)
             }
         }
@@ -137,9 +115,7 @@ fun ChillNavHost(
                 type = NavType.StringType
             })
         ) {
-            ProfilePage(
-                navController = navController
-            )
+            ProfilePage(navController = navController)
         }
 
         composable(
@@ -148,9 +124,7 @@ fun ChillNavHost(
                 type = NavType.StringType
             })
         ) {
-            MessagePage(
-                navController = navController,
-            )
+            MessagePage(navController = navController)
         }
 
         composable(
@@ -159,13 +133,7 @@ fun ChillNavHost(
                 type = NavType.StringType
             })
         ) {
-            val type = it.arguments?.getString(ArgEdit) ?: EditType.Name
-
-            EditProfile(
-                viewModel = viewModel,
-                navController = navController,
-                type = type,
-            )
+            EditProfile(navController = navController)
         }
     }
 }

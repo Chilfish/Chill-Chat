@@ -10,8 +10,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.outlined.AddCircle
-import androidx.compose.material.icons.outlined.ArrowBack
-import androidx.compose.material.icons.outlined.Done
 import androidx.compose.material.icons.rounded.MoreVert
 import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -30,7 +28,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavDestination.Companion.hierarchy
@@ -39,14 +36,12 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import coil.compose.AsyncImage
 import top.chilfish.chillchat.R
 import top.chilfish.chillchat.data.contacts.Profile
-import top.chilfish.chillchat.navigation.EditType
 import top.chilfish.chillchat.navigation.NavBars
 import top.chilfish.chillchat.navigation.Routers
 import top.chilfish.chillchat.navigation.navigateTo
 import top.chilfish.chillchat.ui.main.MainViewModel
 import top.chilfish.chillchat.ui.message.MessageViewModel
 import top.chilfish.chillchat.ui.profile.ProfileViewModel
-import top.chilfish.chillchat.utils.toJson
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -165,52 +160,6 @@ fun ProfileBar(
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun EditProfileBar(
-    viewModel: MainViewModel,
-    navController: NavHostController,
-    type: String,
-    profile: Profile,
-) {
-    TopAppBar(
-        title = {
-            Text(
-                modifier = Modifier.fillMaxWidth(),
-                text = stringResource(R.string.edit_my, Title(type)),
-                textAlign = TextAlign.Center,
-                color = MaterialTheme.colorScheme.onPrimary,
-                fontWeight = FontWeight.Bold,
-                fontSize = 20.sp,
-            )
-        },
-        navigationIcon = {
-            IconBtn(
-                onClick = { navController.popBackStack() },
-                imageVector = Icons.Outlined.ArrowBack
-            )
-        },
-        actions = {
-            IconBtn(
-                onClick = { viewModel.saveEdit(profile) },
-                imageVector = Icons.Outlined.Done
-            )
-        },
-        colors = appBarColors()
-    )
-}
-
-
-private val Title = @Composable { type: String ->
-    when (type) {
-        EditType.Name -> stringResource(R.string.username)
-        EditType.Email -> stringResource(R.string.email)
-        EditType.Bio -> stringResource(R.string.bio)
-        EditType.Avatar -> stringResource(R.string.avatar)
-        EditType.Password -> stringResource(R.string.password)
-        else -> stringResource(R.string.username)
-    }
-}
 
 @Composable
 fun NavBar(

@@ -39,6 +39,8 @@
     <string name="load">Load</string>
     <string name="back">Back</string>
 
+    <string name="loading">Loading</string>
+
     <string name="edit_my">Edit My %s</string>
 
     <string name="avatar">Avatar</string>
