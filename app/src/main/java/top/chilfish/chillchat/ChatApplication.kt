@@ -1,25 +1,27 @@
 package top.chilfish.chillchat
 
 import android.app.Application
+import dagger.hilt.android.HiltAndroidApp
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.SupervisorJob
 import top.chilfish.chillchat.data.ChillChatDatabase
 import top.chilfish.chillchat.provider.AccountProvider
 import top.chilfish.chillchat.provider.ContextProvider
 import top.chilfish.chillchat.provider.RepoProvider
+import javax.inject.Inject
 
+@HiltAndroidApp
 class ChatApplication : Application() {
-    private val applicationScope = CoroutineScope(SupervisorJob())
+    @Inject
+    lateinit var applicationScope: CoroutineScope
+
+    @Inject
+    lateinit var db: ChillChatDatabase
 
     override fun onCreate() {
         super.onCreate()
 
-        val database by lazy {
-            ChillChatDatabase.getDatabase(this, applicationScope)
-        }
-
         ContextProvider.init(this)
-        RepoProvider.init(database, applicationScope)
+        RepoProvider.init(db, applicationScope)
         AccountProvider.init(this)
     }
 }

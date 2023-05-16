@@ -1,7 +1,13 @@
 package top.chilfish.chillchat.data.chatslist
 
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class ChatsListRepository(private val dao: ChatsListDao) {
+
+@Singleton
+class ChatsListRepository @Inject constructor(
+    private val dao: ChatsListDao
+) {
     suspend fun getAll() = dao.getAll()
 
     suspend fun insert(chats: Chats) = dao.insert(chats)

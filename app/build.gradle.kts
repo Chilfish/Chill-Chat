@@ -1,5 +1,6 @@
 plugins {
     id("com.android.application")
+    id("dagger.hilt.android.plugin")
     kotlin("android")
     kotlin("kapt")
 }
@@ -47,10 +48,15 @@ android {
     buildToolsVersion = "33.0.2"
 }
 
+kapt {
+    correctErrorTypes = true
+}
+
 dependencies {
     implementation(libs.androidx.ktx)
     implementation(libs.kotlin.stdlib)
     implementation(libs.coroutines)
+    implementation(libs.coroutines.core)
 
     // Compose
     implementation(libs.compose)
@@ -91,6 +97,12 @@ dependencies {
     annotationProcessor(libs.room.compiler)
     kapt(libs.room.compiler)
     implementation(libs.room.ktx)
+
+    // Hilt
+    implementation("com.google.dagger:hilt-android:2.44")
+    kapt("androidx.hilt:hilt-compiler:1.0.0")
+    kapt("com.google.dagger:hilt-android-compiler:2.44")
+    implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
 
     // Test
     testImplementation(libs.junit)

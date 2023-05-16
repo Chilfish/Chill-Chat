@@ -7,8 +7,10 @@ import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.Composable
 import androidx.core.view.WindowCompat
+import dagger.hilt.android.AndroidEntryPoint
 import top.chilfish.chillchat.ui.theme.ChillChatTheme
 
+@AndroidEntryPoint
 open class BaseActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
