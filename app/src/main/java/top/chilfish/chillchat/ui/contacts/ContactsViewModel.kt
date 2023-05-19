@@ -60,10 +60,30 @@ class ContactsViewModel @Inject constructor(
         Log.d("Chat", "add: $profile")
         contactsRepo.insert(profile)
     }
+
+    fun loadProfile(id: Long) = viewModelScope.launch {
+        val profile = contactsRepo.getById(id) ?: return@launch
+        _contactState.update {
+            it.copy(curProfile = profile)
+        }
+    }
+
+    fun delContact(back: () -> Unit) = viewModelScope.launch {
+        val res = contactsRepo.delete(_contactState.value.curProfile.id)
+
+        showToast(
+            resStrProvider.getString(
+                if (res > 0) R.string.delete_success
+                else R.string.delete_failed
+            )
+        )
+        if (res > 0) back()
+    }
 }
 
 data class ContactState(
     val contacts: MutableList<Profile> = mutableListOf(),
 
+    val curProfile: Profile = Profile(),
     val searchRes: MutableList<Profile> = mutableListOf()
 )

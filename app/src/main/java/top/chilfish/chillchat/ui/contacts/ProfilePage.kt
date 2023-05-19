@@ -1,4 +1,4 @@
-package top.chilfish.chillchat.ui.profile
+package top.chilfish.chillchat.ui.contacts
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -34,15 +34,15 @@ import top.chilfish.chillchat.ui.components.ProfileInfo
 
 @Composable
 fun ProfilePage(
-    viewModel: ProfileViewModel = hiltViewModel(),
+    viewModel: ContactsViewModel = hiltViewModel(),
     navController: NavHostController,
 ) {
-    val profileState = viewModel.profileState.collectAsState().value
+    val profileState = viewModel.contactState.collectAsState().value
 
     LaunchedEffect(Unit) {
         navController.currentBackStackEntryFlow.collect {
             it.arguments?.getString(ArgUser)?.let { id ->
-                viewModel.init(id.toLong())
+                viewModel.loadProfile(id.toLong())
             }
         }
     }
@@ -78,7 +78,7 @@ fun ProfilePage(
 
 @Composable
 fun ProfileBar(
-    viewModel: ProfileViewModel,
+    viewModel: ContactsViewModel,
     navController: NavHostController,
 ) {
     var isAlert by rememberSaveable { mutableStateOf(false) }

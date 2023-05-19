@@ -19,7 +19,7 @@ import top.chilfish.chillchat.ui.main.MainPage
 import top.chilfish.chillchat.ui.main.MainViewModel
 import top.chilfish.chillchat.ui.main.MePage
 import top.chilfish.chillchat.ui.message.MessagePage
-import top.chilfish.chillchat.ui.profile.ProfilePage
+import top.chilfish.chillchat.ui.contacts.ProfilePage
 
 const val ArgUser = "uid"
 const val ArgEdit = "edit"
