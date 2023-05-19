@@ -59,4 +59,8 @@
         the long content of note, the long content of note,the long content of note,
         the long content of note, the long content of note,
     </string>
+
+    <!--  Toast  -->
+    <string name="exist_contact">Contact is existed</string>
+    <string name="add_contact_success">Add Contact Success</string>
 </resources>

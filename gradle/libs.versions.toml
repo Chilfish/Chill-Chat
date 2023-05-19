@@ -25,6 +25,10 @@ dataStore = "1.1.0-alpha04"
 hilt = "2.44"
 hiltWork = "1.0.0"
 hiltLifecycle = "1.0.0-alpha03"
+hiltCompiler = "1.0.0"
+
+# Net
+retrofit2 = "2.9.0"
 
 # UI
 material = "1.9.0"
@@ -55,13 +59,17 @@ activity-compose = { group = "androidx.activity", name = "activity-compose", ver
 appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "bom" }
 
-#hilt-work = { group = "androidx.hilt", name = "hilt-work", version.ref = "hiltWork" }
-#hlit-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
-#hilt-android-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt" }
-#hilt-viewmodel = { group = "androidx.hilt", name = "hilt-lifecycle-viewmodel", version.ref = "hiltLifecycle" }
-#hilt-compiler = { group = "androidx.hilt", name = "hilt-compiler", version.ref = "hiltWork" }
-#hilt-navigation = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "hiltWork" }
+# Hilt
+hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }
+hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hilt" }
+androidx-hilt-compiler = { module = "androidx.hilt:hilt-compiler", version.ref = "hiltCompiler" }
+androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltCompiler" }
 hilt-android-gradle-plugin = { group = "com.google.dagger", name = "hilt-android-gradle-plugin", version.ref = "hilt" }
+
+# retrofit2
+retrofit2 = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit2" }
+retrofit2-converter-gson = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "retrofit2" }
+
 # UI
 compose-ui = { group = "androidx.compose.ui", name = "ui", version.ref = "compose" }
 compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling", version.ref = "compose" }

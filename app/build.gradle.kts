@@ -102,10 +102,14 @@ dependencies {
     implementation(libs.room.ktx)
 
     // Hilt
-    implementation("com.google.dagger:hilt-android:2.44")
-    kapt("androidx.hilt:hilt-compiler:1.0.0")
-    kapt("com.google.dagger:hilt-android-compiler:2.44")
-    implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
+    implementation(libs.hilt.android)
+    kapt(libs.androidx.hilt.compiler)
+    kapt(libs.hilt.android.compiler)
+    implementation(libs.androidx.hilt.navigation.compose)
+
+    //  retrofit2
+    implementation(libs.retrofit2)
+    implementation(libs.retrofit2.converter.gson)
 
     // Test
     testImplementation(libs.junit)

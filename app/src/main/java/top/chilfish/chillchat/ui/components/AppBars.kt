@@ -107,10 +107,8 @@ fun MessageBar(
                     ),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                AsyncImage(
-                    model = profile.avatar,
-                    contentDescription = "avatar",
-                    placeholder = painterResource(R.drawable.placeholder),
+                AvatarImg(
+                    name = profile.avatar,
                     modifier = Modifier
                         .width(40.dp)
                         .clip(RoundedCornerShape(50.dp))
