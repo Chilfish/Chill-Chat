@@ -3,7 +3,6 @@ package top.chilfish.chillchat.data
 import okhttp3.internal.immutableListOf
 import okhttp3.internal.toImmutableList
 import top.chilfish.chillchat.data.chatslist.Chats
-import top.chilfish.chillchat.data.contacts.AvatarHost
 import top.chilfish.chillchat.data.contacts.Host
 import top.chilfish.chillchat.data.contacts.Profile
 import top.chilfish.chillchat.data.messages.Message
@@ -15,21 +14,21 @@ val Contacts = immutableListOf(
     Profile(
         id = 1L,
         name = "Chilfish",
-        avatar = "$AvatarHost/avatar.webp",
+        avatar = "avatar.webp",
         email = "Chilfish@$Host",
         bio = "Chilfish is a fish that lives in the sea."
     ),
     Profile(
         id = 2L,
         name = "Organic Fish",
-        avatar = "$AvatarHost/avatar1.webp",
+        avatar = "avatar1.webp",
         email = "Organic_Fish@$Host",
         bio = "Organic Fish is a fish that is organic."
     ),
     Profile(
         id = 3L,
         name = "Blue Fish",
-        avatar = "$AvatarHost/avatar2.webp",
+        avatar = "avatar2.webp",
         email = "Blue_Fish@$Host",
         bio = "Blue is a fish that has blue eyes."
     ),

@@ -12,6 +12,7 @@ import androidx.navigation.navArgument
 import top.chilfish.chillchat.R
 import top.chilfish.chillchat.ui.contacts.AddContactPage
 import top.chilfish.chillchat.ui.contacts.ContactsPage
+import top.chilfish.chillchat.ui.debugger.DebugPage
 import top.chilfish.chillchat.ui.edit_profile.EditProfile
 import top.chilfish.chillchat.ui.main.ChatsListPage
 import top.chilfish.chillchat.ui.main.MainPage
@@ -34,6 +35,8 @@ object Routers {
     const val EditProfile = "profile/edit/{${ArgEdit}}"
 
     const val AddContact = "addContact"
+
+    const val Debug = "DebugPage"
 }
 
 object EditType {
@@ -145,6 +148,10 @@ fun ChillNavHost(
             AddContactPage(
                 navController = navController
             )
+        }
+
+        composable(route = Routers.Debug) {
+            DebugPage()
         }
     }
 }

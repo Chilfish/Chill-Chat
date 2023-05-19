@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Build
 import androidx.compose.material.icons.outlined.AddCircle
 import androidx.compose.material.icons.rounded.MoreVert
 import androidx.compose.material.icons.rounded.Search
@@ -58,6 +59,10 @@ fun HomeBar(
         title = stringResource(R.string.app_name),
         center = false,
         actions = {
+            IconBtn(
+                onClick = { navHostController.navigate(Routers.Debug) },
+                imageVector = Icons.Default.Build
+            )
             IconBtn(
                 onClick = { viewModel.search() },
                 imageVector = Icons.Rounded.Search

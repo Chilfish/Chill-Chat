@@ -66,7 +66,7 @@ fun ChatsListItem(
             .padding(padding),
     ) {
         AvatarImg(
-            url = profile.avatar,
+            name = profile.avatar,
             modifier = Modifier
                 .width(56.dp)
                 .clip(RoundedCornerShape(12.dp))

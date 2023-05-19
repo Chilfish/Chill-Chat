@@ -10,6 +10,7 @@ import top.chilfish.chillchat.data.repository.MessageRepository
 import top.chilfish.chillchat.provider.AccountProvider
 import top.chilfish.chillchat.provider.ContextProvider
 import top.chilfish.chillchat.provider.RepoProvider
+import top.chilfish.chillchat.provider.SettingsProvider
 import javax.inject.Inject
 
 @HiltAndroidApp
@@ -33,6 +34,7 @@ class ChatApplication : Application() {
         super.onCreate()
 
         ContextProvider.init(this)
+        SettingsProvider.init(this)
         RepoProvider.init(db, applicationScope)
         AccountProvider.init(this)
     }

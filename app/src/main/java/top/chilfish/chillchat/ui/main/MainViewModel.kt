@@ -7,7 +7,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -32,23 +31,26 @@ class MainViewModel @Inject constructor(
     }
 
     private fun load() = viewModelScope.launch {
-        val chats = async { chatsRepo.getAll().first() }.await()
-
-        _mainState.update {
-            it.copy(
-                chats = chats,
-                isLoading = false,
-            )
+        launch {
+            chatsRepo.getAll()
+                .flowOn(Dispatchers.IO)
+                .collect { chats ->
+                    _mainState.update {
+                        it.copy(chats = chats)
+                    }
+                }
         }
 
         // collect change from repo
-        contactsRepo.getUser()
-            .flowOn(Dispatchers.IO)
-            .collect { me ->
-                _mainState.update {
-                    it.copy(me = me)
+        launch {
+            contactsRepo.getUser()
+                .flowOn(Dispatchers.IO)
+                .collect { me ->
+                    _mainState.update {
+                        it.copy(me = me)
+                    }
                 }
-            }
+        }
     }
 
     fun logout() = viewModelScope.launch {

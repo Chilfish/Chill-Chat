@@ -1,10 +1,10 @@
 package top.chilfish.chillchat.ui.components
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -33,6 +33,7 @@ import coil.decode.ImageDecoderDecoder
 import coil.request.CachePolicy
 import coil.request.ImageRequest
 import top.chilfish.chillchat.R
+import top.chilfish.chillchat.provider.BaseHost
 
 
 @Composable
@@ -53,8 +54,9 @@ fun VisibilityBtn(
 
 @Composable
 fun AvatarImg(
-    url: String,
     modifier: Modifier = Modifier,
+    url: String = BaseHost.value,
+    name: String,
     contentDescription: String = stringResource(R.string.avatar),
     contentScale: ContentScale = ContentScale.Fit,
     alignment: Alignment = Alignment.Center,
@@ -63,7 +65,7 @@ fun AvatarImg(
     builder: ImageRequest.Builder.() -> Unit = {}
 ) {
     val request = ImageRequest.Builder(LocalContext.current)
-        .data(url)
+        .data("$url/$name")
         .memoryCachePolicy(CachePolicy.ENABLED)
         .diskCachePolicy(CachePolicy.ENABLED)
         .networkCachePolicy(CachePolicy.ENABLED)
@@ -74,7 +76,15 @@ fun AvatarImg(
         model = request,
         modifier = modifier,
         contentDescription = contentDescription,
-        placeholder = painterResource(R.drawable.placeholder)
+        placeholder = painterResource(R.drawable.placeholder),
+        error = painterResource(R.drawable.placeholder),
+        onError = {
+            Log.e("Chat", "img load error: $it")
+        },
+        alpha = alpha,
+        colorFilter = colorFilter,
+        alignment = alignment,
+        contentScale = contentScale,
     )
 }
 
