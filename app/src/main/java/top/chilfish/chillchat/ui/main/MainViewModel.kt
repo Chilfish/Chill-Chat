@@ -16,7 +16,6 @@ import top.chilfish.chillchat.data.contacts.Profile
 import top.chilfish.chillchat.data.repository.ChatsListRepository
 import top.chilfish.chillchat.data.repository.ContactsRepository
 import top.chilfish.chillchat.provider.AccountProvider
-import top.chilfish.chillchat.provider.curUid
 import javax.inject.Inject
 
 @HiltViewModel
@@ -33,17 +32,11 @@ class MainViewModel @Inject constructor(
     }
 
     private fun load() = viewModelScope.launch {
-        val contactsDeferred = async { contactsRepo.allUsers() }
-        val contacts = contactsDeferred.await()
-            .filter { it.id != curUid }
-            .toMutableList()
-
         val chats = async { chatsRepo.getAll().first() }.await()
 
         _mainState.update {
             it.copy(
                 chats = chats,
-                contacts = contacts,
                 isLoading = false,
             )
         }
@@ -71,7 +64,6 @@ class MainViewModel @Inject constructor(
 
 data class MainState(
     val chats: MutableList<Chatter> = mutableListOf(),
-    val contacts: MutableList<Profile> = mutableListOf(),
     val me: Profile? = null,
 
     val isLoading: Boolean = true,

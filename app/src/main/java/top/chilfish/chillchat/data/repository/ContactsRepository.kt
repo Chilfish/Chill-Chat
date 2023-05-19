@@ -9,7 +9,7 @@ import javax.inject.Singleton
 class ContactsRepository @Inject constructor(
     private val dao: ContactsDao
 ) {
-    suspend fun allUsers() = dao.getAll()
+    fun allUsers() = dao.getAll()
 
     suspend fun insert(profile: Profile) = dao.insert(profile)
 

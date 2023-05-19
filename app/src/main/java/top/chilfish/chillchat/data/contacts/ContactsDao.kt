@@ -10,7 +10,7 @@ import top.chilfish.chillchat.provider.curUid
 @Dao
 interface ContactsDao {
     @Query("SELECT * FROM $User_Table ORDER BY name ASC")
-    suspend fun getAll(): MutableList<Profile>
+    fun getAll(): Flow<MutableList<Profile>>
 
     @Query("SELECT * FROM $User_Table WHERE id = :id")
     suspend fun getById(id: Long): Profile?

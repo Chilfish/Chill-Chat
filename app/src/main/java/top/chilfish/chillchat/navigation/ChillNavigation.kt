@@ -3,6 +3,7 @@ package top.chilfish.chillchat.navigation
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.runtime.Composable
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -11,7 +12,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import top.chilfish.chillchat.R
 import top.chilfish.chillchat.ui.main.ChatsListPage
-import top.chilfish.chillchat.ui.main.ContactsPage
+import top.chilfish.chillchat.ui.contacts.ContactsPage
 import top.chilfish.chillchat.ui.edit_profile.EditProfile
 import top.chilfish.chillchat.ui.main.MainPage
 import top.chilfish.chillchat.ui.main.MainViewModel
@@ -99,7 +100,10 @@ fun ChillNavHost(
 
         composable(route = Routers.Contact) {
             MainPage(navController = navController) {
-                ContactsPage(viewModel, navController)
+                ContactsPage(
+                    viewModel = hiltViewModel(),
+                    navController = navController
+                )
             }
         }
 

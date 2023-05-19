@@ -1,4 +1,4 @@
-package top.chilfish.chillchat.ui.main
+package top.chilfish.chillchat.ui.contacts
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -22,14 +22,13 @@ import top.chilfish.chillchat.data.contacts.Profile
 import top.chilfish.chillchat.navigation.Routers
 import top.chilfish.chillchat.navigation.navigateTo
 import top.chilfish.chillchat.ui.components.AvatarImg
-import top.chilfish.chillchat.utils.toJson
 
 @Composable
 fun ContactsPage(
-    viewModel: MainViewModel,
+    viewModel: ContactsViewModel,
     navController: NavHostController,
 ) {
-    val contacts = viewModel.mainState.collectAsState(initial = MainState()).value.contacts
+    val contacts = viewModel.contactState.collectAsState().value.contacts
 
     LazyColumn {
         itemsIndexed(items = contacts, key = { _, profile -> profile.id }
