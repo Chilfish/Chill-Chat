@@ -60,10 +60,6 @@ class ContactsViewModel @Inject constructor(
         Log.d("Chat", "add: $profile")
         contactsRepo.insert(profile)
     }
-
-    fun delContact(id: Long) = viewModelScope.launch {
-        contactsRepo.delete(id)
-    }
 }
 
 data class ContactState(

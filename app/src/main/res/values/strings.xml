@@ -63,4 +63,9 @@
     <!--  Toast  -->
     <string name="exist_contact">Contact is existed</string>
     <string name="add_contact_success">Add Contact Success</string>
+    <string name="delete_success">Delete Success</string>
+    <string name="delete_failed">Delete Failed</string>
+
+    <string name="alert_title_delete">Confirm to Delete?</string>
+    <string name="alert_message_delete">This action cannot be undone.</string>
 </resources>

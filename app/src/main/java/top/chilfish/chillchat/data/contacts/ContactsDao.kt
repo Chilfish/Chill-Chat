@@ -28,7 +28,7 @@ interface ContactsDao {
     suspend fun deleteAll()
 
     @Query("DELETE FROM $User_Table WHERE id = :id")
-    suspend fun deleteById(id: Long)
+    suspend fun deleteById(id: Long): Int
 
     @Update
     suspend fun update(profile: Profile): Int
