@@ -52,6 +52,8 @@
     <string name="new_password">New Password</string>
     <string name="reset_password">Reset Password</string>
 
+    <string name="add_contacts_hint">Search by UID</string>
+
     <string name="place_content">the content of note</string>
     <string name="place_long_content">the long content of note,  the long content of note,
         the long content of note, the long content of note,the long content of note,

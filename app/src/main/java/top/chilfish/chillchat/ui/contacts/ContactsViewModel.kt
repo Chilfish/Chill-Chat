@@ -34,6 +34,18 @@ class ContactsViewModel @Inject constructor(
         }
     }
 
+    fun search(id: Long) = viewModelScope.launch {
+        _contactState.update {
+            it.copy(
+                searchRes = mutableListOf(
+                    Profile(),
+                    Profile(),
+                    Profile()
+                )
+            )
+        }
+    }
+
     fun addContact(profile: Profile) {
 
     }
@@ -44,5 +56,7 @@ class ContactsViewModel @Inject constructor(
 }
 
 data class ContactState(
-    val contacts: MutableList<Profile> = mutableListOf()
+    val contacts: MutableList<Profile> = mutableListOf(),
+
+    val searchRes: MutableList<Profile> = mutableListOf()
 )

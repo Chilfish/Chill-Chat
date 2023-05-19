@@ -48,14 +48,19 @@ fun ContactsPage(
 }
 
 
+private val padding = 12.dp
+
 @Composable
-fun ContactItem(profile: Profile, onClick: () -> Unit) {
-    val padding = 12.dp
+fun ContactItem(
+    modifier: Modifier = Modifier,
+    profile: Profile,
+    onClick: () -> Unit = {}
+) {
     Row(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
-            .clickable(onClick = onClick)
-            .padding(padding),
+            .padding(padding)
+            .clickable(onClick = onClick),
         verticalAlignment = Alignment.CenterVertically
     ) {
         AvatarImg(
