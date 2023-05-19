@@ -3,7 +3,6 @@ package top.chilfish.chillchat.navigation
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.runtime.Composable
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -11,9 +10,10 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import top.chilfish.chillchat.R
-import top.chilfish.chillchat.ui.main.ChatsListPage
+import top.chilfish.chillchat.ui.contacts.AddContactPage
 import top.chilfish.chillchat.ui.contacts.ContactsPage
 import top.chilfish.chillchat.ui.edit_profile.EditProfile
+import top.chilfish.chillchat.ui.main.ChatsListPage
 import top.chilfish.chillchat.ui.main.MainPage
 import top.chilfish.chillchat.ui.main.MainViewModel
 import top.chilfish.chillchat.ui.main.MePage
@@ -32,6 +32,8 @@ object Routers {
     const val Message = "message/{$ArgUser}"
 
     const val EditProfile = "profile/edit/{${ArgEdit}}"
+
+    const val AddContact = "addContact"
 }
 
 object EditType {
@@ -101,7 +103,6 @@ fun ChillNavHost(
         composable(route = Routers.Contact) {
             MainPage(navController = navController) {
                 ContactsPage(
-                    viewModel = hiltViewModel(),
                     navController = navController
                 )
             }
@@ -138,6 +139,12 @@ fun ChillNavHost(
             })
         ) {
             EditProfile(navController = navController)
+        }
+
+        composable(route = Routers.AddContact) {
+            AddContactPage(
+                navController = navController
+            )
         }
     }
 }

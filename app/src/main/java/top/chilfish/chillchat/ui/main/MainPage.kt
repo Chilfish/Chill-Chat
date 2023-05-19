@@ -14,7 +14,7 @@ fun MainPage(
     mainContent: @Composable () -> Unit
 ) {
     ChillScaffold(
-        topBar = { HomeBar(viewModel) },
+        topBar = { HomeBar(viewModel, navController) },
         bottomBar = { NavBar(navController) },
         content = { mainContent() }
     )

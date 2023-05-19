@@ -4,6 +4,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -28,6 +29,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavDestination.Companion.hierarchy
@@ -41,41 +43,38 @@ import top.chilfish.chillchat.navigation.Routers
 import top.chilfish.chillchat.navigation.navigateTo
 import top.chilfish.chillchat.ui.main.MainViewModel
 import top.chilfish.chillchat.ui.message.MessageViewModel
-import top.chilfish.chillchat.ui.profile.ProfileViewModel
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun appBarColors() = TopAppBarDefaults.topAppBarColors(MaterialTheme.colorScheme.primary)
 
-
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeBar(
     viewModel: MainViewModel,
-    title: String = stringResource(R.string.app_name),
+    navHostController: NavHostController,
 ) {
-    TopAppBar(
-        title = {
-            Text(
-                text = title,
-                fontWeight = FontWeight.Bold,
-                fontSize = 20.sp,
-                color = MaterialTheme.colorScheme.onPrimary
-            )
-        },
+    ChillTopBar(
+        title = stringResource(R.string.app_name),
+        center = false,
         actions = {
             IconBtn(
                 onClick = { viewModel.search() },
                 imageVector = Icons.Rounded.Search
             )
             IconBtn(
-                onClick = { viewModel.addFriend() },
+                onClick = {
+                    navHostController.navigate(Routers.AddContact) {
+                        popUpTo(Routers.Home) {
+                            saveState = true
+                        }
+                        launchSingleTop = true
+                        restoreState = true
+                    }
+                },
                 imageVector = Icons.Outlined.AddCircle
             )
         },
-        navigationIcon = {},
-        colors = appBarColors(),
     )
 }
 
@@ -135,27 +134,42 @@ fun MessageBar(
     )
 }
 
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ProfileBar(
-    viewModel: ProfileViewModel,
-    navController: NavHostController,
+fun ChillTopBar(
+    modifier: Modifier = Modifier,
+    title: String = "",
+    center: Boolean = true,
+    actions: @Composable () -> Unit = {},
+    navController: NavHostController? = null,
 ) {
     TopAppBar(
-        title = {},
+        title = {
+            Text(
+                modifier = modifier.let {
+                    if (center) {
+                        it.fillMaxWidth()
+                    } else it
+                }.let {
+                    if (center && navController != null) {
+                        it.offset(x = (-24).dp)
+                    } else it
+                },
+                text = title,
+                textAlign = TextAlign.Center,
+                color = MaterialTheme.colorScheme.onPrimary,
+                fontWeight = FontWeight.Bold,
+                fontSize = 20.sp,
+            )
+        },
         navigationIcon = {
-            IconBtn(
-                onClick = { navController.popBackStack() },
-                imageVector = Icons.Default.ArrowBack
-            )
+            if (navController != null)
+                IconBtn(
+                    onClick = { navController.popBackStack() },
+                    imageVector = Icons.Default.ArrowBack
+                )
         },
-        actions = {
-            IconBtn(
-                onClick = { viewModel.more() },
-                imageVector = Icons.Rounded.MoreVert
-            )
-        },
+        actions = { actions() },
         colors = appBarColors(),
     )
 }

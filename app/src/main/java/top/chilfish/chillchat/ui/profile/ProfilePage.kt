@@ -4,6 +4,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.MoreVert
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -19,8 +21,9 @@ import top.chilfish.chillchat.R
 import top.chilfish.chillchat.navigation.ArgUser
 import top.chilfish.chillchat.navigation.Routers
 import top.chilfish.chillchat.navigation.navigateTo
+import top.chilfish.chillchat.ui.components.ChillTopBar
 import top.chilfish.chillchat.ui.components.Hero
-import top.chilfish.chillchat.ui.components.ProfileBar
+import top.chilfish.chillchat.ui.components.IconBtn
 import top.chilfish.chillchat.ui.components.ProfileBtn
 import top.chilfish.chillchat.ui.components.ProfileInfo
 
@@ -67,4 +70,20 @@ fun ProfilePage(
             }
         }
     }
+}
+
+@Composable
+fun ProfileBar(
+    viewModel: ProfileViewModel,
+    navController: NavHostController,
+) {
+    ChillTopBar(
+        navController = navController,
+        actions = {
+            IconBtn(
+                onClick = { viewModel.more() },
+                imageVector = Icons.Rounded.MoreVert
+            )
+        }
+    )
 }

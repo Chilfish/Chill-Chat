@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import top.chilfish.chillchat.data.contacts.Profile
 import top.chilfish.chillchat.navigation.Routers
@@ -25,7 +26,7 @@ import top.chilfish.chillchat.ui.components.AvatarImg
 
 @Composable
 fun ContactsPage(
-    viewModel: ContactsViewModel,
+    viewModel: ContactsViewModel = hiltViewModel(),
     navController: NavHostController,
 ) {
     val contacts = viewModel.contactState.collectAsState().value.contacts

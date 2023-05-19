@@ -57,9 +57,6 @@ class MainViewModel @Inject constructor(
 
     fun search() {
     }
-
-    fun addFriend() {
-    }
 }
 
 data class MainState(
