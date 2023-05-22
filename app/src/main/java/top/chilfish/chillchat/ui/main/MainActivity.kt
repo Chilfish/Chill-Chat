@@ -1,7 +1,6 @@
 package top.chilfish.chillchat.ui.main
 
 import android.os.Bundle
-import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.launch
 import top.chilfish.chillchat.BaseActivity
@@ -15,9 +14,7 @@ class MainActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            val viewModel: MainViewModel by viewModels()
-
-            ChillNavHost(viewModel = viewModel)
+            ChillNavHost()
         }
 
         lifecycleScope.launch {

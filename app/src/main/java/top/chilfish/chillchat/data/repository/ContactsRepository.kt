@@ -1,5 +1,7 @@
 package top.chilfish.chillchat.data.repository
 
+import android.util.Log
+import kotlinx.coroutines.flow.Flow
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
@@ -47,12 +49,17 @@ class ContactsRepository @Inject constructor(
         return res
     }
 
-    suspend fun loadAll() {
+    suspend fun loadAll(): Flow<MutableList<Profile>> {
         withApiService { apiContact ->
             val res = apiContact.loadAll(curUid)
+            Log.d("Chat", "repo: all contacts: ${res.size}")
             dao.deleteAll()
             res.forEach { dao.insert(it) }
+
+            val user = apiContact.getUser(curUid)
+            dao.insert(user!!)
         }
+        return dao.getAll()
     }
 
 }
@@ -67,6 +74,6 @@ interface ApiContact {
     @DELETE("del/contact")
     suspend fun delete(@Query("uid") userId: Long, @Query("chatterId") chatterId: Long): Boolean
 
-    @GET("list/contacts/{uid}")
+    @GET("list/contact/{uid}")
     suspend fun loadAll(@Path("uid") uid: Long): List<Profile>
 }

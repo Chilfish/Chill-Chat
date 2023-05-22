@@ -9,9 +9,9 @@ import top.chilfish.chillchat.ui.components.NavBar
 
 @Composable
 fun MainPage(
-    viewModel: MainViewModel = hiltViewModel(),
+    viewModel: MainViewModel,
     navController: NavHostController,
-    mainContent: @Composable () -> Unit
+    mainContent: @Composable () -> Unit = {}
 ) {
     ChillScaffold(
         topBar = { HomeBar(viewModel, navController) },

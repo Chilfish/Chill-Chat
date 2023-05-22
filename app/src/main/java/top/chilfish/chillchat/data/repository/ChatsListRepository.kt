@@ -1,9 +1,12 @@
 package top.chilfish.chillchat.data.repository
 
+import android.util.Log
+import kotlinx.coroutines.flow.Flow
 import retrofit2.http.GET
 import retrofit2.http.Path
 import top.chilfish.chillchat.data.chatslist.Chats
 import top.chilfish.chillchat.data.chatslist.ChatsListDao
+import top.chilfish.chillchat.data.chatslist.Chatter
 import top.chilfish.chillchat.provider.curUid
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -29,6 +32,7 @@ class ChatsListRepository @Inject constructor(
     suspend fun loadAll() {
         withApiService { apiService ->
             val res = apiService.loadAll(curUid)
+            Log.d("Chat", "repo: all chats: ${res}")
             dao.deleteAll()
             res.forEach { dao.insert(it) }
         }

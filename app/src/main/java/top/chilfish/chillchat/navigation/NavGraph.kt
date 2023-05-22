@@ -1,6 +1,7 @@
 package top.chilfish.chillchat.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -23,28 +24,26 @@ import top.chilfish.chillchat.ui.message.MessagePage
 @Composable
 fun ChillNavHost(
     navController: NavHostController = rememberNavController(),
-    viewModel: MainViewModel,
+    viewModel: MainViewModel = hiltViewModel(),
 ) {
     NavHost(
         navController = navController,
         startDestination = Routers.Home,
     ) {
         composable(route = Routers.Home) {
-            MainPage(navController = navController) {
+            MainPage(viewModel, navController) {
                 ChatsListPage(viewModel, navController)
             }
         }
 
         composable(route = Routers.Contact) {
-            MainPage(navController = navController) {
-                ContactsPage(
-                    navController = navController
-                )
+            MainPage(viewModel, navController) {
+                ContactsPage(navController = navController)
             }
         }
 
         composable(route = Routers.Me) {
-            MainPage(navController = navController) {
+            MainPage(viewModel, navController) {
                 MePage(viewModel, navController)
             }
         }

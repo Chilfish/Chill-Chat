@@ -25,6 +25,9 @@ class LoginViewModel @Inject constructor(
     fun goToLogin() = viewModelScope.launch {
         if (!checkSubmit()) return@launch
 
+        // Debug
+        success(3L);return@launch
+
         val (username, password) = loginState.value
         val res = userRepo.login(username, password)
         if (res != null) {

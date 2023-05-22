@@ -1,5 +1,6 @@
 package top.chilfish.chillchat.ui.main
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -14,6 +15,7 @@ import top.chilfish.chillchat.data.chatslist.Chatter
 import top.chilfish.chillchat.data.contacts.Profile
 import top.chilfish.chillchat.data.repository.ChatsListRepository
 import top.chilfish.chillchat.data.repository.ContactsRepository
+import top.chilfish.chillchat.data.repository.MessageRepository
 import top.chilfish.chillchat.data.repository.UserRepository
 import top.chilfish.chillchat.provider.AccountProvider
 import top.chilfish.chillchat.provider.ResStrProvider
@@ -25,6 +27,7 @@ class MainViewModel @Inject constructor(
     private val contactsRepo: ContactsRepository,
     private val chatsRepo: ChatsListRepository,
     private val userRepo: UserRepository,
+    private val mesRepo: MessageRepository,
     private val resStr: ResStrProvider,
 ) : ViewModel() {
 
@@ -33,29 +36,35 @@ class MainViewModel @Inject constructor(
 
     init {
         load()
+        Log.d("Chat", "mainViewModel init")
     }
 
     private fun load() = viewModelScope.launch {
-        launch {
-            chatsRepo.getAll()
-                .flowOn(Dispatchers.IO)
-                .collect { chats ->
-                    _mainState.update {
-                        it.copy(chats = chats)
-                    }
-                }
-        }
+        launch { mesRepo.loadAll() }
+        launch { contactsRepo.loadAll() }
+        launch { chatsRepo.loadAll() }
+        launch { loadChats() }
+        launch { loadMe() }
+    }
 
-        // collect change from repo
-        launch {
-            contactsRepo.getUser()
-                .flowOn(Dispatchers.IO)
-                .collect { me ->
-                    _mainState.update {
-                        it.copy(me = me)
-                    }
+    private suspend fun loadChats() {
+        chatsRepo.getAll()
+            .flowOn(Dispatchers.IO)
+            .collect { chats ->
+                _mainState.update {
+                    it.copy(chats = chats)
                 }
-        }
+            }
+    }
+
+    private suspend fun loadMe() {
+        contactsRepo.getUser()
+            .flowOn(Dispatchers.IO)
+            .collect { me ->
+                _mainState.update {
+                    it.copy(me = me)
+                }
+            }
     }
 
     fun logout() = viewModelScope.launch {
