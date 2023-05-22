@@ -68,4 +68,9 @@
 
     <string name="alert_title_delete">Confirm to Delete?</string>
     <string name="alert_message_delete">This action cannot be undone.</string>
+
+    <string name="login_failed">Login Failed</string>
+    <string name="register_failed">Register Failed</string>
+
+    <string name="check_input">Please check your input</string>
 </resources>

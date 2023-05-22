@@ -10,10 +10,8 @@ import javax.inject.Singleton
 @Singleton
 class ContactsRepository @Inject constructor(
     private val dao: ContactsDao
-) : BaseApiClient<ApiService>() {
-    override fun getApiServiceClass(): Class<ApiService> {
-        return ApiService::class.java
-    }
+) : BaseApiClient<ApiContact>() {
+    override val getApiServiceClass = ApiContact::class.java
 
     fun allUsers() = dao.getAll()
 
@@ -39,7 +37,7 @@ class ContactsRepository @Inject constructor(
 
 }
 
-interface ApiService {
+interface ApiContact {
     @GET("users/{uid}")
     suspend fun getUser(@Path("uid") userId: String): Profile?
 }

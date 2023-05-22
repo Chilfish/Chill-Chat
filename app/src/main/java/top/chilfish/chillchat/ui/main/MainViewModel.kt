@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.flowOn
@@ -14,6 +13,7 @@ import top.chilfish.chillchat.data.chatslist.Chatter
 import top.chilfish.chillchat.data.contacts.Profile
 import top.chilfish.chillchat.data.repository.ChatsListRepository
 import top.chilfish.chillchat.data.repository.ContactsRepository
+import top.chilfish.chillchat.data.repository.UserRepository
 import top.chilfish.chillchat.provider.AccountProvider
 import javax.inject.Inject
 
@@ -21,6 +21,7 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
     private val contactsRepo: ContactsRepository,
     private val chatsRepo: ChatsListRepository,
+    private val userRepo: UserRepository,
 ) : ViewModel() {
 
     private val _mainState = MutableStateFlow(MainState())
@@ -55,6 +56,8 @@ class MainViewModel @Inject constructor(
 
     fun logout() = viewModelScope.launch {
         AccountProvider.setLogout()
+        val id = mainState.value.me!!.id
+        userRepo.logout(id)
     }
 
     fun search() {
