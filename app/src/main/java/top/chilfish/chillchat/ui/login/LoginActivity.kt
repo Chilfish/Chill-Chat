@@ -5,6 +5,7 @@ import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.launch
 import top.chilfish.chillchat.BaseActivity
+import top.chilfish.chillchat.navigation.LoginNavHost
 import top.chilfish.chillchat.ui.main.MainActivity
 
 class LoginActivity : BaseActivity() {
@@ -13,7 +14,7 @@ class LoginActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            LoginPage(viewModel = loginViewModel)
+            LoginNavHost(viewModel = loginViewModel)
         }
         initEvent()
     }
