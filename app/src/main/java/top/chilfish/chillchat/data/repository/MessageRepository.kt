@@ -1,8 +1,6 @@
 package top.chilfish.chillchat.data.repository
 
 import android.util.Log
-import retrofit2.http.GET
-import retrofit2.http.Path
 import top.chilfish.chillchat.data.messages.Message
 import top.chilfish.chillchat.data.messages.MessageDao
 import top.chilfish.chillchat.provider.curUid
@@ -12,8 +10,7 @@ import javax.inject.Singleton
 @Singleton
 class MessageRepository @Inject constructor(
     private val dao: MessageDao
-) : BaseApiClient<ApiMessage>() {
-    override val getApiServiceClass = ApiMessage::class.java
+) : BaseApiClient() {
 
     fun getAll(chatterId: Long) = dao.getAll(curUid, chatterId)
 
@@ -25,18 +22,12 @@ class MessageRepository @Inject constructor(
 
     suspend fun deleteAll() = dao.deleteAll()
 
-    // should be loaded in mainPage
     suspend fun loadAll() {
         withApiService { apiMessage ->
-            val res = apiMessage.loadAll(curUid)
+            val res = apiMessage.loadMessage(curUid)
             Log.d("Chat", "repo: all mes: ${res.size}")
             dao.deleteAll()
             res.forEach { dao.insert(it) }
         }
     }
-}
-
-interface ApiMessage {
-    @GET("list/message/{uid}")
-    suspend fun loadAll(@Path("uid") uid: Long): List<Message>
 }

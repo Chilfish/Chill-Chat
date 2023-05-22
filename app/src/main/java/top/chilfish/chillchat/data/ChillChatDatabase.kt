@@ -42,7 +42,7 @@ abstract class ChillChatDatabase : RoomDatabase() {
                     DATABASE_NAME
                 )
                     .fallbackToDestructiveMigration()
-                    .addCallback(ChillChatDatabaseCallback(scope))
+//                    .addCallback(ChillChatDatabaseCallback(scope))
                     .build()
                     .also { INSTANCE = it }
             }
@@ -75,9 +75,9 @@ abstract class ChillChatDatabase : RoomDatabase() {
             contactsDao.deleteAll()
 
             try {
-//                Contacts.forEach { contactsDao.insert(it) }
-//                Messages.forEach { messageDao.insert(it) }
-//                ChatsList.forEach { chatsListDao.insert(it) }
+                Contacts.forEach { contactsDao.insert(it) }
+                Messages.forEach { messageDao.insert(it) }
+                ChatsList.forEach { chatsListDao.insert(it) }
             } catch (e: Exception) {
                 e.printStackTrace()
             }
