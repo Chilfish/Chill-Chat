@@ -26,6 +26,9 @@ interface ChatsListDao {
     @Query("SELECT * FROM $Chat_Table ORDER BY lastTime DESC")
     fun getAll(): Flow<MutableList<Chatter>>
 
+    @Query("SELECT * FROM $Chat_Table WHERE chatterId = :id")
+    suspend fun getById(id: Long): Chats?
+
     @Insert
     suspend fun insert(chats: Chats)
 
@@ -40,4 +43,16 @@ interface ChatsListDao {
 
     @Query("UPDATE $Chat_Table SET lastMessage = :message, lastTime = :time WHERE chatterId = :chatterId")
     suspend fun updateById(chatterId: Long, message: String, time: Long)
+
+    @Transaction
+    suspend fun insertOrUpdate(chatsList: List<Chats>) {
+        chatsList.forEach {
+            val chatter = getById(it.chatterId)
+            if (chatter == null) {
+                insert(it)
+            } else {
+                update(it)
+            }
+        }
+    }
 }

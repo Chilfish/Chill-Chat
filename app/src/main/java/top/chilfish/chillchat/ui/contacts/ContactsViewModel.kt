@@ -40,7 +40,7 @@ class ContactsViewModel @Inject constructor(
     }
 
     fun search(id: Long) = viewModelScope.launch {
-        val res = contactsRepo.findUser(id.toString()) ?: return@launch
+        val res = contactsRepo.findUser(id) ?: return@launch
         Log.d("Chat", "Search: $res")
 
         _contactState.update {

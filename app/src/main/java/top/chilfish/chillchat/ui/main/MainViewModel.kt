@@ -9,12 +9,15 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import top.chilfish.chillchat.R
 import top.chilfish.chillchat.data.chatslist.Chatter
 import top.chilfish.chillchat.data.contacts.Profile
 import top.chilfish.chillchat.data.repository.ChatsListRepository
 import top.chilfish.chillchat.data.repository.ContactsRepository
 import top.chilfish.chillchat.data.repository.UserRepository
 import top.chilfish.chillchat.provider.AccountProvider
+import top.chilfish.chillchat.provider.ResStrProvider
+import top.chilfish.chillchat.utils.showToast
 import javax.inject.Inject
 
 @HiltViewModel
@@ -22,6 +25,7 @@ class MainViewModel @Inject constructor(
     private val contactsRepo: ContactsRepository,
     private val chatsRepo: ChatsListRepository,
     private val userRepo: UserRepository,
+    private val resStr: ResStrProvider,
 ) : ViewModel() {
 
     private val _mainState = MutableStateFlow(MainState())
@@ -55,9 +59,13 @@ class MainViewModel @Inject constructor(
     }
 
     fun logout() = viewModelScope.launch {
-        AccountProvider.setLogout()
         val id = mainState.value.me!!.id
-        userRepo.logout(id)
+        val res = userRepo.logout(id)
+        if (res) {
+            AccountProvider.setLogout()
+        } else {
+            showToast(resStr.getString(R.string.logout_failed))
+        }
     }
 
     fun search() {

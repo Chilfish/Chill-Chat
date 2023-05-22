@@ -71,6 +71,10 @@
 
     <string name="login_failed">Login Failed</string>
     <string name="register_failed">Register Failed</string>
+    <string name="logout_failed">Logout Failed</string>
+
+    <string name="update_success">Update Success</string>
+    <string name="update_failed">Update Failed</string>
 
     <string name="check_input">Please check your input</string>
 </resources>

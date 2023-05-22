@@ -3,6 +3,7 @@ package top.chilfish.chillchat.data.repository
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.Query
 import top.chilfish.chillchat.data.contacts.Profile
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -46,7 +47,7 @@ interface ApiUser {
     suspend fun register(@Body req: LoginRequest): Profile?
 
     @GET("logout")
-    suspend fun logout(id: Long): Boolean
+    suspend fun logout(@Query("uid") id: Long): Boolean
 }
 
 data class LoginRequest(

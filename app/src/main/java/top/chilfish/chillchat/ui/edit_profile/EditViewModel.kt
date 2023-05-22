@@ -9,15 +9,18 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import top.chilfish.chillchat.R
 import top.chilfish.chillchat.data.contacts.Profile
 import top.chilfish.chillchat.data.repository.ContactsRepository
 import top.chilfish.chillchat.navigation.EditType
+import top.chilfish.chillchat.provider.ResStrProvider
 import top.chilfish.chillchat.utils.showToast
 import javax.inject.Inject
 
 @HiltViewModel
 class EditViewModel @Inject constructor(
     private val contactsRepo: ContactsRepository,
+    private val resStr: ResStrProvider,
 ) : ViewModel() {
     private var _editState = MutableStateFlow(EditState())
     val editState: StateFlow<EditState> = _editState
@@ -49,12 +52,12 @@ class EditViewModel @Inject constructor(
         val res = contactsRepo.update(profile)
         Log.d("Chat", "update: $res")
 
-        if (res > 0) {
-            showToast("Update success")
+        if (res) {
+            showToast(resStr.getString(R.string.update_success))
             _editState.update { it.copy(me = profile) }
             navController.popBackStack()
         } else {
-            showToast("Update failed")
+            showToast(resStr.getString(R.string.update_failed))
         }
     }
 

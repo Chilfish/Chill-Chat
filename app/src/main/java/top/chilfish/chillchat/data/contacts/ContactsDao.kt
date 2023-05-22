@@ -3,6 +3,7 @@ package top.chilfish.chillchat.data.contacts
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
+import androidx.room.Transaction
 import androidx.room.Update
 import kotlinx.coroutines.flow.Flow
 import top.chilfish.chillchat.provider.curUid
@@ -32,4 +33,16 @@ interface ContactsDao {
 
     @Update
     suspend fun update(profile: Profile): Int
+
+    @Transaction
+    suspend fun insertOrUpdate(contacts: List<Profile>) {
+        contacts.forEach {
+            val contact = getById(it.id)
+            if (contact == null) {
+                insert(it)
+            } else {
+                update(it)
+            }
+        }
+    }
 }
