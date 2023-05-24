@@ -65,7 +65,7 @@ private fun SearchRes(
             modifier = Modifier
                 .align(Alignment.CenterHorizontally),
             query = text,
-            onQueryChange = { if (it.isDigitsOnly()) text = it },
+            onQueryChange = { text = it },
             onSearch = {
                 active = false
                 if (text.isDigitsOnly() && text != "")

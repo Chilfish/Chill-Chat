@@ -7,28 +7,28 @@ import javax.inject.Singleton
 @Singleton
 class UserRepository @Inject constructor(
 
-) : BaseApiClient() {
+) {
     suspend fun login(username: String, password: String): Profile? {
         var res: Profile? = null
-        withApiService { apiService ->
-            res = apiService.login(LoginRequest(username, password))
-        }
+//        withApiService { apiService ->
+//            res = apiService.login(LoginRequest(username, password))
+//        }
         return res
     }
 
     suspend fun register(username: String, password: String): Profile? {
         var res: Profile? = null
-        withApiService { apiService ->
-            res = apiService.register(LoginRequest(username, password))
-        }
+
+//            res = apiService.register(LoginRequest(username, password))
+
         return res
     }
 
     suspend fun logout(id: String): Boolean {
         var res = false
-        withApiService { apiService ->
-            res = apiService.logout(id)
-        }
+//        withApiService { apiService ->
+//            res = apiService.logout(id)
+//        }
         return res
     }
 }

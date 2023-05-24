@@ -11,7 +11,7 @@ import javax.inject.Singleton
 @Singleton
 class ChatsListRepository @Inject constructor(
     private val dao: ChatsListDao
-) : BaseApiClient() {
+) {
 
     fun getAll() = dao.getAll()
 
@@ -25,11 +25,11 @@ class ChatsListRepository @Inject constructor(
         dao.updateById(chatterId, message, time)
 
     suspend fun loadAll() {
-        withApiService { apiService ->
-            val res = apiService.loadChats(curUid)
-            Log.d("Chat", "repo: all chats: ${res}")
-            dao.deleteAll()
-            res.forEach { dao.insert(it) }
-        }
+//        withApiService { apiService ->
+//            val res = apiService.loadChats(curUid)
+//            Log.d("Chat", "repo: all chats: ${res}")
+//            dao.deleteAll()
+//            res.forEach { dao.insert(it) }
+//        }
     }
 }

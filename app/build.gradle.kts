@@ -1,6 +1,7 @@
 plugins {
     id("com.android.application")
     id("dagger.hilt.android.plugin")
+    id("kotlinx-serialization")
     kotlin("android")
     kotlin("kapt")
 }
@@ -58,6 +59,7 @@ dependencies {
     implementation(libs.kotlin.stdlib)
     implementation(libs.coroutines)
     implementation(libs.coroutines.core)
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
 
     // Compose
     implementation(libs.compose)
@@ -107,9 +109,8 @@ dependencies {
     kapt(libs.hilt.android.compiler)
     implementation(libs.androidx.hilt.navigation.compose)
 
-    //  retrofit2
-    implementation(libs.retrofit2)
-    implementation(libs.retrofit2.converter.gson)
+    implementation("com.squareup.okhttp3:okhttp:4.10.0")
+    implementation("com.github.liangjingkanji:Net:3.5.8")
 
     // Test
     testImplementation(libs.junit)

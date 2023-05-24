@@ -2,11 +2,13 @@ package top.chilfish.chillchat.data.contacts
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import kotlinx.serialization.Serializable
 import top.chilfish.chillchat.provider.BaseHost
 
 const val User_Table = "users"
 val Host = BaseHost.value
 
+@Serializable
 @Entity(tableName = User_Table)
 data class Profile(
     @PrimaryKey

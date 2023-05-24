@@ -37,6 +37,10 @@ fun DebugPage(
     ) {
         Column(Modifier.padding(16.dp)) {
             BaseURL(viewModel)
+
+            Button(onClick = { viewModel.find() }) {
+                Text("Find")
+            }
         }
     }
 }

@@ -1,17 +1,24 @@
 package top.chilfish.chillchat.data.repository
 
 import android.util.Log
-import kotlinx.coroutines.flow.Flow
+import com.drake.net.Get
+import com.drake.net.Put
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.withContext
 import top.chilfish.chillchat.data.contacts.ContactsDao
 import top.chilfish.chillchat.data.contacts.Profile
-import top.chilfish.chillchat.provider.curUid
+import top.chilfish.chillchat.data.module.IODispatcher
+import top.chilfish.chillchat.utils.toJson
 import javax.inject.Inject
 import javax.inject.Singleton
 
+
 @Singleton
 class ContactsRepository @Inject constructor(
-    private val dao: ContactsDao
-) : BaseApiClient() {
+    private val dao: ContactsDao,
+    @IODispatcher
+    private val ioDispatchers: CoroutineDispatcher
+) {
 
     fun allUsers() = dao.getAll()
 
@@ -25,34 +32,47 @@ class ContactsRepository @Inject constructor(
 
     suspend fun getByName(name: String) = dao.getByName(name)
 
-    suspend fun findUser(userId: String): Profile? {
-        var res: Profile? = null
-        withApiService { apiService ->
-            res = apiService.getUser(userId)
+    suspend fun findUser(cid: String): Profile? {
+        return try {
+            var res: Profile?
+            withContext(ioDispatchers) {
+                res = Get<Profile>("/users/$cid").await()
+            }
+            res
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
         }
-        return res
     }
 
     suspend fun update(profile: Profile): Boolean {
-        var res = false
-        withApiService { apiService ->
-            res = apiService.updateUser(profile.id, profile)
+        return try {
+            withContext(ioDispatchers) {
+                val res = Put<String>("/users/up/${profile.id}") {
+                    json(toJson(profile))
+                }.await()
+            }
+            dao.update(profile)
+            true
+        } catch (e: Exception) {
+            e.printStackTrace()
+            false
         }
-        if (res) dao.update(profile)
-        return res
     }
 
-    suspend fun loadAll(): Flow<MutableList<Profile>> {
-        withApiService { apiContact ->
-            val res = apiContact.loadContact(curUid)
-            Log.d("Chat", "repo: all contacts: ${res.size}")
-            dao.deleteAll()
-            res.forEach { dao.insert(it) }
-
-            val user = apiContact.getUser(curUid)
-            dao.insert(user!!)
+    suspend fun loadAll() {
+        try {
+            withContext(ioDispatchers) {
+                val res = Get<String>("/users/chatters/646ccece9c566de7a7a9b0e5").await()
+                Log.d("Chat", "allChat: $res")
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
-        return dao.getAll()
-    }
 
+
+//            dao.deleteAll()
+//            res.forEach { dao.insert(it) }
+//            dao.insert(user!!)
+    }
 }

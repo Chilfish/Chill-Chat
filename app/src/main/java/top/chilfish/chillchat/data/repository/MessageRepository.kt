@@ -10,7 +10,7 @@ import javax.inject.Singleton
 @Singleton
 class MessageRepository @Inject constructor(
     private val dao: MessageDao
-) : BaseApiClient() {
+)  {
 
     fun getAll(chatterId: String) = dao.getAll(curUid, chatterId)
 
@@ -23,11 +23,11 @@ class MessageRepository @Inject constructor(
     suspend fun deleteAll() = dao.deleteAll()
 
     suspend fun loadAll() {
-        withApiService { apiMessage ->
-            val res = apiMessage.loadMessage(curUid)
-            Log.d("Chat", "repo: all mes: ${res.size}")
-            dao.deleteAll()
-            res.forEach { dao.insert(it) }
-        }
+//        withApiService { apiMessage ->
+//            val res = apiMessage.loadMessage(curUid)
+//            Log.d("Chat", "repo: all mes: ${res.size}")
+//            dao.deleteAll()
+//            res.forEach { dao.insert(it) }
+//        }
     }
 }

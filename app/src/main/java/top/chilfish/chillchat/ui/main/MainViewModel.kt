@@ -40,11 +40,11 @@ class MainViewModel @Inject constructor(
     }
 
     private fun load() = viewModelScope.launch {
-        launch { mesRepo.loadAll() }
-        launch { contactsRepo.loadAll() }
-        launch { chatsRepo.loadAll() }
-        launch { loadChats() }
-        launch { loadMe() }
+//        launch { mesRepo.loadAll() }
+//        launch { contactsRepo.loadAll() }
+//        launch { chatsRepo.loadAll() }
+//        launch { loadChats() }
+//        launch { loadMe() }
     }
 
     private suspend fun loadChats() {
