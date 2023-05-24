@@ -13,7 +13,7 @@ interface MessageDao {
                 "OR (receiverId == :uid AND senderId == :chatterId) " +
                 "ORDER BY time"
     )
-    fun getAll(uid: Long, chatterId: Long): Flow<MutableList<Message>>
+    fun getAll(uid: String, chatterId: String): Flow<MutableList<Message>>
 
     @Insert
     suspend fun insert(message: Message)
@@ -22,8 +22,8 @@ interface MessageDao {
     suspend fun deleteAll()
 
     @Query("DELETE FROM $Message_Table WHERE id = :id")
-    suspend fun deleteById(id: Long)
+    suspend fun deleteById(id: String)
 
     @Query("DELETE FROM $Message_Table WHERE senderId = :chatterId OR receiverId = :chatterId")
-    suspend fun deleteByChatterId(chatterId: Long)
+    suspend fun deleteByChatterId(chatterId: String)
 }

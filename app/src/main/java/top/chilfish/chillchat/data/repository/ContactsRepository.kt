@@ -17,15 +17,15 @@ class ContactsRepository @Inject constructor(
 
     suspend fun insert(profile: Profile) = dao.insert(profile)
 
-    suspend fun delete(id: Long) = dao.deleteById(id)
+    suspend fun delete(id: String) = dao.deleteById(id)
 
-    suspend fun getById(id: Long) = dao.getById(id)
+    suspend fun getById(id: String) = dao.getById(id)
 
     fun getUser() = dao.getUser()
 
     suspend fun getByName(name: String) = dao.getByName(name)
 
-    suspend fun findUser(userId: Long): Profile? {
+    suspend fun findUser(userId: String): Profile? {
         var res: Profile? = null
         withApiService { apiService ->
             res = apiService.getUser(userId)

@@ -39,7 +39,7 @@ class ContactsViewModel @Inject constructor(
         }
     }
 
-    fun search(id: Long) = viewModelScope.launch {
+    fun search(id: String) = viewModelScope.launch {
         val res = contactsRepo.findUser(id) ?: return@launch
         Log.d("Chat", "Search: $res")
 
@@ -61,7 +61,7 @@ class ContactsViewModel @Inject constructor(
         contactsRepo.insert(profile)
     }
 
-    fun loadProfile(id: Long) = viewModelScope.launch {
+    fun loadProfile(id: String) = viewModelScope.launch {
         val profile = contactsRepo.getById(id) ?: return@launch
         _contactState.update {
             it.copy(curProfile = profile)

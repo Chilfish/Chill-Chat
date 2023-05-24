@@ -11,6 +11,7 @@ import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.PUT
 import retrofit2.http.Path
 import retrofit2.http.Query
 import top.chilfish.chillchat.data.chatslist.Chats
@@ -54,33 +55,36 @@ abstract class BaseApiClient {
 
 interface ApiServer {
     // Contact
-    @GET("users/{uid}")
-    suspend fun getUser(@Path("uid") userId: Long): Profile?
+    @GET("users/{id}")
+    suspend fun getUser(@Path("id") userId: String): Profile?
 
-    @POST("users/update/{uid}")
-    suspend fun updateUser(@Path("uid") userId: Long, @Body profile: Profile): Boolean
+    @PUT("users/{id}")
+    suspend fun updateUser(@Path("id") userId: String, @Body profile: Profile): Boolean
 
-    @DELETE("del/contact")
-    suspend fun delContact(@Query("uid") userId: Long, @Query("chatterId") chatterId: Long): Boolean
+    @DELETE("users/{id}/{chatterId}")
+    suspend fun delContact(
+        @Path("id") userId: String,
+        @Path("chatterId") chatterId: String
+    ): Boolean
 
-    @GET("list/contact/{uid}")
-    suspend fun loadContact(@Path("uid") uid: Long): List<Profile>
+    @GET("users/chatters/{id}")
+    suspend fun loadContact(@Path("id") id: String): List<Profile>
 
     // Chats
-    @GET("list/chats/{uid}")
-    suspend fun loadChats(@Path("uid") uid: Long): List<Chats>
+    @GET("list/chats/{id}")
+    suspend fun loadChats(@Path("id") id: String): List<Chats>
 
     // Messages
-    @GET("list/message/{uid}")
-    suspend fun loadMessage(@Path("uid") uid: Long): List<Message>
+    @GET("list/message/{id}")
+    suspend fun loadMessage(@Path("id") id: String): List<Message>
 
     // Login
-    @POST("login")
+    @POST("auth/login")
     suspend fun login(@Body req: LoginRequest): Profile?
 
-    @POST("register")
+    @POST("auth/register")
     suspend fun register(@Body req: LoginRequest): Profile?
 
-    @GET("logout")
-    suspend fun logout(@Query("uid") id: Long): Boolean
+    @GET("auth/logout")
+    suspend fun logout(@Query("id") id: String): Boolean
 }

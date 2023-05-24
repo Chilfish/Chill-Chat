@@ -9,9 +9,9 @@ const val Chat_Table = "chats"
 
 @Entity(tableName = Chat_Table)
 data class Chats(
-    @PrimaryKey(autoGenerate = true)
-    val id: Long = 0L,
-    val chatterId: Long = 0L,
+    @PrimaryKey
+    val id: String = "",
+    val chatterId: String = "",
     val lastMessage: String = "",
     val lastTime: Long = 0,
 ) {

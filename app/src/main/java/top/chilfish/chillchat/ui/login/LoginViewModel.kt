@@ -26,7 +26,7 @@ class LoginViewModel @Inject constructor(
         if (!checkSubmit()) return@launch
 
         // Debug
-        success(3L);return@launch
+        success("646ccece9c566de7a7a9b0e5");return@launch
 
         val (username, password) = loginState.value
         val res = userRepo.login(username, password)
@@ -49,7 +49,7 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-    private fun success(uid: Long) = viewModelScope.launch {
+    private fun success(uid: String) = viewModelScope.launch {
         AccountProvider.setLogin(uid)
         _loginState.update {
             it.copy(isLoginSuccess = true)

@@ -67,7 +67,7 @@ fun Hero(
                 Modifier.clickToEdit(navController, isMe, EditType.Name)
             ) {
                 Text(
-                    text = profile.name,
+                    text = profile.nickname,
                     fontSize = 20.sp,
                     modifier = Modifier.padding(bottom = 12.dp),
                 )
@@ -81,7 +81,7 @@ fun Hero(
                         tint = MaterialTheme.colorScheme.surfaceTint,
                     )
             }
-            Text(text = stringResource(R.string.uid, profile.id.toString()))
+            Text(text = stringResource(R.string.uid, profile.id))
         }
     }
 }

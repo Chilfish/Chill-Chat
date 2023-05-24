@@ -24,7 +24,7 @@ class MessageViewModel @Inject constructor(
     private val _messageState = MutableStateFlow(MessageState())
     val messageState: StateFlow<MessageState> = _messageState
 
-    fun init(chatterId: Long) = viewModelScope.launch {
+    fun init(chatterId: String) = viewModelScope.launch {
         launch {
             messRepo.getAll(chatterId).collect { messages ->
                 _messageState.update {

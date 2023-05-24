@@ -36,7 +36,7 @@ fun MessagePage(
     LaunchedEffect(Unit) {
         navController.currentBackStackEntryFlow.collect {
             it.arguments?.getString(ArgUser)?.let { id ->
-                viewModel.init(id.toLong())
+                viewModel.init(id)
             }
         }
     }

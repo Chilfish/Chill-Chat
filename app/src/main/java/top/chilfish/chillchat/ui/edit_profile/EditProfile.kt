@@ -75,7 +75,7 @@ fun EditProfile(
 
 private val inputText = { type: String, profile: Profile ->
     when (type) {
-        EditType.Name -> profile.name
+        EditType.Name -> profile.nickname
         EditType.Email -> profile.email
         EditType.Bio -> profile.bio
         else -> ""

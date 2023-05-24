@@ -36,7 +36,6 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import coil.compose.AsyncImage
 import top.chilfish.chillchat.R
 import top.chilfish.chillchat.data.contacts.Profile
 import top.chilfish.chillchat.navigation.NavBars
@@ -101,7 +100,7 @@ fun MessageBar(
                             navigateTo(
                                 navCtrl = navHostController,
                                 route = Routers.Profile,
-                                data = profile.id.toString(),
+                                data = profile.id,
                             )
                         }
                     ),
@@ -115,7 +114,7 @@ fun MessageBar(
                 )
                 Text(
                     modifier = Modifier.padding(start = 12.dp),
-                    text = profile.name,
+                    text = profile.nickname,
                     style = MaterialTheme.typography.titleMedium,
                     color = MaterialTheme.colorScheme.onPrimary,
                 )

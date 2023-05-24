@@ -75,7 +75,7 @@ fun ContactItem(
                 .weight(1f)
         ) {
             Text(
-                text = profile.name,
+                text = profile.nickname,
                 modifier = Modifier.padding(bottom = 4.dp),
                 fontSize = 18.sp,
             )

@@ -42,7 +42,7 @@ fun ProfilePage(
     LaunchedEffect(Unit) {
         navController.currentBackStackEntryFlow.collect {
             it.arguments?.getString(ArgUser)?.let { id ->
-                viewModel.loadProfile(id.toLong())
+                viewModel.loadProfile(id)
             }
         }
     }

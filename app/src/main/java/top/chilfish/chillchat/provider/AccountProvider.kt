@@ -20,7 +20,7 @@ private val KEY_UID = stringPreferencesKey("uid")
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = ACCOUNT_SP)
 
 // global user's state
-var curUid: Long = -1
+var curUid: String = ""
 var isLoggedIn = MutableStateFlow(false)
 
 /**
@@ -36,11 +36,11 @@ object AccountProvider {
             val pref = dataStore.data.first()
 
             isLoggedIn.value = pref[KEY_IS_LOGIN] ?: false
-            curUid = pref[KEY_UID]?.toLongOrNull() ?: -1
+            curUid = pref[KEY_UID] ?: ""
         }
     }
 
-    suspend fun setLogin(uid: Long) {
+    suspend fun setLogin(uid: String) {
         curUid = uid
         isLoggedIn.value = true
         dataStore.edit {
@@ -50,7 +50,7 @@ object AccountProvider {
     }
 
     suspend fun setLogout() {
-        curUid = -1
+        curUid = ""
         isLoggedIn.value = false
         dataStore.edit {
             it[KEY_IS_LOGIN] = false

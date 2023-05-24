@@ -44,7 +44,7 @@ fun ChatsListPage(
                     navigateTo(
                         navCtrl = navController,
                         route = Routers.Message,
-                        data = chat.profile.id.toString(),
+                        data = chat.profile.id,
                     )
                 }
             )
@@ -77,7 +77,7 @@ fun ChatsListItem(
                 .weight(1f)
         ) {
             Text(
-                text = profile.name,
+                text = profile.nickname,
                 modifier = Modifier.padding(bottom = 4.dp),
                 fontSize = 18.sp,
             )

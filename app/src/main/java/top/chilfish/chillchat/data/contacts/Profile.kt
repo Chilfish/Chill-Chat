@@ -9,10 +9,12 @@ val Host = BaseHost.value
 
 @Entity(tableName = User_Table)
 data class Profile(
-    @PrimaryKey(autoGenerate = true)
-    val id: Long = 0L,
-    val name: String = "Default Name",
-    val avatar: String = "avatar0.webp",
+    @PrimaryKey
+    val id: String = "",
+    val cid: String = "default_name",
+
+    val nickname: String = "Default Name",
     val email: String = "Default Email@$Host",
     val bio: String = "Default Bio",
+    val avatar: String = "avatar0.webp",
 )

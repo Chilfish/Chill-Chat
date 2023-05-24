@@ -27,7 +27,7 @@ interface ChatsListDao {
     fun getAll(): Flow<MutableList<Chatter>>
 
     @Query("SELECT * FROM $Chat_Table WHERE chatterId = :id")
-    suspend fun getById(id: Long): Chats?
+    suspend fun getById(id: String): Chats?
 
     @Insert
     suspend fun insert(chats: Chats)
@@ -36,13 +36,13 @@ interface ChatsListDao {
     suspend fun deleteAll()
 
     @Query("DELETE FROM $Chat_Table WHERE id = :id")
-    suspend fun deleteById(id: Long)
+    suspend fun deleteById(id: String)
 
     @Update
     suspend fun update(chats: Chats)
 
     @Query("UPDATE $Chat_Table SET lastMessage = :message, lastTime = :time WHERE chatterId = :chatterId")
-    suspend fun updateById(chatterId: Long, message: String, time: Long)
+    suspend fun updateById(chatterId: String, message: String, time: Long)
 
     @Transaction
     suspend fun insertOrUpdate(chatsList: List<Chats>) {

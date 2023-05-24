@@ -24,7 +24,7 @@ class UserRepository @Inject constructor(
         return res
     }
 
-    suspend fun logout(id: Long): Boolean {
+    suspend fun logout(id: String): Boolean {
         var res = false
         withApiService { apiService ->
             res = apiService.logout(id)

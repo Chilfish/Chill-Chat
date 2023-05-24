@@ -10,17 +10,17 @@ import top.chilfish.chillchat.provider.curUid
 
 @Dao
 interface ContactsDao {
-    @Query("SELECT * FROM $User_Table ORDER BY name ASC")
+    @Query("SELECT * FROM $User_Table ORDER BY cid ASC")
     fun getAll(): Flow<MutableList<Profile>>
 
     @Query("SELECT * FROM $User_Table WHERE id = :id")
-    suspend fun getById(id: Long): Profile?
+    suspend fun getById(id: String): Profile?
 
-    @Query("SELECT * FROM $User_Table WHERE name LIKE :name")
+    @Query("SELECT * FROM $User_Table WHERE cid LIKE :name")
     suspend fun getByName(name: String): MutableList<Profile>
 
     @Query("SELECT * FROM $User_Table WHERE id = :id")
-    fun getUser(id: Long = curUid): Flow<Profile>
+    fun getUser(id: String = curUid): Flow<Profile>
 
     @Insert
     suspend fun insert(profile: Profile)
@@ -29,7 +29,7 @@ interface ContactsDao {
     suspend fun deleteAll()
 
     @Query("DELETE FROM $User_Table WHERE id = :id")
-    suspend fun deleteById(id: Long): Int
+    suspend fun deleteById(id: String): Int
 
     @Update
     suspend fun update(profile: Profile): Int

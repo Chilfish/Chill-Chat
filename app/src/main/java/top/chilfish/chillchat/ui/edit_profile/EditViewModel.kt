@@ -44,7 +44,7 @@ class EditViewModel @Inject constructor(
         val type = editState.value.editType
 
         profile = profile.copy(
-            name = if (type == EditType.Name) data else profile.name,
+            nickname = if (type == EditType.Name) data else profile.nickname,
             bio = if (type == EditType.Bio) data else profile.bio,
             email = if (type == EditType.Email) data else profile.email,
         )

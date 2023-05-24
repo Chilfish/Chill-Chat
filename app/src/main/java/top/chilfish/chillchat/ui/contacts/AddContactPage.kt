@@ -69,7 +69,7 @@ private fun SearchRes(
             onSearch = {
                 active = false
                 if (text.isDigitsOnly() && text != "")
-                    viewModel.search(text.toLong())
+                    viewModel.search(text)
             },
             active = active,
             onActiveChange = { active = it },
