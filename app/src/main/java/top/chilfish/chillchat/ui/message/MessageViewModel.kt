@@ -12,7 +12,7 @@ import top.chilfish.chillchat.data.messages.Message
 import top.chilfish.chillchat.data.repository.ChatsListRepository
 import top.chilfish.chillchat.data.repository.ContactsRepository
 import top.chilfish.chillchat.data.repository.MessageRepository
-import top.chilfish.chillchat.provider.curUid
+import top.chilfish.chillchat.provider.curCid
 import javax.inject.Inject
 
 @HiltViewModel
@@ -45,7 +45,7 @@ class MessageViewModel @Inject constructor(
         val chatter = messageState.value.chatter
 
         val mes = Message(
-            senderId = curUid,
+            senderId = curCid,
             receiverId = chatter.id,
             message = message,
             time = System.currentTimeMillis(),

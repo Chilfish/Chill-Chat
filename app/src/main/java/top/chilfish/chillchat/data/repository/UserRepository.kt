@@ -1,18 +1,35 @@
 package top.chilfish.chillchat.data.repository
 
+import android.util.Log
+import com.drake.net.Post
+import com.drake.net.exception.RequestParamsException
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.withContext
 import top.chilfish.chillchat.data.contacts.Profile
+import top.chilfish.chillchat.data.module.IODispatcher
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class UserRepository @Inject constructor(
-
+    @IODispatcher
+    private val ioDispatchers: CoroutineDispatcher
 ) {
     suspend fun login(username: String, password: String): Profile? {
         var res: Profile? = null
-//        withApiService { apiService ->
-//            res = apiService.login(LoginRequest(username, password))
-//        }
+        withContext(ioDispatchers) {
+            try {
+                res = Post<Profile>("/users/login") {
+                    json("""{"username":"$username","password":"$password"}""")
+                }.await()
+            } catch (e: RequestParamsException) {
+                Log.d("Chat", "Login failed: ${e.message}")
+                null
+            } catch (e: Exception) {
+                e.printStackTrace()
+                null
+            }
+        }
         return res
     }
 

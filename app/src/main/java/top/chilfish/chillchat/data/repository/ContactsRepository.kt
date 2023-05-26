@@ -4,11 +4,14 @@ import android.util.Log
 import com.drake.net.Get
 import com.drake.net.Put
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import top.chilfish.chillchat.data.contacts.ContactsDao
 import top.chilfish.chillchat.data.contacts.Profile
 import top.chilfish.chillchat.data.module.IODispatcher
-import top.chilfish.chillchat.utils.toJson
+import top.chilfish.chillchat.provider.curCid
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -28,28 +31,33 @@ class ContactsRepository @Inject constructor(
 
     suspend fun getById(id: String) = dao.getById(id)
 
-    fun getUser() = dao.getUser()
+    suspend fun getUser(): Flow<Profile> {
+        val user = findUser(curCid)
+        if (user != null)
+            dao.update(user)
+        return dao.getUser()
+    }
 
     suspend fun getByName(name: String) = dao.getByName(name)
 
     suspend fun findUser(cid: String): Profile? {
-        return try {
-            var res: Profile?
-            withContext(ioDispatchers) {
+        var res: Profile? = null
+        withContext(ioDispatchers) {
+            try {
                 res = Get<Profile>("/users/$cid").await()
+            } catch (e: Exception) {
+                e.printStackTrace()
+                Log.e("Chat", "net: ${e.message}")
             }
-            res
-        } catch (e: Exception) {
-            e.printStackTrace()
-            null
         }
+        return res
     }
 
     suspend fun update(profile: Profile): Boolean {
         return try {
             withContext(ioDispatchers) {
                 val res = Put<String>("/users/up/${profile.id}") {
-                    json(toJson(profile))
+                    json(Json.encodeToString(profile))
                 }.await()
             }
             dao.update(profile)
@@ -60,10 +68,10 @@ class ContactsRepository @Inject constructor(
         }
     }
 
-    suspend fun loadAll() {
+    suspend fun loadAll(id: String) {
         try {
             withContext(ioDispatchers) {
-                val res = Get<String>("/users/chatters/646ccece9c566de7a7a9b0e5").await()
+                val res = Get<String>("/users/chatters/${id}").await()
                 Log.d("Chat", "allChat: $res")
             }
         } catch (e: Exception) {

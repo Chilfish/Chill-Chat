@@ -2,7 +2,6 @@ package top.chilfish.chillchat.ui.debugger
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
@@ -11,63 +10,86 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import top.chilfish.chillchat.R
-import top.chilfish.chillchat.data.contacts.Host
 import top.chilfish.chillchat.provider.BaseHost
+import top.chilfish.chillchat.provider.curCid
 import top.chilfish.chillchat.ui.components.ChillScaffold
 import top.chilfish.chillchat.ui.components.ChillTopBar
 import top.chilfish.chillchat.ui.components.TextInput
 
-private val ItemPadding = Modifier.padding(bottom = 16.dp)
+private val ItemPadding = Modifier.padding(bottom = 12.dp)
 
 @Composable
 fun DebugPage(
     viewModel: DebugViewModel = hiltViewModel(),
 ) {
+    var host by rememberSaveable { mutableStateOf(BaseHost.value) }
+    LaunchedEffect(Unit) { BaseHost.collect { host = it } }
+
     ChillScaffold(
         topBar = { ChillTopBar(title = "Debugger Page") }
     ) {
         Column(Modifier.padding(16.dp)) {
-            BaseURL(viewModel)
+            Setter(
+                title = "SetHost",
+                btnText = "Save",
+                input = host,
+                onBtnClick = { viewModel.setHost(it) }
+            )
 
-            Button(onClick = { viewModel.find() }) {
-                Text("Find")
+            Setter(
+                title = "Set Cid",
+                btnText = "Save",
+                input = curCid,
+                onBtnClick = { viewModel.setCid(it) }
+            )
+
+            Setter(
+                title = "Find User",
+                btnText = "Find",
+                onBtnClick = { viewModel.find(it) }
+            )
+
+            Row {
+                Button(onClick = { viewModel.loadContacts() }) {
+                    Text("Load Contacts")
+                }
+                Button(onClick = { viewModel.login() }) {
+                    Text("Login")
+                }
             }
+
         }
     }
 }
 
+
 @Composable
-private fun BaseURL(
-    viewModel: DebugViewModel,
+private fun Setter(
+    title: String = "",
+    input: String = "",
+    btnText: String = "",
+    onBtnClick: (String) -> Unit = {},
 ) {
-    var url by rememberSaveable { mutableStateOf("") }
-    var host by remember { mutableStateOf("") }
+    var text by rememberSaveable { mutableStateOf(input) }
 
-    LaunchedEffect(Unit) {
-        BaseHost.collect { host = it }
-    }
-
-    Text("Base Host: $host")
+    Text("$title: $text")
     Row(
         modifier = ItemPadding,
         verticalAlignment = Alignment.CenterVertically,
     ) {
         TextInput(
             modifier = Modifier.width(300.dp),
-            value = url,
-            onValueChange = { url = it }
+            value = text,
+            onValueChange = { text = it }
         )
-        Button(onClick = { viewModel.setHost(url) }) {
-            Text(stringResource(R.string.save))
+        Button(onClick = { onBtnClick(text) }) {
+            Text(btnText)
         }
     }
 }

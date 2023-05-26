@@ -1,5 +1,6 @@
 package top.chilfish.chillchat.ui.login
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -26,12 +27,13 @@ class LoginViewModel @Inject constructor(
         if (!checkSubmit()) return@launch
 
         // Debug
-        success("646ccece9c566de7a7a9b0e5");return@launch
+//        success("chilfish");return@launch
 
         val (username, password) = loginState.value
         val res = userRepo.login(username, password)
+        Log.d("Chat", "login res: $res")
         if (res != null) {
-            success(res.id)
+            success(res.cid)
         } else {
             showToast(resStr.getString(R.string.login_failed))
         }
@@ -43,14 +45,14 @@ class LoginViewModel @Inject constructor(
         val (username, password) = loginState.value
         val res = userRepo.register(username, password)
         if (res != null) {
-            success(res.id)
+            success(res.cid)
         } else {
             showToast(resStr.getString(R.string.register_failed))
         }
     }
 
-    private fun success(uid: String) = viewModelScope.launch {
-        AccountProvider.setLogin(uid)
+    private fun success(cid: String) = viewModelScope.launch {
+        AccountProvider.setLogin(cid)
         _loginState.update {
             it.copy(isLoginSuccess = true)
         }

@@ -17,7 +17,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import top.chilfish.chillchat.data.messages.Message
 import top.chilfish.chillchat.navigation.ArgUser
-import top.chilfish.chillchat.provider.curUid
+import top.chilfish.chillchat.provider.curCid
 import top.chilfish.chillchat.ui.components.ChillScaffold
 import top.chilfish.chillchat.ui.components.MessageBar
 
@@ -92,7 +92,7 @@ fun MessageMain(
                 MessageItem(
                     message = message.message,
                     time = message.timeStr,
-                    isMe = message.senderId == curUid,
+                    isMe = message.senderId == curCid,
                     isShowTime = (index == 0 || message.time - messages[index - 1].time > TimeGap)
                 )
             }

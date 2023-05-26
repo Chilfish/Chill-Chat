@@ -59,7 +59,7 @@ dependencies {
     implementation(libs.kotlin.stdlib)
     implementation(libs.coroutines)
     implementation(libs.coroutines.core)
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
+    implementation(libs.serialization)
 
     // Compose
     implementation(libs.compose)

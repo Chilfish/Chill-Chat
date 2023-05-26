@@ -1,9 +1,8 @@
 package top.chilfish.chillchat.data.repository
 
-import android.util.Log
 import top.chilfish.chillchat.data.messages.Message
 import top.chilfish.chillchat.data.messages.MessageDao
-import top.chilfish.chillchat.provider.curUid
+import top.chilfish.chillchat.provider.curCid
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -12,7 +11,7 @@ class MessageRepository @Inject constructor(
     private val dao: MessageDao
 )  {
 
-    fun getAll(chatterId: String) = dao.getAll(curUid, chatterId)
+    fun getAll(chatterId: String) = dao.getAll(curCid, chatterId)
 
     suspend fun insert(message: Message) = dao.insert(message)
 

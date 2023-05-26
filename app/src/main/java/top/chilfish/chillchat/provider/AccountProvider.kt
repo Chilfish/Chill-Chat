@@ -16,11 +16,11 @@ import kotlinx.coroutines.launch
 
 private const val ACCOUNT_SP = "Account"
 private val KEY_IS_LOGIN = booleanPreferencesKey("isLogin")
-private val KEY_UID = stringPreferencesKey("uid")
+private val KEY_CID = stringPreferencesKey("cid")
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = ACCOUNT_SP)
 
 // global user's state
-var curUid: String = ""
+var curCid: String = ""
 var isLoggedIn = MutableStateFlow(false)
 
 /**
@@ -36,25 +36,25 @@ object AccountProvider {
             val pref = dataStore.data.first()
 
             isLoggedIn.value = pref[KEY_IS_LOGIN] ?: false
-            curUid = pref[KEY_UID] ?: ""
+            curCid = pref[KEY_CID] ?: ""
         }
     }
 
-    suspend fun setLogin(uid: String) {
-        curUid = uid
+    suspend fun setLogin(cid: String) {
+        curCid = cid
         isLoggedIn.value = true
         dataStore.edit {
             it[KEY_IS_LOGIN] = true
-            it[KEY_UID] = uid.toString()
+            it[KEY_CID] = cid
         }
     }
 
     suspend fun setLogout() {
-        curUid = ""
+        curCid = ""
         isLoggedIn.value = false
         dataStore.edit {
             it[KEY_IS_LOGIN] = false
-            it[KEY_UID] = ""
+            it[KEY_CID] = ""
         }
     }
 }

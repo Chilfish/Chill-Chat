@@ -1,5 +1,6 @@
 package top.chilfish.chillchat.utils
 
+import android.util.Log
 import com.drake.net.NetConfig
 import com.drake.net.convert.NetConverter
 import com.drake.net.exception.ConvertException
@@ -36,6 +37,7 @@ class SerializationConverter(
             return NetConverter.onConvert<R>(succeed, response)
         } catch (e: ConvertException) {
             val code = response.code
+            Log.d("Chat", "Convert: $response")
             when {
                 code in 200..299 -> { // 请求成功
                     val bodyString = response.body?.string() ?: return null

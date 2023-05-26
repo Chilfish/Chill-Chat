@@ -6,7 +6,7 @@ import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Update
 import kotlinx.coroutines.flow.Flow
-import top.chilfish.chillchat.provider.curUid
+import top.chilfish.chillchat.provider.curCid
 
 @Dao
 interface ContactsDao {
@@ -20,7 +20,7 @@ interface ContactsDao {
     suspend fun getByName(name: String): MutableList<Profile>
 
     @Query("SELECT * FROM $User_Table WHERE id = :id")
-    fun getUser(id: String = curUid): Flow<Profile>
+    fun getUser(id: String = curCid): Flow<Profile>
 
     @Insert
     suspend fun insert(profile: Profile)

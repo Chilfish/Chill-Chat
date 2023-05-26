@@ -4,25 +4,37 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import top.chilfish.chillchat.data.repository.ContactsRepository
+import top.chilfish.chillchat.data.repository.UserRepository
+import top.chilfish.chillchat.provider.AccountProvider
 import top.chilfish.chillchat.provider.SettingsProvider
 import javax.inject.Inject
 
 @HiltViewModel
 class DebugViewModel @Inject constructor(
     private val contactsRepo: ContactsRepository,
+    private val userRepo: UserRepository,
 ) : ViewModel() {
     fun setHost(host: String) = viewModelScope.launch {
         SettingsProvider.setHost(host)
     }
 
-    fun find() = viewModelScope.launch {
-        val id = "chilfish"
-        val res = contactsRepo.findUser(id)
+    fun find(cid: String) = viewModelScope.launch {
+        val res = contactsRepo.findUser(cid)
         Log.d("Chat", "debug: User: $res")
-//        contactsRepo.update(res!!)
-        contactsRepo.loadAll()
+    }
+
+    fun setCid(cid: String) = viewModelScope.launch {
+        AccountProvider.setLogin(cid)
+    }
+
+    fun loadContacts() = viewModelScope.launch {
+//        contactsRepo.loadAll()
+    }
+
+    fun login() = viewModelScope.launch {
+        val res = userRepo.login("chilfish", "123456781")
+        Log.d("Chat", "login:$res")
     }
 }

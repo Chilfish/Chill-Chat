@@ -44,7 +44,7 @@ class MainViewModel @Inject constructor(
 //        launch { contactsRepo.loadAll() }
 //        launch { chatsRepo.loadAll() }
 //        launch { loadChats() }
-//        launch { loadMe() }
+        launch { loadMe() }
     }
 
     private suspend fun loadChats() {
@@ -68,8 +68,9 @@ class MainViewModel @Inject constructor(
     }
 
     fun logout() = viewModelScope.launch {
-        val id = mainState.value.me!!.id
-        val res = userRepo.logout(id)
+//        val id = mainState.value.me!!.id
+        val res = true
+//            userRepo.logout(id)
         if (res) {
             AccountProvider.setLogout()
         } else {

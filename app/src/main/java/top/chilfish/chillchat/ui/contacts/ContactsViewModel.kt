@@ -12,7 +12,7 @@ import top.chilfish.chillchat.R
 import top.chilfish.chillchat.data.contacts.Profile
 import top.chilfish.chillchat.data.repository.ContactsRepository
 import top.chilfish.chillchat.provider.ResStrProvider
-import top.chilfish.chillchat.provider.curUid
+import top.chilfish.chillchat.provider.curCid
 import top.chilfish.chillchat.utils.showToast
 import javax.inject.Inject
 
@@ -32,7 +32,7 @@ class ContactsViewModel @Inject constructor(
         contactsRepo.allUsers().collect { users ->
             _contactState.update {
                 it.copy(contacts = users
-                    .filter { user -> user.id != curUid }
+                    .filter { user -> user.id != curCid }
                     .toMutableList()
                 )
             }
