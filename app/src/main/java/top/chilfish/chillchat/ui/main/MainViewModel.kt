@@ -68,17 +68,7 @@ class MainViewModel @Inject constructor(
     }
 
     fun logout() = viewModelScope.launch {
-//        val id = mainState.value.me!!.id
-        val res = true
-//            userRepo.logout(id)
-        if (res) {
-            AccountProvider.setLogout()
-        } else {
-            showToast(resStr.getString(R.string.logout_failed))
-        }
-    }
-
-    fun search() {
+        AccountProvider.setLogout()
     }
 }
 

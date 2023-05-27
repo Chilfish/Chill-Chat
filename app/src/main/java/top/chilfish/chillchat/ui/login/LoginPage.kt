@@ -146,6 +146,6 @@ private fun Btn(
         onClick = onClick,
         colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.primary)
     ) {
-        Text(text = text, color = Color.White)
+        Text(text = text, color = MaterialTheme.colorScheme.onPrimary)
     }
 }

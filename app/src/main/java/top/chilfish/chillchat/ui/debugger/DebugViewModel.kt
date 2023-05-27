@@ -34,7 +34,7 @@ class DebugViewModel @Inject constructor(
     }
 
     fun login() = viewModelScope.launch {
-        val res = userRepo.login("chilfish", "123456781")
+        val res = userRepo.auth("chilfish", "12345678")
         Log.d("Chat", "login:$res")
     }
 }

@@ -26,16 +26,10 @@ class LoginViewModel @Inject constructor(
     fun goToLogin() = viewModelScope.launch {
         if (!checkSubmit()) return@launch
 
-        // Debug
-//        success("chilfish");return@launch
-
         val (username, password) = loginState.value
-        val res = userRepo.login(username, password)
-        Log.d("Chat", "login res: $res")
+        val res = userRepo.auth(username, password)
         if (res != null) {
             success(res.cid)
-        } else {
-            showToast(resStr.getString(R.string.login_failed))
         }
     }
 
@@ -43,11 +37,9 @@ class LoginViewModel @Inject constructor(
         if (!checkSubmit()) return@launch
 
         val (username, password) = loginState.value
-        val res = userRepo.register(username, password)
+        val res = userRepo.auth(username, password, false)
         if (res != null) {
             success(res.cid)
-        } else {
-            showToast(resStr.getString(R.string.register_failed))
         }
     }
 

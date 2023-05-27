@@ -62,10 +62,10 @@ fun HomeBar(
                 onClick = { navHostController.navigate(Routers.Debug) },
                 imageVector = Icons.Default.Build
             )
-            IconBtn(
-                onClick = { viewModel.search() },
-                imageVector = Icons.Rounded.Search
-            )
+//            IconBtn(
+//                onClick = { viewModel.search() },
+//                imageVector = Icons.Rounded.Search
+//            )
             IconBtn(
                 onClick = {
                     navHostController.navigate(Routers.AddContact) {

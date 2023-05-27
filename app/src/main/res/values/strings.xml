@@ -11,7 +11,7 @@
     <string name="logout">Log Out</string>
     <string name="send_message">Send Message</string>
 
-    <string name="username_hint">your username or email</string>
+    <string name="username_hint">your cid (username)</string>
     <string name="password_hint">your password</string>
     <string name="username_required">Username is required</string>
     <string name="password_required">Password is required</string>
@@ -77,4 +77,10 @@
     <string name="update_failed">Update Failed</string>
 
     <string name="check_input">Please check your input</string>
+
+    <string name="exist_username">Username is existed</string>
+    <string name="user_not_found">User not found</string>
+    <string name="error_auth">Username or Password is incorrect</string>
+
+    <string name="error_server">Server error</string>
 </resources>

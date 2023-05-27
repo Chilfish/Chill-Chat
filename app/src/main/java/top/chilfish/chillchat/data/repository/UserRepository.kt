@@ -1,56 +1,47 @@
 package top.chilfish.chillchat.data.repository
 
-import android.util.Log
 import com.drake.net.Post
 import com.drake.net.exception.RequestParamsException
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.withContext
+import okhttp3.Response
+import top.chilfish.chillchat.R
 import top.chilfish.chillchat.data.contacts.Profile
-import top.chilfish.chillchat.data.module.IODispatcher
+import top.chilfish.chillchat.provider.ResStrProvider
+import top.chilfish.chillchat.utils.showToast
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class UserRepository @Inject constructor(
-    @IODispatcher
-    private val ioDispatchers: CoroutineDispatcher
-) {
-    suspend fun login(username: String, password: String): Profile? {
-        var res: Profile? = null
-        withContext(ioDispatchers) {
-            try {
-                res = Post<Profile>("/users/login") {
+    private val resStr: ResStrProvider,
+) : BaseApiRequest() {
+    suspend fun auth(username: String, password: String, isLogin: Boolean = true): Profile? {
+        val path = if (isLogin) "login" else "register"
+        val res = try {
+            request {
+                Post<Profile>("/users/${path}") {
                     json("""{"username":"$username","password":"$password"}""")
-                }.await()
-            } catch (e: RequestParamsException) {
-                Log.d("Chat", "Login failed: ${e.message}")
-                null
-            } catch (e: Exception) {
-                e.printStackTrace()
-                null
+                }
             }
+        } catch (e: RequestParamsException) {
+            exception(e.response)
+            null
         }
         return res
     }
 
-    suspend fun register(username: String, password: String): Profile? {
-        var res: Profile? = null
+    private fun exception(e: Response) {
+        when (e.code) {
+            409 -> {
+                showToast(resStr.getString(R.string.exist_username))
+            }
 
-//            res = apiService.register(LoginRequest(username, password))
+            404 -> {
+                showToast(resStr.getString(R.string.error_auth))
+            }
 
-        return res
-    }
-
-    suspend fun logout(id: String): Boolean {
-        var res = false
-//        withApiService { apiService ->
-//            res = apiService.logout(id)
-//        }
-        return res
+            in 500..600 -> {
+                showToast(resStr.getString(R.string.error_server))
+            }
+        }
     }
 }
-
-data class LoginRequest(
-    val username: String,
-    val password: String
-)
