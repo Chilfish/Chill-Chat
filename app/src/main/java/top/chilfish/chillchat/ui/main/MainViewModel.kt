@@ -27,7 +27,6 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
     private val contactsRepo: ContactsRepository,
     private val chatsRepo: ChatsListRepository,
-    private val userRepo: UserRepository,
     private val mesRepo: MessageRepository,
     private val resStr: ResStrProvider,
     @IODispatcher

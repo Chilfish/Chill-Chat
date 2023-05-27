@@ -1,11 +1,14 @@
 package top.chilfish.chillchat.data.repository
 
 import com.drake.net.Post
+import com.drake.net.Put
 import com.drake.net.exception.RequestParamsException
 import okhttp3.Response
 import top.chilfish.chillchat.R
+import top.chilfish.chillchat.data.contacts.ContactsDao
 import top.chilfish.chillchat.data.contacts.Profile
 import top.chilfish.chillchat.provider.ResStrProvider
+import top.chilfish.chillchat.provider.curId
 import top.chilfish.chillchat.utils.showToast
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -13,6 +16,7 @@ import javax.inject.Singleton
 @Singleton
 class UserRepository @Inject constructor(
     private val resStr: ResStrProvider,
+    private val dao: ContactsDao,
 ) : BaseApiRequest(resStr) {
     suspend fun auth(username: String, password: String, isLogin: Boolean = true): Profile? {
         val path = if (isLogin) "login" else "register"
@@ -26,6 +30,22 @@ class UserRepository @Inject constructor(
             exception(e.response)
             null
         }
+        return res
+    }
+
+    suspend fun updatePassword(old: String, new: String): Boolean {
+        val res = try {
+            request {
+                Put<Boolean>("/users/up/password/${curId}") {
+                    json("""{"old":"$old", "new":"$new"}""")
+                }
+            }
+        } catch (e: RequestParamsException) {
+            if (e.response.code == 400) {
+                showToast(resStr.getString(R.string.error_password_same))
+            }
+            null
+        } ?: false
         return res
     }
 

@@ -57,14 +57,18 @@ class ContactsRepository @Inject constructor(
     }
 
     suspend fun update(profile: Profile): Boolean {
-        val res =
+        val res = try {
             request {
-                Put<Boolean>("/users/up/${profile.id}") {
+                Put<Boolean>("/users/up") {
                     json(Json.encodeToString(profile))
                 }
             }
-        dao.update(profile)
-        return res ?: false
+        } catch (e: RequestParamsException) {
+            showToast(resStr.getString(R.string.update_failed))
+            null
+        } ?: false
+        if (res) dao.update(profile)
+        return res
     }
 
     suspend fun loadAll(id: String?) {

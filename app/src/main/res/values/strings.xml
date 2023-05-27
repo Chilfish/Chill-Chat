@@ -80,8 +80,9 @@
 
     <string name="exist_username">Username is existed</string>
     <string name="user_not_found">User not found</string>
-    <string name="error_auth">Username or Password is incorrect</string>
 
+    <string name="error_auth">Username or Password is incorrect</string>
     <string name="error_server">Server error</string>
     <string name="error_network">Network error</string>
+    <string name="error_password_same">Old password is incorrect</string>
 </resources>
