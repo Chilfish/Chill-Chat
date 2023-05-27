@@ -47,7 +47,7 @@ class LoginViewModel @Inject constructor(
     }
 
     private fun success(me: Profile) = viewModelScope.launch {
-        AccountProvider.setLogin(me.cid)
+        AccountProvider.setLogin(me.id, me.cid)
         contactsRepo.setUser(me)
         _loginState.update {
             it.copy(isLoginSuccess = true)

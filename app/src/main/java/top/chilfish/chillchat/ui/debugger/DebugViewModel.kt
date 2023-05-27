@@ -27,7 +27,8 @@ class DebugViewModel @Inject constructor(
     }
 
     fun setCid(cid: String) = viewModelScope.launch {
-        AccountProvider.setLogin(cid)
+        val res = contactsRepo.findUser(cid) ?: return@launch
+        AccountProvider.setLogin(res.id, cid)
     }
 
     fun loadContacts() = viewModelScope.launch {

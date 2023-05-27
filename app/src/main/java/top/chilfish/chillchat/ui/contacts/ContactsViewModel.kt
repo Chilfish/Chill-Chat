@@ -13,6 +13,7 @@ import top.chilfish.chillchat.data.contacts.Profile
 import top.chilfish.chillchat.data.repository.ContactsRepository
 import top.chilfish.chillchat.provider.ResStrProvider
 import top.chilfish.chillchat.provider.curCid
+import top.chilfish.chillchat.provider.curId
 import top.chilfish.chillchat.utils.showToast
 import javax.inject.Inject
 
@@ -32,7 +33,7 @@ class ContactsViewModel @Inject constructor(
         contactsRepo.allUsers().collect { users ->
             _contactState.update {
                 it.copy(contacts = users
-                    .filter { user -> user.id != curCid }
+                    .filter { user -> user.id != curId }
                     .toMutableList()
                 )
             }
@@ -50,15 +51,18 @@ class ContactsViewModel @Inject constructor(
         }
     }
 
-    fun addContact(profile: Profile) = viewModelScope.launch {
+    fun addContact(profile: Profile, back: () -> Unit) = viewModelScope.launch {
         if (contactsRepo.getById(profile.id) != null) {
             showToast(resStrProvider.getString(R.string.exist_contact))
             return@launch
         }
-        showToast(resStrProvider.getString(R.string.add_contact_success))
 
-        Log.d("Chat", "add: $profile")
-        contactsRepo.insert(profile)
+        val res = contactsRepo.add2Contact(profile)
+        if (res) {
+            showToast(resStrProvider.getString(R.string.add_contact_success))
+            Log.d("Chat", "add: $profile")
+            back()
+        }
     }
 
     fun loadProfile(id: String) = viewModelScope.launch {
@@ -69,15 +73,16 @@ class ContactsViewModel @Inject constructor(
     }
 
     fun delContact(back: () -> Unit) = viewModelScope.launch {
-        val res = contactsRepo.delete(_contactState.value.curProfile.id)
+        val chatterId = _contactState.value.curProfile.id
+        val res = contactsRepo.delChatter(chatterId)
 
         showToast(
             resStrProvider.getString(
-                if (res > 0) R.string.delete_success
+                if (res) R.string.delete_success
                 else R.string.delete_failed
             )
         )
-        if (res > 0) back()
+        if (res) back()
     }
 }
 

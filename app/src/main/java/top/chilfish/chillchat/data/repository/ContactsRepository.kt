@@ -1,19 +1,21 @@
 package top.chilfish.chillchat.data.repository
 
 import android.util.Log
+import com.drake.net.Delete
 import com.drake.net.Get
 import com.drake.net.Put
+import com.drake.net.exception.RequestParamsException
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.async
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.withContext
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import top.chilfish.chillchat.R
 import top.chilfish.chillchat.data.contacts.ContactsDao
 import top.chilfish.chillchat.data.contacts.Profile
 import top.chilfish.chillchat.data.module.IODispatcher
 import top.chilfish.chillchat.provider.ResStrProvider
 import top.chilfish.chillchat.provider.curCid
+import top.chilfish.chillchat.provider.curId
+import top.chilfish.chillchat.utils.showToast
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -27,10 +29,6 @@ class ContactsRepository @Inject constructor(
 ) : BaseApiRequest(resStr) {
 
     fun allUsers() = dao.getAll()
-
-    suspend fun insert(profile: Profile) = dao.insert(profile)
-
-    suspend fun delete(id: String) = dao.deleteById(id)
 
     suspend fun getById(id: String) = dao.getById(id)
 
@@ -46,34 +44,27 @@ class ContactsRepository @Inject constructor(
 
     fun getUser() = dao.getUser()
 
-    suspend fun getByName(name: String) = dao.getByName(name)
-
     suspend fun findUser(cid: String): Profile? {
-        var res: Profile? = null
-        withContext(ioDispatchers) {
-            try {
-                res = Get<Profile>("/users/$cid").await()
-            } catch (e: Exception) {
-                e.printStackTrace()
-                Log.e("Chat", "net: ${e.message}")
+        val res = try {
+            request {
+                Get<Profile>("/users/$cid")
             }
+        } catch (e: RequestParamsException) {
+            showToast(resStr.getString(R.string.user_not_found))
+            null
         }
         return res
     }
 
     suspend fun update(profile: Profile): Boolean {
-        return try {
-            withContext(ioDispatchers) {
-                val res = Put<String>("/users/up/${profile.id}") {
+        val res =
+            request {
+                Put<Boolean>("/users/up/${profile.id}") {
                     json(Json.encodeToString(profile))
-                }.await()
+                }
             }
-            dao.update(profile)
-            true
-        } catch (e: Exception) {
-            e.printStackTrace()
-            false
-        }
+        dao.update(profile)
+        return res ?: false
     }
 
     suspend fun loadAll(id: String?) {
@@ -84,5 +75,26 @@ class ContactsRepository @Inject constructor(
 
         dao.deleteAll()
         res.forEach { dao.insert(it) }
+    }
+
+    suspend fun add2Contact(chatter: Profile): Boolean {
+        val res = request {
+            Put<Profile>("/users/add/${curId}/${chatter.id}")
+        }
+        if (res != null) {
+            dao.insert(chatter)
+        }
+        return res != null
+    }
+
+    suspend fun delChatter(chatterId: String): Boolean {
+        val res = request {
+            Delete<Profile>("/users/del/${curId}/${chatterId}")
+        }
+        if (res != null) {
+            dao.deleteById(chatterId)
+        }
+        Log.d("Chat", "del: $res")
+        return res != null
     }
 }

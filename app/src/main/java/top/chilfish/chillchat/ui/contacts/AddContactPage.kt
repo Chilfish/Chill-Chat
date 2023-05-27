@@ -25,10 +25,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.core.text.isDigitsOnly
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import top.chilfish.chillchat.R
+import top.chilfish.chillchat.provider.curCid
 import top.chilfish.chillchat.ui.components.ChillScaffold
 import top.chilfish.chillchat.ui.components.ChillTopBar
 
@@ -45,7 +45,7 @@ fun AddContactPage(
             )
         },
         content = {
-            SearchRes(viewModel)
+            SearchRes(viewModel, navController)
         }
     )
 }
@@ -54,6 +54,7 @@ fun AddContactPage(
 @Composable
 private fun SearchRes(
     viewModel: ContactsViewModel,
+    navController: NavHostController,
 ) {
     var text by rememberSaveable { mutableStateOf("") }
     var active by rememberSaveable { mutableStateOf(false) }
@@ -68,8 +69,7 @@ private fun SearchRes(
             onQueryChange = { text = it },
             onSearch = {
                 active = false
-                if (text.isDigitsOnly() && text != "")
-                    viewModel.search(text)
+                if (text != "") viewModel.search(text)
             },
             active = active,
             onActiveChange = { active = it },
@@ -92,13 +92,19 @@ private fun SearchRes(
                         profile = user,
                         modifier = Modifier.weight(1f)
                     )
-                    TextButton(
-                        modifier = Modifier
-                            .width(64.dp)
-                            .height(36.dp),
-                        onClick = { viewModel.addContact(user) },
-                        content = { Text(stringResource(R.string.add)) },
-                    )
+                    if (user.cid != curCid) {
+                        TextButton(
+                            modifier = Modifier
+                                .width(64.dp)
+                                .height(36.dp),
+                            onClick = {
+                                viewModel.addContact(user) {
+                                    navController.popBackStack()
+                                }
+                            },
+                            content = { Text(stringResource(R.string.add)) },
+                        )
+                    }
                 }
             }
         }
