@@ -4,6 +4,7 @@ import android.util.Log
 import com.drake.net.Get
 import com.drake.net.Put
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.encodeToString
@@ -11,6 +12,7 @@ import kotlinx.serialization.json.Json
 import top.chilfish.chillchat.data.contacts.ContactsDao
 import top.chilfish.chillchat.data.contacts.Profile
 import top.chilfish.chillchat.data.module.IODispatcher
+import top.chilfish.chillchat.provider.ResStrProvider
 import top.chilfish.chillchat.provider.curCid
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -20,8 +22,9 @@ import javax.inject.Singleton
 class ContactsRepository @Inject constructor(
     private val dao: ContactsDao,
     @IODispatcher
-    private val ioDispatchers: CoroutineDispatcher
-) {
+    private val ioDispatchers: CoroutineDispatcher,
+    private val resStr: ResStrProvider,
+) : BaseApiRequest(resStr) {
 
     fun allUsers() = dao.getAll()
 
@@ -31,12 +34,17 @@ class ContactsRepository @Inject constructor(
 
     suspend fun getById(id: String) = dao.getById(id)
 
-    suspend fun getUser(): Flow<Profile> {
-        val user = findUser(curCid)
-        if (user != null)
-            dao.update(user)
-        return dao.getUser()
+    suspend fun setUser(me: Profile) {
+        val old = dao.getById(me.id)
+        if (old == null) {
+            dao.insert(me)
+        } else {
+            dao.update((me))
+        }
+        Log.d("Chat", "setUser: $me, old: ${old?.id}, curCid: $curCid")
     }
+
+    fun getUser() = dao.getUser()
 
     suspend fun getByName(name: String) = dao.getByName(name)
 
@@ -68,19 +76,13 @@ class ContactsRepository @Inject constructor(
         }
     }
 
-    suspend fun loadAll(id: String) {
-        try {
-            withContext(ioDispatchers) {
-                val res = Get<String>("/users/chatters/${id}").await()
-                Log.d("Chat", "allChat: $res")
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
+    suspend fun loadAll(id: String?) {
+        val res = request {
+            Get<List<Profile>>("/users/chatters/${id}")
+        } ?: return
+        Log.d("Chat", "allContacts: $res")
 
-
-//            dao.deleteAll()
-//            res.forEach { dao.insert(it) }
-//            dao.insert(user!!)
+        dao.deleteAll()
+        res.forEach { dao.insert(it) }
     }
 }

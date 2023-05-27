@@ -9,6 +9,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import top.chilfish.chillchat.R
+import top.chilfish.chillchat.data.contacts.Profile
+import top.chilfish.chillchat.data.repository.ContactsRepository
 import top.chilfish.chillchat.data.repository.UserRepository
 import top.chilfish.chillchat.provider.AccountProvider
 import top.chilfish.chillchat.provider.ResStrProvider
@@ -18,6 +20,7 @@ import javax.inject.Inject
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     private val userRepo: UserRepository,
+    private val contactsRepo: ContactsRepository,
     private val resStr: ResStrProvider,
 ) : ViewModel() {
     private val _loginState = MutableStateFlow(LoginState())
@@ -29,7 +32,7 @@ class LoginViewModel @Inject constructor(
         val (username, password) = loginState.value
         val res = userRepo.auth(username, password)
         if (res != null) {
-            success(res.cid)
+            success(res)
         }
     }
 
@@ -39,12 +42,13 @@ class LoginViewModel @Inject constructor(
         val (username, password) = loginState.value
         val res = userRepo.auth(username, password, false)
         if (res != null) {
-            success(res.cid)
+            success(res)
         }
     }
 
-    private fun success(cid: String) = viewModelScope.launch {
-        AccountProvider.setLogin(cid)
+    private fun success(me: Profile) = viewModelScope.launch {
+        AccountProvider.setLogin(me.cid)
+        contactsRepo.setUser(me)
         _loginState.update {
             it.copy(isLoginSuccess = true)
         }

@@ -9,6 +9,7 @@ import top.chilfish.chillchat.data.repository.ContactsRepository
 import top.chilfish.chillchat.data.repository.UserRepository
 import top.chilfish.chillchat.provider.AccountProvider
 import top.chilfish.chillchat.provider.SettingsProvider
+import top.chilfish.chillchat.provider.curCid
 import javax.inject.Inject
 
 @HiltViewModel
@@ -30,7 +31,11 @@ class DebugViewModel @Inject constructor(
     }
 
     fun loadContacts() = viewModelScope.launch {
-//        contactsRepo.loadAll()
+//        contactsRepo.allUsers().collect {
+//            Log.d("Chat", "debug: Contacts: $it")
+//        }
+        val user = contactsRepo.findUser(curCid)
+        contactsRepo.loadAll(user?.id!!)
     }
 
     fun login() = viewModelScope.launch {

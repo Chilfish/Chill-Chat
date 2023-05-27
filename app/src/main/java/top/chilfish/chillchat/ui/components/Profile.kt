@@ -81,7 +81,7 @@ fun Hero(
                         tint = MaterialTheme.colorScheme.surfaceTint,
                     )
             }
-            Text(text = stringResource(R.string.uid, profile.id))
+            Text(text = stringResource(R.string.cid, profile.cid))
         }
     }
 }

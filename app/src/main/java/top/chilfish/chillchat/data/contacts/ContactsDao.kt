@@ -19,14 +19,14 @@ interface ContactsDao {
     @Query("SELECT * FROM $User_Table WHERE cid LIKE :name")
     suspend fun getByName(name: String): MutableList<Profile>
 
-    @Query("SELECT * FROM $User_Table WHERE id = :id")
-    fun getUser(id: String = curCid): Flow<Profile>
+    @Query("SELECT * FROM $User_Table WHERE cid = :cid")
+    fun getUser(cid: String = curCid): Flow<Profile>
 
     @Insert
     suspend fun insert(profile: Profile)
 
-    @Query("DELETE FROM $User_Table")
-    suspend fun deleteAll()
+    @Query("DELETE FROM $User_Table WHERE cid != :cid")
+    suspend fun deleteAll(cid: String = curCid)
 
     @Query("DELETE FROM $User_Table WHERE id = :id")
     suspend fun deleteById(id: String): Int

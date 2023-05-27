@@ -13,7 +13,7 @@ import javax.inject.Singleton
 @Singleton
 class UserRepository @Inject constructor(
     private val resStr: ResStrProvider,
-) : BaseApiRequest() {
+) : BaseApiRequest(resStr) {
     suspend fun auth(username: String, password: String, isLogin: Boolean = true): Profile? {
         val path = if (isLogin) "login" else "register"
         val res = try {

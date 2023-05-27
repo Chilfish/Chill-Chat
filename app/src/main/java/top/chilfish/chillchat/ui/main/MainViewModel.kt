@@ -4,22 +4,23 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import top.chilfish.chillchat.R
+import kotlinx.coroutines.withContext
 import top.chilfish.chillchat.data.chatslist.Chatter
 import top.chilfish.chillchat.data.contacts.Profile
+import top.chilfish.chillchat.data.module.IODispatcher
 import top.chilfish.chillchat.data.repository.ChatsListRepository
 import top.chilfish.chillchat.data.repository.ContactsRepository
 import top.chilfish.chillchat.data.repository.MessageRepository
 import top.chilfish.chillchat.data.repository.UserRepository
 import top.chilfish.chillchat.provider.AccountProvider
 import top.chilfish.chillchat.provider.ResStrProvider
-import top.chilfish.chillchat.utils.showToast
 import javax.inject.Inject
 
 @HiltViewModel
@@ -29,6 +30,8 @@ class MainViewModel @Inject constructor(
     private val userRepo: UserRepository,
     private val mesRepo: MessageRepository,
     private val resStr: ResStrProvider,
+    @IODispatcher
+    private val ioDispatchers: CoroutineDispatcher
 ) : ViewModel() {
 
     private val _mainState = MutableStateFlow(MainState())
@@ -40,11 +43,14 @@ class MainViewModel @Inject constructor(
     }
 
     private fun load() = viewModelScope.launch {
-//        launch { mesRepo.loadAll() }
-//        launch { contactsRepo.loadAll() }
 //        launch { chatsRepo.loadAll() }
 //        launch { loadChats() }
-        launch { loadMe() }
+        withContext(ioDispatchers) {
+            watchMe()
+        }
+        withContext(ioDispatchers) {
+            contactsRepo.loadAll(mainState.value.me?.id)
+        }
     }
 
     private suspend fun loadChats() {
@@ -57,9 +63,8 @@ class MainViewModel @Inject constructor(
             }
     }
 
-    private suspend fun loadMe() {
+    private suspend fun watchMe() {
         contactsRepo.getUser()
-            .flowOn(Dispatchers.IO)
             .collect { me ->
                 _mainState.update {
                     it.copy(me = me)
