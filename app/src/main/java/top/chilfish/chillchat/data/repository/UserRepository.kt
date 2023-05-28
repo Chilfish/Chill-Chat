@@ -10,6 +10,7 @@ import top.chilfish.chillchat.data.contacts.Profile
 import top.chilfish.chillchat.provider.ResStrProvider
 import top.chilfish.chillchat.provider.curId
 import top.chilfish.chillchat.utils.showToast
+import java.io.File
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -46,6 +47,15 @@ class UserRepository @Inject constructor(
             }
             null
         } ?: false
+        return res
+    }
+
+    suspend fun updateAvatar(avatar: File): String? {
+        val res = request {
+            Post<String>("/file") {
+                param("file", avatar.name, avatar)
+            }
+        }
         return res
     }
 

@@ -5,6 +5,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -51,6 +52,7 @@ fun Hero(
     profile: Profile,
     isMe: Boolean = false,
     navController: NavHostController? = null,
+    changeAvatar: () -> Unit = {},
 ) {
     Row(
         Modifier
@@ -58,9 +60,9 @@ fun Hero(
             .fillMaxWidth()
     ) {
         AvatarImg(
-            name = profile.avatar, modifier = Modifier
-                .width(100.dp)
-                .clip(RoundedCornerShape(12.dp))
+            name = profile.avatar,
+            modifier = Modifier
+                .let { if (isMe) it.clickable { changeAvatar() } else it }
         )
         Column(Modifier.padding(24.dp)) {
             Row(

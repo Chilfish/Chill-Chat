@@ -10,6 +10,7 @@ import top.chilfish.chillchat.data.repository.UserRepository
 import top.chilfish.chillchat.provider.AccountProvider
 import top.chilfish.chillchat.provider.SettingsProvider
 import top.chilfish.chillchat.provider.curCid
+import java.io.File
 import javax.inject.Inject
 
 @HiltViewModel
@@ -42,5 +43,9 @@ class DebugViewModel @Inject constructor(
     fun login() = viewModelScope.launch {
         val res = userRepo.auth("chilfish", "12345678")
         Log.d("Chat", "login:$res")
+    }
+
+    fun uploadImg(img: File) = viewModelScope.launch {
+        userRepo.updateAvatar(img)
     }
 }

@@ -21,6 +21,7 @@ import top.chilfish.chillchat.data.repository.MessageRepository
 import top.chilfish.chillchat.data.repository.UserRepository
 import top.chilfish.chillchat.provider.AccountProvider
 import top.chilfish.chillchat.provider.ResStrProvider
+import java.io.File
 import javax.inject.Inject
 
 @HiltViewModel
@@ -29,6 +30,7 @@ class MainViewModel @Inject constructor(
     private val chatsRepo: ChatsListRepository,
     private val mesRepo: MessageRepository,
     private val resStr: ResStrProvider,
+    private val userRepo: UserRepository,
     @IODispatcher
     private val ioDispatchers: CoroutineDispatcher
 ) : ViewModel() {
@@ -73,6 +75,15 @@ class MainViewModel @Inject constructor(
 
     fun logout() = viewModelScope.launch {
         AccountProvider.setLogout()
+    }
+
+    fun changeAvatar(avatar: File?) = viewModelScope.launch {
+        if (avatar == null) return@launch
+
+        val res = userRepo.updateAvatar(avatar) ?: return@launch
+
+        Log.d("Chat", "Avatar: $avatar, $res")
+        contactsRepo.update(mainState.value.me?.copy(avatar = res))
     }
 }
 

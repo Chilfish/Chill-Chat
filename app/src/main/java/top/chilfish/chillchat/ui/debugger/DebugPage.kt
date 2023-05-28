@@ -20,7 +20,9 @@ import top.chilfish.chillchat.provider.BaseHost
 import top.chilfish.chillchat.provider.curCid
 import top.chilfish.chillchat.ui.components.ChillScaffold
 import top.chilfish.chillchat.ui.components.ChillTopBar
+import top.chilfish.chillchat.ui.components.PickFile
 import top.chilfish.chillchat.ui.components.TextInput
+
 
 private val ItemPadding = Modifier.padding(bottom = 12.dp)
 
@@ -62,8 +64,13 @@ fun DebugPage(
                 Button(onClick = { viewModel.login() }) {
                     Text("Login")
                 }
-            }
 
+                PickFile(pickedFile = { viewModel.uploadImg(it) }) {
+                    Button(onClick = { it() }) {
+                        Text("Pick Photo")
+                    }
+                }
+            }
         }
     }
 }

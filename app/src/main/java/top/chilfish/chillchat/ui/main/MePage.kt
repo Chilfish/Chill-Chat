@@ -18,6 +18,7 @@ import top.chilfish.chillchat.navigation.EditType
 import top.chilfish.chillchat.navigation.Routers
 import top.chilfish.chillchat.navigation.navigateTo
 import top.chilfish.chillchat.ui.components.Hero
+import top.chilfish.chillchat.ui.components.PickFile
 import top.chilfish.chillchat.ui.components.ProfileBtn
 import top.chilfish.chillchat.ui.components.ProfileInfo
 
@@ -36,11 +37,15 @@ fun MePage(
             .padding(30.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Hero(
-            profile = profile,
-            isMe = true,
-            navController = navController
-        )
+        PickFile(pickedFile = { viewModel.changeAvatar(it) }) { launcher ->
+            Hero(
+                profile = profile,
+                isMe = true,
+                navController = navController,
+                changeAvatar = { launcher() }
+            )
+        }
+
         ProfileInfo(
             profile = profile,
             isMe = true,

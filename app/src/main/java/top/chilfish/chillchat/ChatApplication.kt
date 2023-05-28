@@ -9,6 +9,7 @@ import dagger.hilt.android.HiltAndroidApp
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import okhttp3.Cache
 import top.chilfish.chillchat.data.ChillChatDatabase
 import top.chilfish.chillchat.data.module.IODispatcher
 import top.chilfish.chillchat.data.repository.ChatsListRepository
@@ -54,6 +55,7 @@ class ChatApplication : Application() {
                 NetConfig.initialize(it, applicationContext) {
                     setDebug(true)
                     setConverter(SerializationConverter())
+                    cache(Cache(cacheDir, 1024 * 1024 * 128))
                 }
             }
         }

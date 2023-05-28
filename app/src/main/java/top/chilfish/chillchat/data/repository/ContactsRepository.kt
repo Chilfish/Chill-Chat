@@ -56,7 +56,8 @@ class ContactsRepository @Inject constructor(
         return res
     }
 
-    suspend fun update(profile: Profile): Boolean {
+    suspend fun update(profile: Profile?): Boolean {
+        if (profile == null) return false
         val res = try {
             request {
                 Put<Boolean>("/users/up") {

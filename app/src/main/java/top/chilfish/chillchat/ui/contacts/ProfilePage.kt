@@ -92,7 +92,7 @@ fun ProfileBar(
             onConfirm = {
                 isAlert = false
                 viewModel.delContact {
-                    navController.popBackStack()
+                    navigateTo(navController, Routers.Home)
                 }
             },
             onCancel = { isAlert = false }

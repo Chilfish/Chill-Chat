@@ -24,12 +24,15 @@ open class BaseApiRequest @Inject constructor(
             res = try {
                 request().await()
             } catch (e: RequestParamsException) {
+                e.printStackTrace()
                 throw e
             } catch (e: NetSocketTimeoutException) {
+                e.printStackTrace()
                 Log.e("Chat", "net error: ${e.cause}")
                 showToast(resStr.getString(R.string.error_server))
                 null
             } catch (e: NetConnectException) {
+                e.printStackTrace()
                 Log.e("Chat", "net error: ${e.cause}")
                 showToast(resStr.getString(R.string.error_network))
                 null
