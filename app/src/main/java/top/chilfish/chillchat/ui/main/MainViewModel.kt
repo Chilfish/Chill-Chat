@@ -11,7 +11,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import top.chilfish.chillchat.data.chatslist.Chatter
 import top.chilfish.chillchat.data.contacts.Profile
 import top.chilfish.chillchat.data.module.IODispatcher
@@ -31,8 +30,6 @@ class MainViewModel @Inject constructor(
     private val mesRepo: MessageRepository,
     private val resStr: ResStrProvider,
     private val userRepo: UserRepository,
-    @IODispatcher
-    private val ioDispatchers: CoroutineDispatcher
 ) : ViewModel() {
 
     private val _mainState = MutableStateFlow(MainState())
@@ -43,18 +40,15 @@ class MainViewModel @Inject constructor(
         Log.d("Chat", "mainViewModel init")
     }
 
-    private fun load() = viewModelScope.launch {
-//        launch { chatsRepo.loadAll() }
-//        launch { loadChats() }
-        withContext(ioDispatchers) {
-            watchMe()
-        }
-        withContext(ioDispatchers) {
-            contactsRepo.loadAll(mainState.value.me?.id)
-        }
+    fun load() = viewModelScope.launch {
+        launch { mesRepo.loadAll() }
+        launch { loadChats() }
+        launch { watchMe() }
+        launch { contactsRepo.loadAll(mainState.value.me?.id) }
     }
 
     private suspend fun loadChats() {
+        chatsRepo.loadAll()
         chatsRepo.getAll()
             .flowOn(Dispatchers.IO)
             .collect { chats ->

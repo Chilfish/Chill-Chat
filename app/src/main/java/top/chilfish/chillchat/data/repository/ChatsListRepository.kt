@@ -19,8 +19,20 @@ class ChatsListRepository @Inject constructor(
 
     suspend fun update(chats: Chats) = dao.update(chats)
 
-    suspend fun updateById(chatterId: String, message: String, time: Long) =
-        dao.updateById(chatterId, message, time)
+    suspend fun updateById(chatterId: String, message: String, time: Long) {
+        val res = dao.getById(chatterId)
+        if (res == null) {
+            dao.insert(
+                Chats(
+                    chatterId = chatterId,
+                    lastMessage = message,
+                    lastTime = time
+                )
+            )
+        } else {
+            dao.updateById(chatterId, message, time)
+        }
+    }
 
     suspend fun loadAll() {
 //        withApiService { apiService ->

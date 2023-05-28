@@ -13,7 +13,7 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Build
 import androidx.compose.material.icons.outlined.AddCircle
 import androidx.compose.material.icons.rounded.MoreVert
-import androidx.compose.material.icons.rounded.Search
+import androidx.compose.material.icons.rounded.Refresh
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -62,10 +62,10 @@ fun HomeBar(
                 onClick = { navHostController.navigate(Routers.Debug) },
                 imageVector = Icons.Default.Build
             )
-//            IconBtn(
-//                onClick = { viewModel.search() },
-//                imageVector = Icons.Rounded.Search
-//            )
+            IconBtn(
+                onClick = { viewModel.load() },
+                imageVector = Icons.Rounded.Refresh
+            )
             IconBtn(
                 onClick = {
                     navHostController.navigate(Routers.AddContact) {

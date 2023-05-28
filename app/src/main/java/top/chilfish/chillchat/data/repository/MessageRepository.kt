@@ -9,7 +9,7 @@ import javax.inject.Singleton
 @Singleton
 class MessageRepository @Inject constructor(
     private val dao: MessageDao
-)  {
+) {
 
     fun getAll(chatterId: String) = dao.getAll(curCid, chatterId)
 
@@ -28,5 +28,11 @@ class MessageRepository @Inject constructor(
 //            dao.deleteAll()
 //            res.forEach { dao.insert(it) }
 //        }
+    }
+
+    // TODO SocketIO
+    suspend fun sendMes(chatterId: String, content: String): Message? {
+
+        return null
     }
 }

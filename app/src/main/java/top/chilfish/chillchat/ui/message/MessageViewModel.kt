@@ -43,15 +43,9 @@ class MessageViewModel @Inject constructor(
 
     fun sendMes(message: String) = viewModelScope.launch {
         val chatter = messageState.value.chatter
+        val mes = messRepo.sendMes(chatter.id, message) ?: return@launch
 
-        val mes = Message(
-            senderId = curCid,
-            receiverId = chatter.id,
-            message = message,
-            time = System.currentTimeMillis(),
-        )
         launch { chatsRepo.updateById(chatter.id, mes.message, mes.time) }
-
         launch { messRepo.insert(mes) }
     }
 }
