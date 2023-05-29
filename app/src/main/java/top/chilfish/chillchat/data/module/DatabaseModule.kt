@@ -7,7 +7,6 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.SupervisorJob
 import top.chilfish.chillchat.data.ChillChatDatabase
 import top.chilfish.chillchat.data.chatslist.ChatsListDao
 import javax.inject.Singleton
@@ -16,11 +15,6 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object DatabaseModule {
-
-    @Provides
-    @Singleton
-    fun provideCoroutineScope(): CoroutineScope =
-        CoroutineScope(SupervisorJob())
 
     @Provides
     @Singleton
@@ -41,7 +35,7 @@ object DatabaseModule {
     @Singleton
     fun provideDatabase(
         @ApplicationContext context: Context,
-        scope: CoroutineScope
+        @ApplicationScope scope: CoroutineScope,
     ): ChillChatDatabase =
         ChillChatDatabase.getDatabase(context, scope)
 }

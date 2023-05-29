@@ -11,6 +11,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import okhttp3.Cache
 import top.chilfish.chillchat.data.ChillChatDatabase
+import top.chilfish.chillchat.data.module.ApplicationScope
 import top.chilfish.chillchat.data.module.IODispatcher
 import top.chilfish.chillchat.data.repository.ChatsListRepository
 import top.chilfish.chillchat.data.repository.ContactsRepository
@@ -24,8 +25,14 @@ import javax.inject.Inject
 
 @HiltAndroidApp
 class ChatApplication : Application() {
+
     @Inject
+    @ApplicationScope
     lateinit var applicationScope: CoroutineScope
+
+    @Inject
+    @IODispatcher
+    lateinit var ioDispatcher: CoroutineDispatcher
 
     @Inject
     lateinit var db: ChillChatDatabase
@@ -38,10 +45,6 @@ class ChatApplication : Application() {
 
     @Inject
     lateinit var messageRepository: MessageRepository
-
-    @Inject
-    @IODispatcher
-    lateinit var ioDispatcher: CoroutineDispatcher
 
     @Inject
     lateinit var socket: Socket

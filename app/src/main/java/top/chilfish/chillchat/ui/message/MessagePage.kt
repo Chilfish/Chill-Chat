@@ -90,7 +90,7 @@ fun MessageMain(
                 val message = messages[index]
 
                 MessageItem(
-                    message = message.message,
+                    message = message.content,
                     time = message.timeStr,
                     isMe = message.sendId == curId,
                     isShowTime = (index == 0 || message.time - messages[index - 1].time > TimeGap)

@@ -15,7 +15,7 @@ data class Message(
     val id: Long = 0,
     val sendId: String,
     val receiveId: String,
-    val message: String,
+    val content: String,
     val time: Long = System.currentTimeMillis(),
 ) {
     @get:Ignore

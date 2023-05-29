@@ -1,15 +1,17 @@
 package top.chilfish.chillchat.data.repository
 
+import android.util.Log
 import com.drake.net.Get
 import io.socket.client.Socket
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import top.chilfish.chillchat.data.contacts.Profile
 import top.chilfish.chillchat.data.messages.Message
 import top.chilfish.chillchat.data.messages.MessageDao
+import top.chilfish.chillchat.data.module.ApplicationScope
 import top.chilfish.chillchat.provider.ResStrProvider
-import top.chilfish.chillchat.provider.curCid
 import top.chilfish.chillchat.provider.curId
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -20,6 +22,9 @@ class MessageRepository @Inject constructor(
     private val contactsRepository: ContactsRepository,
     private val socket: Socket,
     resStr: ResStrProvider,
+
+    @ApplicationScope
+    private val scope: CoroutineScope
 ) : BaseApiRequest(resStr) {
     fun getAll(chatterId: String) = dao.getAll(curId, chatterId)
 
@@ -52,10 +57,20 @@ class MessageRepository @Inject constructor(
         val message = Message(
             sendId = curId,
             receiveId = chatterId,
-            message = content
+            content = content
         )
 
         socket.emit("message", Json.encodeToString(message))
         return message
+    }
+
+    fun receiveMes() {
+        socket.on("message") { args ->
+            val message = Json.decodeFromString<Message>(args[0].toString())
+            Log.d("Chat", "receive: ${args[0]}")
+            scope.launch {
+                insert(message)
+            }
+        }
     }
 }

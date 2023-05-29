@@ -13,7 +13,6 @@ import top.chilfish.chillchat.data.messages.Message
 import top.chilfish.chillchat.data.repository.ChatsListRepository
 import top.chilfish.chillchat.data.repository.ContactsRepository
 import top.chilfish.chillchat.data.repository.MessageRepository
-import top.chilfish.chillchat.provider.curCid
 import javax.inject.Inject
 
 @HiltViewModel
@@ -34,6 +33,7 @@ class MessageViewModel @Inject constructor(
             }
         }
 
+        messRepo.receiveMes()
         Log.d("Chat", "all mes: ${messageState.value.messages}")
 
         launch {
@@ -48,7 +48,7 @@ class MessageViewModel @Inject constructor(
         val chatter = messageState.value.chatter
         val mes = messRepo.sendMes(chatter.id, message)
 
-        launch { chatsRepo.updateById(chatter.id, mes.message, mes.time) }
+        launch { chatsRepo.updateById(chatter.id, mes.content, mes.time) }
         launch { messRepo.insert(mes) }
     }
 }
