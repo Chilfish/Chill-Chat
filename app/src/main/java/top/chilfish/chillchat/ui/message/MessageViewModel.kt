@@ -1,5 +1,6 @@
 package top.chilfish.chillchat.ui.message
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -33,6 +34,8 @@ class MessageViewModel @Inject constructor(
             }
         }
 
+        Log.d("Chat", "all mes: ${messageState.value.messages}")
+
         launch {
             val chatter = contactsRepo.getById(chatterId) ?: Profile()
             _messageState.update { it.copy(chatter = chatter) }
@@ -43,7 +46,7 @@ class MessageViewModel @Inject constructor(
 
     fun sendMes(message: String) = viewModelScope.launch {
         val chatter = messageState.value.chatter
-        val mes = messRepo.sendMes(chatter.id, message) ?: return@launch
+        val mes = messRepo.sendMes(chatter.id, message)
 
         launch { chatsRepo.updateById(chatter.id, mes.message, mes.time) }
         launch { messRepo.insert(mes) }

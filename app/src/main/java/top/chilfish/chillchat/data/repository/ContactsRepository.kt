@@ -73,6 +73,7 @@ class ContactsRepository @Inject constructor(
     }
 
     suspend fun loadAll(id: String?) {
+        if (id == null) return
         val res = request {
             Get<List<Profile>>("/users/chatters/${id}")
         }

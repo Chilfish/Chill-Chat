@@ -3,18 +3,20 @@ package top.chilfish.chillchat.data.messages
 import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
+import kotlinx.serialization.Serializable
 import top.chilfish.chillchat.utils.formattedTime
 
 const val Message_Table = "messages"
 
+@Serializable
 @Entity(tableName = Message_Table)
 data class Message(
-    @PrimaryKey
-    val id: String = "",
-    val senderId: String,
-    val receiverId: String,
+    @PrimaryKey(autoGenerate = true)
+    val id: Long = 0,
+    val sendId: String,
+    val receiveId: String,
     val message: String,
-    val time: Long,
+    val time: Long = System.currentTimeMillis(),
 ) {
     @get:Ignore
     val timeStr: String

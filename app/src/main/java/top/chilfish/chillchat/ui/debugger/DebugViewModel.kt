@@ -4,12 +4,15 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import io.socket.client.Socket
 import kotlinx.coroutines.launch
 import top.chilfish.chillchat.data.repository.ContactsRepository
+import top.chilfish.chillchat.data.repository.MessageRepository
 import top.chilfish.chillchat.data.repository.UserRepository
 import top.chilfish.chillchat.provider.AccountProvider
 import top.chilfish.chillchat.provider.SettingsProvider
 import top.chilfish.chillchat.provider.curCid
+import top.chilfish.chillchat.provider.curId
 import java.io.File
 import javax.inject.Inject
 
@@ -17,7 +20,29 @@ import javax.inject.Inject
 class DebugViewModel @Inject constructor(
     private val contactsRepo: ContactsRepository,
     private val userRepo: UserRepository,
+    private val mesRepo: MessageRepository,
+    private val socket: Socket,
 ) : ViewModel() {
+    init {
+        Log.d("Chat", "Socket: ${socket.connected()}")
+        connect()
+    }
+
+    private fun connect() {
+        socket.connect()
+        socket.emit("join", curId)
+        socket.on("connect") {
+            Log.d("Chat", "Socket: Connected!")
+        }
+        socket.on("message") { args ->
+            Log.d("Chat", "receive message: ${args[0]}")
+        }
+    }
+
+    fun join() {
+        socket.emit("join", curId)
+    }
+
     fun setHost(host: String) = viewModelScope.launch {
         SettingsProvider.setHost(host)
     }
@@ -47,5 +72,9 @@ class DebugViewModel @Inject constructor(
 
     fun uploadImg(img: File) = viewModelScope.launch {
         userRepo.updateAvatar(img)
+    }
+
+    fun sendMes() {
+        mesRepo.sendMes("", "Hello")
     }
 }

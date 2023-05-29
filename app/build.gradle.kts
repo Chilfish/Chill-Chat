@@ -109,8 +109,11 @@ dependencies {
     kapt(libs.hilt.android.compiler)
     implementation(libs.androidx.hilt.navigation.compose)
 
-    implementation("com.squareup.okhttp3:okhttp:4.10.0")
-    implementation("com.github.liangjingkanji:Net:3.5.8")
+    implementation(libs.okhttp)
+    implementation(libs.liangjingkanji.net)
+    implementation("io.socket:socket.io-client:2.1.0") {
+        exclude(group = "org.json", module = "json")
+    }
 
     // Test
     testImplementation(libs.junit)

@@ -39,6 +39,8 @@ material3 = "1.2.0-alpha01"
 coil = "2.3.0"
 gson = "2.10.1"
 accompanist = "0.31.2-alpha"
+liangjingkanjiNet = "3.5.8"
+okhttp = "4.10.0"
 
 # testing
 junit = "4.13.2"
@@ -86,6 +88,8 @@ coil-gif = { group = "io.coil-kt", name = "coil-gif", version.ref = "coil" }
 gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
 accompanist-insets = { group = "com.google.accompanist", name = "accompanist-insets", version.ref = "accompanist" }
 accompanist-insets-ui = { group = "com.google.accompanist", name = "accompanist-insets-ui", version.ref = "accompanist" }
+liangjingkanji-net = { module = "com.github.liangjingkanji:Net", version.ref = "liangjingkanjiNet" }
+okhttp = { module = "com.squareup.okhttp3:okhttp", version.ref = "okhttp" }
 
 # Jetpack
 navigation = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigation" }

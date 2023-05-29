@@ -16,7 +16,7 @@ import javax.inject.Singleton
 
 @Singleton
 open class BaseApiRequest @Inject constructor(
-    private val resStr: ResStrProvider
+    private val resStr: ResStrProvider,
 ) {
     suspend fun <T> request(request: suspend CoroutineScope.() -> Deferred<T>): T? {
         var res: T? = null

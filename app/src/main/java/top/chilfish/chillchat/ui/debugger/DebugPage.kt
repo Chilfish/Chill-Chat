@@ -70,6 +70,13 @@ fun DebugPage(
                         Text("Pick Photo")
                     }
                 }
+
+                Button(onClick = { viewModel.join() }) {
+                    Text("Join Room")
+                }
+                Button(onClick = { viewModel.sendMes() }) {
+                    Text("Send message")
+                }
             }
         }
     }

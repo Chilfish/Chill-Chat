@@ -1,11 +1,11 @@
 package top.chilfish.chillchat
 
 import android.app.Application
-import com.drake.net.BuildConfig
 import com.drake.net.NetConfig
 import com.drake.net.okhttp.setConverter
 import com.drake.net.okhttp.setDebug
 import dagger.hilt.android.HiltAndroidApp
+import io.socket.client.Socket
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -42,6 +42,9 @@ class ChatApplication : Application() {
     @Inject
     @IODispatcher
     lateinit var ioDispatcher: CoroutineDispatcher
+
+    @Inject
+    lateinit var socket: Socket
 
     override fun onCreate() {
         super.onCreate()
