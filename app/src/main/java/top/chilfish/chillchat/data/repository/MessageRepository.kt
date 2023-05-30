@@ -60,7 +60,7 @@ class MessageRepository @Inject constructor(
             content = content
         )
 
-        socket.emit("message", Json.encodeToString(message))
+        socket.emit("send_message", Json.encodeToString(message))
         return message
     }
 
