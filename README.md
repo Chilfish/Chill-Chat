@@ -1,27 +1,36 @@
-[:construction: Under developing] a simple online chat app client built with Jetpack Compose & GPT
+:construction: Under developing.
+
+a simple online chat app client built with Jetpack Compose & GPT
+
+the simple server is [here](https://github.com/Chilfish/Chill-Chat-Server)
 
 > Just a demo for Compose learning
 
 ### Tech. stack
 
-- Kotlin
-- Coroutines
+- Kotlin & Coroutines
 - Jetpack Compose modern toolkit for building native UI
-- Jetpack Navigation
-- Material 3
+- Jetpack Navigation for Routing
+- Jetpack Room for offline store
+- Material 3 Design
 - Hilt for dependency injection
 - Coil for image loading
 - MVI architecture
-
-- [ ] connect with server
-- [ ] chatting under the Socket.io
+- handling the HTTP via [com.drake.net](https://github.com/liangjingkanji/Net)
+- chatting using the Socket.io
 
 ### Preview
 
-<figure align="center"><img src="./docs/MainPage.webp"/><figcaption>
-  MainPage
-</figcaption></figure>
+<br />
 
-<figure align="center"><img src="./docs/OtherPage.webp"/><figcaption>
-  OtherPage
-</figcaption></figure>
+**Main Page**
+
+![Main Page](./docs/MainPage.webp)
+
+**Other Page**
+
+![Other Page](./docs/OtherPage.webp)
+
+**Login & Debug**
+
+![Login & Debug](./docs/login%26debug.webp)
