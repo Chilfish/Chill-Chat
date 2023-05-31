@@ -21,6 +21,8 @@ import javax.inject.Singleton
 @Singleton
 class MessageRepository @Inject constructor(
     private val dao: MessageDao,
+    private val chatsRepo: ChatsListRepository,
+
     private val socket: Socket,
     private val api: ApiRequest,
 
@@ -49,7 +51,14 @@ class MessageRepository @Inject constructor(
         }
     }
 
-    fun sendMes(chatterId: String, content: String): Message {
+    private suspend fun insertAndUpdate(mes: Message, chatterId: String) =
+        withContext(ioDispatcher) {
+            launch { chatsRepo.updateById(chatterId, mes.content, mes.time) }
+            launch { dao.insert(mes) }
+            Unit
+        }
+
+    suspend fun sendMes(chatterId: String, content: String) = withContext(ioDispatcher) {
         val message = Message(
             sendId = curId,
             receiveId = chatterId,
@@ -57,16 +66,23 @@ class MessageRepository @Inject constructor(
         )
 
         socket.emit("send_message", Json.encodeToString(message))
-        return message
+        insertAndUpdate(message, chatterId)
     }
 
-    fun receiveMes() {
+    suspend fun receiveMes() = withContext(ioDispatcher) {
         socket.on("message") { args ->
             val message = Json.decodeFromString<Message>(args[0].toString())
             Log.d("Chat", "receive: ${args[0]}")
+
             scope.launch {
-                insert(message)
+                insertAndUpdate(message, message.sendId)
             }
         }
+        Unit
+    }
+
+    suspend fun isRead() = withContext(ioDispatcher) {
+        socket.emit("read")
+        Unit
     }
 }

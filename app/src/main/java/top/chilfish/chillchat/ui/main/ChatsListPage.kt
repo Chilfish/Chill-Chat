@@ -33,26 +33,22 @@ fun ChatsListPage(
 ) {
     val mainState = viewModel.mainState.collectAsState().value
 
-    if (!mainState.isLoading) {
-        LazyColumn {
-            itemsIndexed(
-                items = mainState.chats,
-                key = { _, chat -> chat.chatter.id }) { _, chat ->
-                ChatsListItem(
-                    chat = chat.chatter,
-                    profile = chat.profile,
-                    onClick = {
-                        navigateTo(
-                            navCtrl = navController,
-                            route = Routers.Message,
-                            data = chat.profile.id,
-                        )
-                    }
-                )
-            }
+    LazyColumn {
+        itemsIndexed(
+            items = mainState.chats,
+            key = { _, chat -> chat.chatter.id }) { _, chat ->
+            ChatsListItem(
+                chat = chat.chatter,
+                profile = chat.profile,
+                onClick = {
+                    navigateTo(
+                        navCtrl = navController,
+                        route = Routers.Message,
+                        data = chat.profile.id,
+                    )
+                }
+            )
         }
-    } else {
-        Text(text = "Loading...")
     }
 }
 

@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import kotlinx.coroutines.flow.Flow
+import top.chilfish.chillchat.provider.curId
 
 @Dao
 interface MessageDao {
@@ -19,7 +20,9 @@ interface MessageDao {
         "SELECT * FROM $Message_Table " +
                 "WHERE sendId IN (SELECT * FROM $View_ids) " +
                 "OR receiveId IN (SELECT * FROM $View_ids) " +
-                "GROUP BY sendId, receiveId " +
+                "GROUP BY CASE WHEN sendId < receiveId " +
+                "THEN sendId || ',' || receiveId " +
+                "ELSE receiveId || ',' || sendId END " +
                 "HAVING time = MAX(time);"
     )
     suspend fun getLatest(): List<Message>

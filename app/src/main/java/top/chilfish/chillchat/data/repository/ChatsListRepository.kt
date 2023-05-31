@@ -1,6 +1,7 @@
 package top.chilfish.chillchat.data.repository
 
 
+import android.util.Log
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import top.chilfish.chillchat.data.chatslist.Chats
@@ -46,6 +47,8 @@ class ChatsListRepository @Inject constructor(
     suspend fun loadAll() = withContext(ioDispatcher) {
         val lastMessages = mesDao.getLatest()
         dao.deleteAll()
+
+        Log.d("Chat", "load ChatsList: $lastMessages")
 
         lastMessages.forEach { mes ->
             dao.insert(

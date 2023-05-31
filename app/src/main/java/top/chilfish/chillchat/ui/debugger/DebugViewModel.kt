@@ -73,7 +73,7 @@ class DebugViewModel @Inject constructor(
         userRepo.updateAvatar(img)
     }
 
-    fun sendMes() {
+    fun sendMes() = viewModelScope.launch {
         mesRepo.sendMes("", "Hello")
     }
 }

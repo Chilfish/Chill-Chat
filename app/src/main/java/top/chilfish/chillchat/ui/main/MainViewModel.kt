@@ -16,7 +16,6 @@ import kotlinx.coroutines.withContext
 import top.chilfish.chillchat.data.chatslist.Chatter
 import top.chilfish.chillchat.data.contacts.Profile
 import top.chilfish.chillchat.data.module.IODispatcher
-import top.chilfish.chillchat.data.module.MainDispatcher
 import top.chilfish.chillchat.data.repository.ChatsListRepository
 import top.chilfish.chillchat.data.repository.ContactsRepository
 import top.chilfish.chillchat.data.repository.MessageRepository
@@ -36,8 +35,6 @@ class MainViewModel @Inject constructor(
 
     @IODispatcher
     private val ioDispatcher: CoroutineDispatcher,
-    @MainDispatcher
-    private val mainDispatcher: CoroutineDispatcher,
 ) : ViewModel() {
 
     private val _mainState = MutableStateFlow(MainState())
@@ -50,15 +47,13 @@ class MainViewModel @Inject constructor(
 
     fun load() = viewModelScope.launch {
         connect()
+        mesRepo.receiveMes()
+
         launch { watchMe() }
         launch { contactsRepo.loadAll() }
         launch {
             async { mesRepo.loadAll() }.await()
             loadChats()
-        }
-
-        withContext(mainDispatcher) {
-            _mainState.update { it.copy(isLoading = false) }
         }
     }
 
@@ -80,7 +75,7 @@ class MainViewModel @Inject constructor(
             }
     }
 
-    private suspend fun watchMe(){
+    private suspend fun watchMe() {
         contactsRepo.getUser()
             .flowOn(ioDispatcher)
             .collect { res ->
@@ -92,6 +87,7 @@ class MainViewModel @Inject constructor(
 
     fun logout() = viewModelScope.launch {
         AccountProvider.setLogout()
+        socket.disconnect()
     }
 
     fun changeAvatar(avatar: File?) = viewModelScope.launch {

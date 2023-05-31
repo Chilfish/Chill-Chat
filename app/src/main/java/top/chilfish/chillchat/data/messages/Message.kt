@@ -26,7 +26,7 @@ data class Message(
 }
 
 @DatabaseView(
-    value = "SELECT sendId as ids FROM messages " +
+    value = "SELECT sendId FROM messages " +
             "UNION " +
             "SELECT receiveId FROM messages",
     viewName = View_ids

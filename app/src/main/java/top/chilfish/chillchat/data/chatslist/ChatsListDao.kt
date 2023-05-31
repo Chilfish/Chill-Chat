@@ -47,16 +47,4 @@ interface ChatsListDao {
 
     @Query("UPDATE $Chat_Table SET lastMessage = :message, lastTime = :time WHERE chatterId = :chatterId")
     suspend fun updateById(chatterId: String, message: String, time: Long)
-
-    @Transaction
-    suspend fun insertOrUpdate(chatsList: List<Chats>) {
-        chatsList.forEach {
-            val chatter = getById(it.chatterId)
-            if (chatter == null) {
-                insert(it)
-            } else {
-                update(it)
-            }
-        }
-    }
 }
