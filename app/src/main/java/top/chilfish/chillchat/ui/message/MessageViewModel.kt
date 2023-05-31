@@ -27,7 +27,6 @@ class MessageViewModel @Inject constructor(
     val messageState: StateFlow<MessageState> = _messageState
 
     fun init(chatterId: String) = viewModelScope.launch {
-        messRepo.isRead()
 
         launch(ioDispatcher) {
             messRepo.getAll(chatterId).collect { messages ->
@@ -40,6 +39,7 @@ class MessageViewModel @Inject constructor(
         launch(ioDispatcher) {
             val chatter = contactsRepo.getById(chatterId) ?: Profile()
             _messageState.update { it.copy(chatter = chatter) }
+            messRepo.isRead(chatter.id)
         }
     }
 

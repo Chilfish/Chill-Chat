@@ -61,8 +61,8 @@ class MainViewModel @Inject constructor(
         socket.connect()
         socket.on("connect") {
             Log.d("Chat", "Socket: Connected!")
+            socket.emit("join", curId)
         }
-        socket.emit("join", curId)
     }
 
     private suspend fun loadChats() {

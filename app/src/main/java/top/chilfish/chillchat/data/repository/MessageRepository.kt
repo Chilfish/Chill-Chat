@@ -81,8 +81,8 @@ class MessageRepository @Inject constructor(
         Unit
     }
 
-    suspend fun isRead() = withContext(ioDispatcher) {
-        socket.emit("read")
+    suspend fun isRead(chatterId: String) = withContext(ioDispatcher) {
+        socket.emit("read", """{"userId":"$curId","chatterId":"$chatterId"}""")
         Unit
     }
 }
