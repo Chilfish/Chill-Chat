@@ -5,12 +5,11 @@ import top.chilfish.chillchat.data.chatslist.ChatsListDao
 import javax.inject.Inject
 import javax.inject.Singleton
 
-
 @Singleton
 class ChatsListRepository @Inject constructor(
-    private val dao: ChatsListDao
+    private val dao: ChatsListDao,
+    private val api: ApiRequest,
 ) {
-
     fun getAll() = dao.getAll()
 
     suspend fun insert(chats: Chats) = dao.insert(chats)

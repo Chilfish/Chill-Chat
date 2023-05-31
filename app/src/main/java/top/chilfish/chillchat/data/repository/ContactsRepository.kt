@@ -5,13 +5,11 @@ import com.drake.net.Delete
 import com.drake.net.Get
 import com.drake.net.Put
 import com.drake.net.exception.RequestParamsException
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import top.chilfish.chillchat.R
 import top.chilfish.chillchat.data.contacts.ContactsDao
 import top.chilfish.chillchat.data.contacts.Profile
-import top.chilfish.chillchat.data.module.IODispatcher
 import top.chilfish.chillchat.provider.ResStrProvider
 import top.chilfish.chillchat.provider.curCid
 import top.chilfish.chillchat.provider.curId
@@ -19,15 +17,12 @@ import top.chilfish.chillchat.utils.showToast
 import javax.inject.Inject
 import javax.inject.Singleton
 
-
 @Singleton
 class ContactsRepository @Inject constructor(
     private val dao: ContactsDao,
-    @IODispatcher
-    private val ioDispatchers: CoroutineDispatcher,
     private val resStr: ResStrProvider,
-) : BaseApiRequest(resStr) {
-
+    private val api: ApiRequest,
+) {
     fun allUsers() = dao.getAll()
 
     suspend fun getById(id: String) = dao.getById(id)
@@ -46,7 +41,7 @@ class ContactsRepository @Inject constructor(
 
     suspend fun findUser(cid: String): Profile? {
         val res = try {
-            request {
+            api.request {
                 Get<Profile>("/users/$cid")
             }
         } catch (e: RequestParamsException) {
@@ -59,7 +54,7 @@ class ContactsRepository @Inject constructor(
     suspend fun update(profile: Profile?): Boolean {
         if (profile == null) return false
         val res = try {
-            request {
+            api.request {
                 Put<Boolean>("/users/up") {
                     json(Json.encodeToString(profile))
                 }
@@ -74,7 +69,7 @@ class ContactsRepository @Inject constructor(
 
     suspend fun loadAll(id: String?) {
         if (id == null) return
-        val res = request {
+        val res = api.request {
             Get<List<Profile>>("/users/chatters/${id}")
         }
         Log.d("Chat", "allContacts: $res")
@@ -86,7 +81,7 @@ class ContactsRepository @Inject constructor(
     }
 
     suspend fun add2Contact(chatter: Profile): Boolean {
-        val res = request {
+        val res = api.request {
             Put<Profile>("/users/add/${curId}/${chatter.id}")
         }
         if (res != null) {
@@ -96,7 +91,7 @@ class ContactsRepository @Inject constructor(
     }
 
     suspend fun delChatter(chatterId: String): Boolean {
-        val res = request {
+        val res = api.request {
             Delete<Profile>("/users/del/${curId}/${chatterId}")
         }
         if (res != null) {

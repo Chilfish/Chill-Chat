@@ -6,12 +6,12 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.socket.client.Socket
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import top.chilfish.chillchat.data.chatslist.Chatter
 import top.chilfish.chillchat.data.contacts.Profile
 import top.chilfish.chillchat.data.module.IODispatcher
@@ -20,7 +20,6 @@ import top.chilfish.chillchat.data.repository.ContactsRepository
 import top.chilfish.chillchat.data.repository.MessageRepository
 import top.chilfish.chillchat.data.repository.UserRepository
 import top.chilfish.chillchat.provider.AccountProvider
-import top.chilfish.chillchat.provider.ResStrProvider
 import top.chilfish.chillchat.provider.curId
 import java.io.File
 import javax.inject.Inject
@@ -30,9 +29,11 @@ class MainViewModel @Inject constructor(
     private val contactsRepo: ContactsRepository,
     private val chatsRepo: ChatsListRepository,
     private val mesRepo: MessageRepository,
-    private val resStr: ResStrProvider,
     private val userRepo: UserRepository,
     private val socket: Socket,
+
+    @IODispatcher
+    private val ioDispatcher: CoroutineDispatcher,
 ) : ViewModel() {
 
     private val _mainState = MutableStateFlow(MainState())
@@ -44,14 +45,15 @@ class MainViewModel @Inject constructor(
     }
 
     fun load() = viewModelScope.launch {
-        connect()
+        launch { connect() }
         launch { watchMe() }
         launch { contactsRepo.loadAll(mainState.value.me?.id) }
         launch { mesRepo.loadAll() }
         launch { loadChats() }
     }
 
-    private fun connect() {
+
+    private suspend fun connect() = withContext(ioDispatcher) {
         socket.connect()
         socket.on("connect") {
             Log.d("Chat", "Socket: Connected!")
@@ -62,7 +64,7 @@ class MainViewModel @Inject constructor(
     private suspend fun loadChats() {
         chatsRepo.loadAll()
         chatsRepo.getAll()
-            .flowOn(Dispatchers.IO)
+            .flowOn(ioDispatcher)
             .collect { chats ->
                 _mainState.update {
                     it.copy(chats = chats)

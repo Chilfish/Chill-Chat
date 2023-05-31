@@ -11,7 +11,6 @@ import top.chilfish.chillchat.data.contacts.Profile
 import top.chilfish.chillchat.data.messages.Message
 import top.chilfish.chillchat.data.messages.MessageDao
 import top.chilfish.chillchat.data.module.ApplicationScope
-import top.chilfish.chillchat.provider.ResStrProvider
 import top.chilfish.chillchat.provider.curId
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -21,11 +20,11 @@ class MessageRepository @Inject constructor(
     private val dao: MessageDao,
     private val contactsRepository: ContactsRepository,
     private val socket: Socket,
-    resStr: ResStrProvider,
+    private val api: ApiRequest,
 
     @ApplicationScope
-    private val scope: CoroutineScope
-) : BaseApiRequest(resStr) {
+    private val scope: CoroutineScope,
+) {
     fun getAll(chatterId: String) = dao.getAll(curId, chatterId)
 
     suspend fun insert(message: Message) = dao.insert(message)
@@ -47,7 +46,7 @@ class MessageRepository @Inject constructor(
     }
 
     private suspend fun loadMessages(contact: Profile) {
-        val res = request {
+        val res = api.request {
             Get<List<Message>>("/messages/${curId}/${contact.id}")
         } ?: return
         dao.insertAll(res)
