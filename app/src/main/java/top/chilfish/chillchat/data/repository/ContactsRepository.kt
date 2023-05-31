@@ -5,11 +5,14 @@ import com.drake.net.Delete
 import com.drake.net.Get
 import com.drake.net.Put
 import com.drake.net.exception.RequestParamsException
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.withContext
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import top.chilfish.chillchat.R
 import top.chilfish.chillchat.data.contacts.ContactsDao
 import top.chilfish.chillchat.data.contacts.Profile
+import top.chilfish.chillchat.data.module.IODispatcher
 import top.chilfish.chillchat.provider.ResStrProvider
 import top.chilfish.chillchat.provider.curCid
 import top.chilfish.chillchat.provider.curId
@@ -22,6 +25,9 @@ class ContactsRepository @Inject constructor(
     private val dao: ContactsDao,
     private val resStr: ResStrProvider,
     private val api: ApiRequest,
+
+    @IODispatcher
+    private val ioDispatcher: CoroutineDispatcher,
 ) {
     fun allUsers() = dao.getAll()
 
@@ -67,10 +73,9 @@ class ContactsRepository @Inject constructor(
         return res
     }
 
-    suspend fun loadAll(id: String?) {
-        if (id == null) return
+    suspend fun loadAll() = withContext(ioDispatcher) {
         val res = api.request {
-            Get<List<Profile>>("/users/chatters/${id}")
+            Get<List<Profile>>("/users/chatters/${curId}")
         }
         Log.d("Chat", "allContacts: $res")
 

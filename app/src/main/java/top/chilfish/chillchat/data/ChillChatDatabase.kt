@@ -14,9 +14,11 @@ import top.chilfish.chillchat.data.contacts.ContactsDao
 import top.chilfish.chillchat.data.contacts.Profile
 import top.chilfish.chillchat.data.messages.Message
 import top.chilfish.chillchat.data.messages.MessageDao
+import top.chilfish.chillchat.data.messages.Ids
 
 @Database(
     entities = [Chats::class, Message::class, Profile::class],
+    views = [Ids::class],
     version = 1,
     exportSchema = false
 )
@@ -33,7 +35,7 @@ abstract class ChillChatDatabase : RoomDatabase() {
 
         fun getDatabase(
             context: Context,
-            scope: CoroutineScope
+            scope: CoroutineScope,
         ): ChillChatDatabase {
             return INSTANCE ?: synchronized(this) {
                 INSTANCE ?: Room.databaseBuilder(
@@ -42,14 +44,14 @@ abstract class ChillChatDatabase : RoomDatabase() {
                     DATABASE_NAME
                 )
                     .fallbackToDestructiveMigration()
-//                    .addCallback(ChillChatDatabaseCallback(scope))
+                    .addCallback(ChillChatDatabaseCallback(scope))
                     .build()
                     .also { INSTANCE = it }
             }
         }
 
         private class ChillChatDatabaseCallback(
-            private val scope: CoroutineScope
+            private val scope: CoroutineScope,
         ) : Callback() {
             override fun onCreate(db: SupportSQLiteDatabase) {
                 super.onCreate(db)
@@ -68,19 +70,11 @@ abstract class ChillChatDatabase : RoomDatabase() {
         private suspend fun populateDatabase(
             chatsListDao: ChatsListDao,
             messageDao: MessageDao,
-            contactsDao: ContactsDao
+            contactsDao: ContactsDao,
         ) {
             chatsListDao.deleteAll()
             messageDao.deleteAll()
             contactsDao.deleteAll()
-
-            try {
-//                Contacts.forEach { contactsDao.insert(it) }
-//                Messages.forEach { messageDao.insert(it) }
-//                ChatsList.forEach { chatsListDao.insert(it) }
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
         }
     }
 }

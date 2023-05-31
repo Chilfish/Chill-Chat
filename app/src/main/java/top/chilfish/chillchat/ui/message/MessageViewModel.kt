@@ -34,7 +34,7 @@ class MessageViewModel @Inject constructor(
         }
 
         messRepo.receiveMes()
-        Log.d("Chat", "all mes: ${messageState.value.messages}")
+//        Log.d("Chat", "all mes: ${messageState.value.messages}")
 
         launch {
             val chatter = contactsRepo.getById(chatterId) ?: Profile()

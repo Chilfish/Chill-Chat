@@ -15,6 +15,15 @@ interface MessageDao {
     )
     fun getAll(uid: String, chatterId: String): Flow<MutableList<Message>>
 
+    @Query(
+        "SELECT * FROM $Message_Table " +
+                "WHERE sendId IN (SELECT * FROM $View_ids) " +
+                "OR receiveId IN (SELECT * FROM $View_ids) " +
+                "GROUP BY sendId, receiveId " +
+                "HAVING time = MAX(time);"
+    )
+    suspend fun getLatest(): List<Message>
+
     @Insert
     suspend fun insert(message: Message)
 

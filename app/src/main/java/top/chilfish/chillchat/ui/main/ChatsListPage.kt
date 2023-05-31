@@ -33,22 +33,26 @@ fun ChatsListPage(
 ) {
     val mainState = viewModel.mainState.collectAsState().value
 
-    LazyColumn {
-        itemsIndexed(
-            items = mainState.chats,
-            key = { _, chat -> chat.chatter.id }) { _, chat ->
-            ChatsListItem(
-                chat = chat.chatter,
-                profile = chat.profile,
-                onClick = {
-                    navigateTo(
-                        navCtrl = navController,
-                        route = Routers.Message,
-                        data = chat.profile.id,
-                    )
-                }
-            )
+    if (!mainState.isLoading) {
+        LazyColumn {
+            itemsIndexed(
+                items = mainState.chats,
+                key = { _, chat -> chat.chatter.id }) { _, chat ->
+                ChatsListItem(
+                    chat = chat.chatter,
+                    profile = chat.profile,
+                    onClick = {
+                        navigateTo(
+                            navCtrl = navController,
+                            route = Routers.Message,
+                            data = chat.profile.id,
+                        )
+                    }
+                )
+            }
         }
+    } else {
+        Text(text = "Loading...")
     }
 }
 
@@ -56,7 +60,7 @@ fun ChatsListPage(
 fun ChatsListItem(
     chat: Chats,
     profile: Profile,
-    onClick: () -> Unit
+    onClick: () -> Unit,
 ) {
     val padding = 12.dp
     Row(

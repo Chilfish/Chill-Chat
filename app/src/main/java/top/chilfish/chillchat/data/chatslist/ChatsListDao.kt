@@ -16,7 +16,7 @@ data class Chatter(
         parentColumn = "chatterId",
         entityColumn = "id"
     )
-    val profile: Profile
+    val profile: Profile,
 )
 
 @Dao
@@ -29,15 +29,19 @@ interface ChatsListDao {
     @Query("SELECT * FROM $Chat_Table WHERE chatterId = :id")
     suspend fun getById(id: String): Chats?
 
+    @Transaction
     @Insert
     suspend fun insert(chats: Chats)
 
+    @Transaction
     @Query("DELETE FROM $Chat_Table")
     suspend fun deleteAll()
 
+    @Transaction
     @Query("DELETE FROM $Chat_Table WHERE id = :id")
     suspend fun deleteById(id: String)
 
+    @Transaction
     @Update
     suspend fun update(chats: Chats)
 

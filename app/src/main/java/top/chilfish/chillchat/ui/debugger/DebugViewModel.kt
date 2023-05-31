@@ -61,8 +61,7 @@ class DebugViewModel @Inject constructor(
 //        contactsRepo.allUsers().collect {
 //            Log.d("Chat", "debug: Contacts: $it")
 //        }
-        val user = contactsRepo.findUser(curCid)
-        contactsRepo.loadAll(user?.id!!)
+        contactsRepo.loadAll()
     }
 
     fun login() = viewModelScope.launch {
