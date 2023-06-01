@@ -3,11 +3,13 @@ package top.chilfish.chillchat.data.messages
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
+import androidx.room.Transaction
 import kotlinx.coroutines.flow.Flow
 import top.chilfish.chillchat.provider.curId
 
 @Dao
 interface MessageDao {
+    @Transaction
     @Query(
         "SELECT * FROM $Message_Table " +
                 "where (receiveId ==:chatterId AND sendId == :uid) " +
@@ -16,6 +18,7 @@ interface MessageDao {
     )
     fun getAll(uid: String, chatterId: String): Flow<MutableList<Message>>
 
+    @Transaction
     @Query(
         "SELECT * FROM $Message_Table " +
                 "WHERE sendId IN (SELECT * FROM $View_ids) " +
@@ -27,18 +30,19 @@ interface MessageDao {
     )
     suspend fun getLatest(): List<Message>
 
+    @Transaction
     @Insert
     suspend fun insert(message: Message)
 
+    @Transaction
     @Insert
     suspend fun insertAll(messages: List<Message>)
 
+    @Transaction
     @Query("DELETE FROM $Message_Table")
     suspend fun deleteAll()
 
+    @Transaction
     @Query("DELETE FROM $Message_Table WHERE id = :id")
     suspend fun deleteById(id: String)
-
-    @Query("DELETE FROM $Message_Table WHERE sendId = :chatterId OR receiveId = :chatterId")
-    suspend fun deleteByChatterId(chatterId: String)
 }

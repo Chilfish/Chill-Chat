@@ -12,7 +12,6 @@ import top.chilfish.chillchat.R
 import top.chilfish.chillchat.data.contacts.Profile
 import top.chilfish.chillchat.data.repository.ContactsRepository
 import top.chilfish.chillchat.provider.ResStrProvider
-import top.chilfish.chillchat.provider.curCid
 import top.chilfish.chillchat.provider.curId
 import top.chilfish.chillchat.utils.showToast
 import javax.inject.Inject
@@ -90,5 +89,5 @@ data class ContactState(
     val contacts: MutableList<Profile> = mutableListOf(),
 
     val curProfile: Profile = Profile(),
-    val searchRes: MutableList<Profile> = mutableListOf()
+    val searchRes: MutableList<Profile> = mutableListOf(),
 )

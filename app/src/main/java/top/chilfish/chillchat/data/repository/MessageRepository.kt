@@ -40,11 +40,11 @@ class MessageRepository @Inject constructor(
     suspend fun deleteAll() = dao.deleteAll()
 
     suspend fun loadAll() = withContext(ioDispatcher) {
-        dao.deleteAll()
         val res = api.request {
             Get<List<MessagesItem>>("/messages/${curId}")
         } ?: return@withContext
 
+        dao.deleteAll()
         res.forEach {
             Log.d("Chat", "fetch messages: ${it.messages}")
             dao.insertAll(it.messages)

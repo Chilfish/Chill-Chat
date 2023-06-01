@@ -67,8 +67,8 @@ class MainViewModel @Inject constructor(
 
     private suspend fun loadChats() {
         chatsRepo.loadAll()
-            .flowOn(ioDispatcher)
-            .collect { chats ->
+            ?.flowOn(ioDispatcher)
+            ?.collect { chats ->
                 _mainState.update {
                     it.copy(chats = chats)
                 }

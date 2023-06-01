@@ -76,13 +76,11 @@ class ContactsRepository @Inject constructor(
     suspend fun loadAll() = withContext(ioDispatcher) {
         val res = api.request {
             Get<List<Profile>>("/users/chatters/${curId}")
-        }
+        } ?: return@withContext
         Log.d("Chat", "allContacts: $res")
 
-        if (res != null) {
-            dao.deleteAll()
-            res.forEach { dao.insert(it) }
-        }
+        dao.deleteAll()
+        res.forEach { dao.insert(it) }
     }
 
     suspend fun add2Contact(chatter: Profile): Boolean {

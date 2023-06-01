@@ -22,7 +22,7 @@ open class BaseActivity : AppCompatActivity() {
         setContent(
             parent = null,
             content = {
-                ChillChatTheme() {
+                ChillChatTheme {
                     content()
                 }
             }

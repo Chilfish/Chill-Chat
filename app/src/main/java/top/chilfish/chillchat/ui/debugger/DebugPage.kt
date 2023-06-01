@@ -41,40 +41,42 @@ fun DebugPage(
                 title = "SetHost",
                 btnText = "Save",
                 input = host,
-                onBtnClick = { viewModel.setHost(it) }
+                onBtnClick = viewModel::setHost
             )
 
             Setter(
                 title = "Set Cid",
                 btnText = "Save",
                 input = curCid,
-                onBtnClick = { viewModel.setCid(it) }
+                onBtnClick = viewModel::setCid
             )
 
-            Setter(
-                title = "Find User",
-                btnText = "Find",
-                onBtnClick = { viewModel.find(it) }
-            )
+//            Setter(
+//                title = "Find User",
+//                btnText = "Find",
+//                onBtnClick = { viewModel.find(it) }
+//            )
 
             Row {
-                Button(onClick = { viewModel.loadContacts() }) {
+                Button(onClick = viewModel::loadContacts) {
                     Text("Load Contacts")
                 }
-                Button(onClick = { viewModel.login() }) {
+                Button(onClick = viewModel::login) {
                     Text("Login")
                 }
 
-                PickFile(pickedFile = { viewModel.uploadImg(it) }) {
+                PickFile(pickedFile = viewModel::uploadImg) {
                     Button(onClick = { it() }) {
                         Text("Pick Photo")
                     }
                 }
+            }
 
-                Button(onClick = { viewModel.join() }) {
+            Row {
+                Button(onClick = viewModel::join) {
                     Text("Join Room")
                 }
-                Button(onClick = { viewModel.sendMes() }) {
+                Button(onClick = viewModel::sendMes) {
                     Text("Send message")
                 }
             }

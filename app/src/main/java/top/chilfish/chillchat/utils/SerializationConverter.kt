@@ -37,7 +37,7 @@ class SerializationConverter(
             return NetConverter.onConvert<R>(succeed, response)
         } catch (e: ConvertException) {
             val code = response.code
-            Log.d("Chat", "Convert: $response")
+//            Log.d("Chat", "Convert: $response")
             when {
                 code in 200..299 -> { // 请求成功
                     val bodyString = response.body?.string() ?: return null
