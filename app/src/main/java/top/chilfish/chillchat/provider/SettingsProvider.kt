@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
-private const val defaultHost = "http://192.168.144.39:8000"
+private const val defaultHost = "http://as.chilfish.top:8000"
 var BaseHost = MutableStateFlow(defaultHost)
     private set
 

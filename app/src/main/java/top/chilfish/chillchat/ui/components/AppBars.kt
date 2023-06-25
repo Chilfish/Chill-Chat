@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Build
 import androidx.compose.material.icons.outlined.AddCircle
 import androidx.compose.material.icons.rounded.MoreVert
 import androidx.compose.material.icons.rounded.Refresh
@@ -58,10 +57,6 @@ fun HomeBar(
         title = stringResource(R.string.app_name),
         center = false,
         actions = {
-            IconBtn(
-                onClick = { navHostController.navigate(Routers.Debug) },
-                imageVector = Icons.Default.Build
-            )
             IconBtn(
                 onClick = { viewModel.load() },
                 imageVector = Icons.Rounded.Refresh
@@ -148,15 +143,17 @@ fun ChillTopBar(
     TopAppBar(
         title = {
             Text(
-                modifier = modifier.let {
-                    if (center) {
-                        it.fillMaxWidth()
-                    } else it
-                }.let {
-                    if (center && navController != null) {
-                        it.offset(x = (-24).dp)
-                    } else it
-                },
+                modifier = modifier
+                    .let {
+                        if (center) {
+                            it.fillMaxWidth()
+                        } else it
+                    }
+                    .let {
+                        if (center && navController != null) {
+                            it.offset(x = (-24).dp)
+                        } else it
+                    },
                 text = title,
                 textAlign = TextAlign.Center,
                 color = MaterialTheme.colorScheme.onPrimary,

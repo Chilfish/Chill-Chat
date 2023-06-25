@@ -22,8 +22,6 @@ import javax.inject.Singleton
 class MessageRepository @Inject constructor(
     private val dao: MessageDao,
     private val chatsRepo: ChatsListRepository,
-
-    private val socket: Socket,
     private val api: ApiRequest,
 
     @ApplicationScope
@@ -31,6 +29,12 @@ class MessageRepository @Inject constructor(
     @IODispatcher
     private val ioDispatcher: CoroutineDispatcher,
 ) {
+    private lateinit var socket: Socket
+
+    fun init(socket: Socket) {
+        this.socket = socket
+    }
+
     fun getAll(chatterId: String) = dao.getAll(curId, chatterId)
 
     suspend fun insert(message: Message) = dao.insert(message)
@@ -46,7 +50,7 @@ class MessageRepository @Inject constructor(
 
         dao.deleteAll()
         res.forEach {
-            Log.d("Chat", "fetch messages: ${it.messages}")
+//            Log.d("Chat", "fetch messages: ${it.messages}")
             dao.insertAll(it.messages)
         }
     }

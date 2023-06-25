@@ -11,7 +11,6 @@ import top.chilfish.chillchat.data.repository.MessageRepository
 import top.chilfish.chillchat.data.repository.UserRepository
 import top.chilfish.chillchat.provider.AccountProvider
 import top.chilfish.chillchat.provider.SettingsProvider
-import top.chilfish.chillchat.provider.curCid
 import top.chilfish.chillchat.provider.curId
 import java.io.File
 import javax.inject.Inject
@@ -21,11 +20,12 @@ class DebugViewModel @Inject constructor(
     private val contactsRepo: ContactsRepository,
     private val userRepo: UserRepository,
     private val mesRepo: MessageRepository,
-    private val socket: Socket,
 ) : ViewModel() {
+    private lateinit var socket: Socket
+
     init {
-        Log.d("Chat", "Socket: ${socket.connected()}")
-        connect()
+//        Log.d("Chat", "Socket: ${socket.connected()}")
+//        connect()
     }
 
     private fun connect() {

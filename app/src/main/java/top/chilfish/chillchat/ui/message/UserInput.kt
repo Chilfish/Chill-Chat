@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Face
 import androidx.compose.material.icons.filled.Send
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -37,7 +36,6 @@ fun UserInputPreview() {
 fun UserInput(
     modifier: Modifier = Modifier,
     onSend: (String) -> Unit = {},
-    onMood: () -> Unit = {},
     resetScroll: () -> Unit = {},
 ) {
 
@@ -64,15 +62,10 @@ fun UserInput(
             Row(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                IconBtn(
-                    onClick = onMood,
-                    imageVector = Icons.Default.Face,
-                    tint = MaterialTheme.colorScheme.surfaceTint
-                )
                 Box(
                     modifier = Modifier
                         .weight(1f)
-                        .padding(vertical = 8.dp),
+                        .padding(8.dp),
                     contentAlignment = Alignment.CenterStart,
                     content = { innerTextField() },
                 )

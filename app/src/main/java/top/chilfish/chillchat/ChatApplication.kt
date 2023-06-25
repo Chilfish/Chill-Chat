@@ -5,7 +5,6 @@ import com.drake.net.NetConfig
 import com.drake.net.okhttp.setConverter
 import com.drake.net.okhttp.setDebug
 import dagger.hilt.android.HiltAndroidApp
-import io.socket.client.Socket
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -45,9 +44,6 @@ class ChatApplication : Application() {
 
     @Inject
     lateinit var messageRepository: MessageRepository
-
-    @Inject
-    lateinit var socket: Socket
 
     override fun onCreate() {
         super.onCreate()

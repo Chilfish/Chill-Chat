@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import io.socket.client.IO
 import io.socket.client.Socket
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.async
@@ -21,6 +22,7 @@ import top.chilfish.chillchat.data.repository.ContactsRepository
 import top.chilfish.chillchat.data.repository.MessageRepository
 import top.chilfish.chillchat.data.repository.UserRepository
 import top.chilfish.chillchat.provider.AccountProvider
+import top.chilfish.chillchat.provider.BaseHost
 import top.chilfish.chillchat.provider.curId
 import java.io.File
 import javax.inject.Inject
@@ -31,7 +33,6 @@ class MainViewModel @Inject constructor(
     private val chatsRepo: ChatsListRepository,
     private val mesRepo: MessageRepository,
     private val userRepo: UserRepository,
-    private val socket: Socket,
 
     @IODispatcher
     private val ioDispatcher: CoroutineDispatcher,
@@ -39,6 +40,8 @@ class MainViewModel @Inject constructor(
 
     private val _mainState = MutableStateFlow(MainState())
     val mainState: StateFlow<MainState> = _mainState
+
+    private lateinit var socket: Socket
 
     init {
         load()
@@ -58,11 +61,13 @@ class MainViewModel @Inject constructor(
     }
 
     private suspend fun connect() = withContext(ioDispatcher) {
+        socket = IO.socket("${BaseHost.value}/chat")
         socket.connect()
         socket.on("connect") {
             Log.d("Chat", "Socket: Connected!")
             socket.emit("join", curId)
         }
+        mesRepo.init(socket)
     }
 
     private suspend fun loadChats() {
