@@ -1,7 +1,6 @@
 package top.chilfish.chillchat.ui.login
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -19,21 +18,17 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHostController
 import top.chilfish.chillchat.R
-import top.chilfish.chillchat.navigation.Routers
 import top.chilfish.chillchat.ui.components.TextInput
 
 @Composable
 fun LoginPage(
     modifier: Modifier = Modifier,
     viewModel: LoginViewModel,
-    navController: NavHostController,
 ) {
     val loginState = viewModel.loginState.collectAsState().value
 
@@ -47,8 +42,7 @@ fun LoginPage(
             modifier = Modifier
                 .width(150.dp)
                 .padding(12.dp)
-                .clip(RoundedCornerShape(12.dp))
-                .clickable { navController.navigate(Routers.Debug) },
+                .clip(RoundedCornerShape(12.dp)),
             contentDescription = stringResource(R.string.app_name),
             painter = painterResource(R.drawable.logo)
         )

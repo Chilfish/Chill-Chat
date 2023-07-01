@@ -16,12 +16,12 @@ import top.chilfish.chillchat.data.repository.ChatsListRepository
 import top.chilfish.chillchat.data.repository.ContactsRepository
 import top.chilfish.chillchat.data.repository.MessageRepository
 import top.chilfish.chillchat.provider.AccountProvider
-import top.chilfish.chillchat.provider.BaseHost
 import top.chilfish.chillchat.provider.ContextProvider
-import top.chilfish.chillchat.provider.SettingsProvider
 import top.chilfish.chillchat.utils.SerializationConverter
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
+
+const val BaseHost = "http://as.chilfish.top:8000"
 
 @HiltAndroidApp
 class ChatApplication : Application() {
@@ -50,17 +50,14 @@ class ChatApplication : Application() {
         super.onCreate()
 
         ContextProvider.init(this)
-        SettingsProvider.init(this)
         AccountProvider.init(this)
 
         applicationScope.launch {
-            BaseHost.collect {
-                NetConfig.initialize(it, applicationContext) {
-                    connectTimeout(5, TimeUnit.SECONDS)
-                    setDebug(true)
-                    setConverter(SerializationConverter())
-                    cache(Cache(cacheDir, 1024 * 1024 * 128))
-                }
+            NetConfig.initialize(BaseHost, applicationContext) {
+                connectTimeout(5, TimeUnit.SECONDS)
+                setDebug(true)
+                setConverter(SerializationConverter())
+                cache(Cache(cacheDir, 1024 * 1024 * 128))
             }
         }
     }

@@ -11,7 +11,6 @@ import androidx.navigation.navArgument
 import top.chilfish.chillchat.ui.contacts.AddContactPage
 import top.chilfish.chillchat.ui.contacts.ContactsPage
 import top.chilfish.chillchat.ui.contacts.ProfilePage
-import top.chilfish.chillchat.ui.debugger.DebugPage
 import top.chilfish.chillchat.ui.edit_profile.EditProfile
 import top.chilfish.chillchat.ui.login.LoginPage
 import top.chilfish.chillchat.ui.login.LoginViewModel
@@ -80,10 +79,6 @@ fun ChillNavHost(
                 navController = navController
             )
         }
-
-        composable(route = Routers.Debug) {
-            DebugPage()
-        }
     }
 }
 
@@ -97,14 +92,7 @@ fun LoginNavHost(
         startDestination = Routers.Home,
     ) {
         composable(route = Routers.Home) {
-            LoginPage(
-                viewModel = viewModel,
-                navController = navController
-            )
-        }
-
-        composable(route = Routers.Debug) {
-            DebugPage()
+            LoginPage(viewModel = viewModel,)
         }
     }
 }

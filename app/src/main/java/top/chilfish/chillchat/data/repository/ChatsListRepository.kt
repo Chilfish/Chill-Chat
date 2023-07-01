@@ -28,7 +28,11 @@ class ChatsListRepository @Inject constructor(
 
     suspend fun delete(id: String) = dao.deleteById(id)
 
-    suspend fun deleteAll() = dao.deleteAll()
+    suspend fun deleteAll() = try {
+        dao.deleteAll()
+    } catch (e: Exception) {
+        e.printStackTrace()
+    }
 
     suspend fun update(chats: Chats) = dao.update(chats)
 

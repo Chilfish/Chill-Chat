@@ -31,7 +31,11 @@ class ContactsRepository @Inject constructor(
 ) {
     fun allUsers() = dao.getAll()
 
-    suspend fun deleteAll() = dao.deleteAll()
+    suspend fun deleteAll() = try {
+        dao.deleteAll()
+    } catch (e: Exception) {
+        e.printStackTrace()
+    }
 
     suspend fun getById(id: String) = dao.getById(id)
 

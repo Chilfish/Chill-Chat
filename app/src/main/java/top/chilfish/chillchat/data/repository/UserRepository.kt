@@ -27,7 +27,17 @@ class UserRepository @Inject constructor(
                 }
             }
         } catch (e: RequestParamsException) {
-            exception(e.response)
+            when (e.response.code) {
+                409 -> {
+                    showToast(resStr.getString(R.string.exist_username))
+                }
+                404 -> {
+                    showToast(resStr.getString(R.string.error_auth))
+                }
+                in 500..600 -> {
+                    showToast(resStr.getString(R.string.error_server))
+                }
+            }
             null
         }
         return res

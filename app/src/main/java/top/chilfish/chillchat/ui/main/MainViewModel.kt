@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import top.chilfish.chillchat.BaseHost
 import top.chilfish.chillchat.data.chatslist.Chatter
 import top.chilfish.chillchat.data.contacts.Profile
 import top.chilfish.chillchat.data.module.IODispatcher
@@ -22,7 +22,6 @@ import top.chilfish.chillchat.data.repository.ContactsRepository
 import top.chilfish.chillchat.data.repository.MessageRepository
 import top.chilfish.chillchat.data.repository.UserRepository
 import top.chilfish.chillchat.provider.AccountProvider
-import top.chilfish.chillchat.provider.BaseHost
 import top.chilfish.chillchat.provider.curId
 import java.io.File
 import javax.inject.Inject
@@ -52,12 +51,14 @@ class MainViewModel @Inject constructor(
     fun load() = viewModelScope.launch {
         launch { watchMe() }
         launch { contactsRepo.loadAll() }
-        launch { mesRepo.loadAll() }
+
+        //
+        async { mesRepo.loadAll() }.await()
         launch { loadChats() }
     }
 
     private fun connect() = viewModelScope.launch(ioDispatcher) {
-        socket = IO.socket("${BaseHost.value}/chat")
+        socket = IO.socket("${BaseHost}/chat")
         socket.connect()
         socket.on("connect") {
             Log.d("Chat", "Socket: Connected!")
@@ -89,6 +90,7 @@ class MainViewModel @Inject constructor(
 
     fun logout() = viewModelScope.launch {
         try {
+            async { chatsRepo.deleteAll() }.await()
             contactsRepo.deleteAll()
             mesRepo.deleteAll()
             AccountProvider.setLogout()
@@ -111,6 +113,4 @@ class MainViewModel @Inject constructor(
 data class MainState(
     val chats: MutableList<Chatter> = mutableListOf(),
     val me: Profile? = null,
-
-    val isLoading: Boolean = true,
 )

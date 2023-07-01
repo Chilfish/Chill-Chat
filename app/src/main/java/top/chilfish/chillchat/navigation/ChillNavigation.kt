@@ -19,8 +19,6 @@ object Routers {
     const val EditProfile = "profile/edit/{${ArgEdit}}"
 
     const val AddContact = "addContact"
-
-    const val Debug = "DebugPage"
 }
 
 object EditType {

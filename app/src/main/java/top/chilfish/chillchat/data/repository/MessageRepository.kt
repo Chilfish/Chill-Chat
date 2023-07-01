@@ -86,11 +86,7 @@ class MessageRepository @Inject constructor(
     suspend fun receiveMes() = withContext(ioDispatcher) {
         socket.on("message") { args ->
             val message = Json.decodeFromString<Message>(args[0].toString())
-            Log.d("Chat", "receive: ${args[0]}")
-
-            scope.launch {
-                insertAndUpdate(message, message.sendId)
-            }
+            scope.launch { insertAndUpdate(message, message.sendId) }
         }
         Unit
     }

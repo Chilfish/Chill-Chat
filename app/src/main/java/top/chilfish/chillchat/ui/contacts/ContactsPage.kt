@@ -39,7 +39,7 @@ fun ContactsPage(
                     navigateTo(
                         navCtrl = navController,
                         route = Routers.Profile,
-                        data = profile.id.toString(),
+                        data = profile.id,
                     )
                 }
             )
