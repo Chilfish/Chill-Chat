@@ -7,6 +7,7 @@ import top.chilfish.chillchat.utils.formattedTime
 
 const val Chat_Table = "chats"
 
+// 聊天列表
 @Entity(tableName = Chat_Table)
 data class Chats(
     @PrimaryKey(autoGenerate = true)

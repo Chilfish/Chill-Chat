@@ -31,6 +31,8 @@ class ContactsRepository @Inject constructor(
 ) {
     fun allUsers() = dao.getAll()
 
+    suspend fun deleteAll() = dao.deleteAll()
+
     suspend fun getById(id: String) = dao.getById(id)
 
     suspend fun setUser(me: Profile) {
@@ -74,9 +76,15 @@ class ContactsRepository @Inject constructor(
     }
 
     suspend fun loadAll() = withContext(ioDispatcher) {
-        val res = api.request {
-            Get<List<Profile>>("/users/chatters/${curId}")
+        val res = try {
+            api.request {
+                Get<List<Profile>>("/users/chatters/${curId}")
+            }
+        } catch (e: RequestParamsException) {
+            showToast(resStr.getString(R.string.error_404))
+            null
         } ?: return@withContext
+
         Log.d("Chat", "allContacts: $res")
 
         dao.deleteAll()
@@ -84,9 +92,15 @@ class ContactsRepository @Inject constructor(
     }
 
     suspend fun add2Contact(chatter: Profile): Boolean {
-        val res = api.request {
-            Put<Profile>("/users/add/${curId}/${chatter.id}")
+        val res = try {
+            api.request {
+                Put<Profile>("/users/add/${curId}/${chatter.id}")
+            }
+        } catch (e: RequestParamsException) {
+            showToast(resStr.getString(R.string.error_404))
+            null
         }
+
         if (res != null) {
             dao.insert(chatter)
         }
@@ -94,8 +108,13 @@ class ContactsRepository @Inject constructor(
     }
 
     suspend fun delChatter(chatterId: String): Boolean {
-        val res = api.request {
-            Delete<Profile>("/users/del/${curId}/${chatterId}")
+        val res = try {
+            api.request {
+                Delete<Profile>("/users/del/${curId}/${chatterId}")
+            }
+        } catch (e: RequestParamsException) {
+            showToast(resStr.getString(R.string.error_404))
+            null
         }
         if (res != null) {
             dao.deleteById(chatterId)

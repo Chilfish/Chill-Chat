@@ -10,6 +10,7 @@ import top.chilfish.chillchat.utils.formattedTime
 const val Message_Table = "messages"
 const val View_ids = "view_ids"
 
+// 聊天消息表
 @Serializable
 @Entity(tableName = Message_Table)
 data class Message(

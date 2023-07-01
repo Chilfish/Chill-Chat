@@ -20,6 +20,7 @@ import top.chilfish.chillchat.provider.BaseHost
 import top.chilfish.chillchat.provider.ContextProvider
 import top.chilfish.chillchat.provider.SettingsProvider
 import top.chilfish.chillchat.utils.SerializationConverter
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 @HiltAndroidApp
@@ -55,6 +56,7 @@ class ChatApplication : Application() {
         applicationScope.launch {
             BaseHost.collect {
                 NetConfig.initialize(it, applicationContext) {
+                    connectTimeout(5, TimeUnit.SECONDS)
                     setDebug(true)
                     setConverter(SerializationConverter())
                     cache(Cache(cacheDir, 1024 * 1024 * 128))

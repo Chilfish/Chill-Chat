@@ -8,6 +8,7 @@ import top.chilfish.chillchat.provider.BaseHost
 const val User_Table = "users"
 val Host = BaseHost.value
 
+// 用户/联系人 信息表
 @Serializable
 @Entity(tableName = User_Table)
 data class Profile(

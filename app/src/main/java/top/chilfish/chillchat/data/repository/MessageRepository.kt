@@ -2,6 +2,7 @@ package top.chilfish.chillchat.data.repository
 
 import android.util.Log
 import com.drake.net.Get
+import com.drake.net.exception.RequestParamsException
 import io.socket.client.Socket
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
@@ -9,12 +10,15 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import top.chilfish.chillchat.R
 import top.chilfish.chillchat.data.messages.Message
 import top.chilfish.chillchat.data.messages.MessageDao
 import top.chilfish.chillchat.data.messages.MessagesItem
 import top.chilfish.chillchat.data.module.ApplicationScope
 import top.chilfish.chillchat.data.module.IODispatcher
+import top.chilfish.chillchat.provider.ResStrProvider
 import top.chilfish.chillchat.provider.curId
+import top.chilfish.chillchat.utils.showToast
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -23,6 +27,7 @@ class MessageRepository @Inject constructor(
     private val dao: MessageDao,
     private val chatsRepo: ChatsListRepository,
     private val api: ApiRequest,
+    private val resStr: ResStrProvider,
 
     @ApplicationScope
     private val scope: CoroutineScope,
@@ -44,13 +49,18 @@ class MessageRepository @Inject constructor(
     suspend fun deleteAll() = dao.deleteAll()
 
     suspend fun loadAll() = withContext(ioDispatcher) {
-        val res = api.request {
-            Get<List<MessagesItem>>("/messages/${curId}")
+        val res = try {
+            api.request {
+                Get<List<MessagesItem>>("/messages/${curId}")
+            }
+        } catch (e: RequestParamsException) {
+            showToast(resStr.getString(R.string.error_404))
+            null
         } ?: return@withContext
+
 
         dao.deleteAll()
         res.forEach {
-//            Log.d("Chat", "fetch messages: ${it.messages}")
             dao.insertAll(it.messages)
         }
     }

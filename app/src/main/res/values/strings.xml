@@ -85,4 +85,5 @@
     <string name="error_server">Server error</string>
     <string name="error_network">Network error</string>
     <string name="error_password_same">Old password is incorrect</string>
+    <string name="error_404">Request not found</string>
 </resources>

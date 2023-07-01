@@ -44,23 +44,19 @@ class MainViewModel @Inject constructor(
     private lateinit var socket: Socket
 
     init {
+        connect()
         load()
         Log.d("Chat", "mainViewModel init")
     }
 
     fun load() = viewModelScope.launch {
-        connect()
-        mesRepo.receiveMes()
-
         launch { watchMe() }
         launch { contactsRepo.loadAll() }
-        launch {
-            async { mesRepo.loadAll() }.await()
-            loadChats()
-        }
+        launch { mesRepo.loadAll() }
+        launch { loadChats() }
     }
 
-    private suspend fun connect() = withContext(ioDispatcher) {
+    private fun connect() = viewModelScope.launch(ioDispatcher) {
         socket = IO.socket("${BaseHost.value}/chat")
         socket.connect()
         socket.on("connect") {
@@ -68,12 +64,13 @@ class MainViewModel @Inject constructor(
             socket.emit("join", curId)
         }
         mesRepo.init(socket)
+        mesRepo.receiveMes()
     }
 
     private suspend fun loadChats() {
         chatsRepo.loadAll()
-            ?.flowOn(ioDispatcher)
-            ?.collect { chats ->
+            .flowOn(ioDispatcher)
+            .collect { chats ->
                 _mainState.update {
                     it.copy(chats = chats)
                 }
@@ -91,8 +88,14 @@ class MainViewModel @Inject constructor(
     }
 
     fun logout() = viewModelScope.launch {
-        AccountProvider.setLogout()
-        socket.disconnect()
+        try {
+            contactsRepo.deleteAll()
+            mesRepo.deleteAll()
+            AccountProvider.setLogout()
+            socket.disconnect()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
     fun changeAvatar(avatar: File?) = viewModelScope.launch {
