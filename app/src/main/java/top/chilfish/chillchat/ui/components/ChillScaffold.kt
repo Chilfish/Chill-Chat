@@ -18,6 +18,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 
+/**
+ * 全局脚手架布局，包含顶部栏、底部栏、内容区域
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ChillScaffold(

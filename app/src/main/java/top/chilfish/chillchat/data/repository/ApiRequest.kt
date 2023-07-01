@@ -22,6 +22,9 @@ open class ApiRequest @Inject constructor(
     @IODispatcher
     private val ioDispatchers: CoroutineDispatcher,
 ) {
+    /**
+     * 网络请求 warp
+     */
     suspend fun <T> request(request: suspend CoroutineScope.() -> Deferred<T>): T? {
         var res: T? = null
         withContext(ioDispatchers) {

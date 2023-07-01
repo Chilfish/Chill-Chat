@@ -27,17 +27,7 @@ class UserRepository @Inject constructor(
                 }
             }
         } catch (e: RequestParamsException) {
-            when (e.response.code) {
-                409 -> {
-                    showToast(resStr.getString(R.string.exist_username))
-                }
-                404 -> {
-                    showToast(resStr.getString(R.string.error_auth))
-                }
-                in 500..600 -> {
-                    showToast(resStr.getString(R.string.error_server))
-                }
-            }
+            exception(e.response)
             null
         }
         return res
@@ -59,6 +49,7 @@ class UserRepository @Inject constructor(
         return res
     }
 
+    // 上传头像
     suspend fun updateAvatar(avatar: File): String? {
         val res = api.request {
             Post<String>("/file") {

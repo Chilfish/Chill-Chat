@@ -14,6 +14,9 @@ import top.chilfish.chillchat.provider.curId
 import javax.inject.Inject
 import javax.inject.Singleton
 
+/**
+ * 聊天列表数据仓库，用于管理聊天列表数据
+ */
 @Singleton
 class ChatsListRepository @Inject constructor(
     private val dao: ChatsListDao,

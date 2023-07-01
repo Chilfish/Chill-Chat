@@ -26,6 +26,9 @@ data class Message(
         get() = formattedTime(time)
 }
 
+/**
+ * 筛选聊天列表中联系人id的视图
+ */
 @DatabaseView(
     value = "SELECT sendId FROM messages " +
             "UNION " +

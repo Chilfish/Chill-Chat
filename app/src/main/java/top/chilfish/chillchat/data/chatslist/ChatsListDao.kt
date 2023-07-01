@@ -10,6 +10,9 @@ import androidx.room.Update
 import kotlinx.coroutines.flow.Flow
 import top.chilfish.chillchat.data.contacts.Profile
 
+/**
+ * 联合查询，聊天列表数据访问对象
+ */
 data class Chatter(
     @Embedded val chatter: Chats,
     @Relation(

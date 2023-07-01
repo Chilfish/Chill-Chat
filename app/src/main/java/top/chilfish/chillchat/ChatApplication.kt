@@ -21,6 +21,7 @@ import top.chilfish.chillchat.utils.SerializationConverter
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
+// 服务器地址
 const val BaseHost = "http://as.chilfish.top:8000"
 
 @HiltAndroidApp
@@ -52,6 +53,7 @@ class ChatApplication : Application() {
         ContextProvider.init(this)
         AccountProvider.init(this)
 
+        // 初始化 Net 请求库
         applicationScope.launch {
             NetConfig.initialize(BaseHost, applicationContext) {
                 connectTimeout(5, TimeUnit.SECONDS)

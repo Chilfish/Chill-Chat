@@ -36,6 +36,9 @@ data class NavBarDes(
 )
 
 
+/**
+ * 携带参数跳转路由
+ */
 fun navigateTo(navCtrl: NavHostController, route: String, data: String = "") {
     val curRoute = when (route) {
         Routers.Profile -> Routers.Profile.replace("{$ArgUser}", data)

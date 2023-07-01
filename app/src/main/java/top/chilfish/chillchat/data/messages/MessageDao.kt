@@ -18,6 +18,9 @@ interface MessageDao {
     )
     fun getAll(uid: String, chatterId: String): Flow<MutableList<Message>>
 
+    /**
+     * 获取每位联系人的最新一条消息
+     */
     @Transaction
     @Query(
         "SELECT * FROM $Message_Table " +

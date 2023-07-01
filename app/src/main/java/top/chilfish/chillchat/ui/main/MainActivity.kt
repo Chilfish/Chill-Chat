@@ -17,6 +17,7 @@ class MainActivity : BaseActivity() {
             ChillNavHost()
         }
 
+        // 监听登录状态
         lifecycleScope.launch {
             isLoggedIn.collect {
                 if (!it) {

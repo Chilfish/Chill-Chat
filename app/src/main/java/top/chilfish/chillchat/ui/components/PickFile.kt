@@ -10,6 +10,9 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import java.io.File
 
+/**
+ * 从文件列表选择图片
+ */
 @Composable
 fun PickFile(
     navController: NavController = rememberNavController(),

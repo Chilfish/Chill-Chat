@@ -1,6 +1,5 @@
 package top.chilfish.chillchat.data.repository
 
-import android.util.Log
 import com.drake.net.Get
 import com.drake.net.exception.RequestParamsException
 import io.socket.client.Socket
@@ -48,6 +47,9 @@ class MessageRepository @Inject constructor(
 
     suspend fun deleteAll() = dao.deleteAll()
 
+    /**
+     * 加载聊天列表
+     */
     suspend fun loadAll() = withContext(ioDispatcher) {
         val res = try {
             api.request {
@@ -65,6 +67,9 @@ class MessageRepository @Inject constructor(
         }
     }
 
+    /**
+     * 插入消息并更新聊天列表
+     */
     private suspend fun insertAndUpdate(mes: Message, chatterId: String) =
         withContext(ioDispatcher) {
             launch { chatsRepo.updateById(chatterId, mes.content, mes.time) }

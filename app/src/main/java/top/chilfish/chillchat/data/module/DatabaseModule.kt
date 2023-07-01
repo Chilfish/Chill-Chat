@@ -11,7 +11,9 @@ import top.chilfish.chillchat.data.ChillChatDatabase
 import top.chilfish.chillchat.data.chatslist.ChatsListDao
 import javax.inject.Singleton
 
-
+/**
+ * Hilt 依赖注入提供者，用于提供数据库相关的依赖
+ */
 @Module
 @InstallIn(SingletonComponent::class)
 object DatabaseModule {

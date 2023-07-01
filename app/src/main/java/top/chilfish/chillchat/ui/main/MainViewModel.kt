@@ -48,15 +48,17 @@ class MainViewModel @Inject constructor(
         Log.d("Chat", "mainViewModel init")
     }
 
+    // 加载数据
     fun load() = viewModelScope.launch {
         launch { watchMe() }
         launch { contactsRepo.loadAll() }
 
-        //
+        // 得等到历史记录加载完毕后才加载聊天列表
         async { mesRepo.loadAll() }.await()
         launch { loadChats() }
     }
 
+    // 连接 Socket.IO
     private fun connect() = viewModelScope.launch(ioDispatcher) {
         socket = IO.socket("${BaseHost}/chat")
         socket.connect()
@@ -68,6 +70,7 @@ class MainViewModel @Inject constructor(
         mesRepo.receiveMes()
     }
 
+    // 加载聊天列表
     private suspend fun loadChats() {
         chatsRepo.loadAll()
             .flowOn(ioDispatcher)
@@ -78,6 +81,7 @@ class MainViewModel @Inject constructor(
             }
     }
 
+    // 监听个人信息变化
     private suspend fun watchMe() {
         contactsRepo.getUser()
             .flowOn(ioDispatcher)
@@ -88,6 +92,7 @@ class MainViewModel @Inject constructor(
             }
     }
 
+    // 退出登录并删除信息
     fun logout() = viewModelScope.launch {
         try {
             async { chatsRepo.deleteAll() }.await()
@@ -100,6 +105,7 @@ class MainViewModel @Inject constructor(
         }
     }
 
+    // 更新头像
     fun changeAvatar(avatar: File?) = viewModelScope.launch {
         if (avatar == null) return@launch
 

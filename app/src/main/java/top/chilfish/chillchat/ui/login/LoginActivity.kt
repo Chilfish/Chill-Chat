@@ -19,6 +19,7 @@ class LoginActivity : BaseActivity() {
         initEvent()
     }
 
+    // 监听登录状态，登录成功或已经登录了跳转套主页
     private fun initEvent() {
         lifecycleScope.launch {
             loginViewModel.loginState.collect {
