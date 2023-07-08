@@ -1,10 +1,10 @@
-:construction: Under developing.
+a simple online chat app client built with Jetpack Compose.
 
-a simple online chat app client built with Jetpack Compose & GPT
-
+<!--
 the simple server is [here](https://github.com/Chilfish/Chill-Chat-Server)
+-->
 
-> Just a demo for Compose learning
+> Just a demo for Compose learning & my homework.
 
 ### Tech. stack
 
